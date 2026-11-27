@@ -4,7 +4,8 @@ from pathlib import Path
 import json,time,uuid
 from fastmcp import Context
 
-DLL=Path(r'C:\Users\h2\AppData\Roaming\Autodesk\ApplicationPlugins\CadMcpArch2026V2Safe.bundle\Contents\Win64\CadMcpArch2026V2Safe.dll')
+from cad_mcp_paths import native_dll
+DLL = native_dll('CadMcpArch2026V2Safe')
 def check_join_chain(doc,handles):
  from backends import com_backend as com
  import math

@@ -12,7 +12,7 @@ def package_version() -> str:
     try:
         return version("autocad-mcp-pro")
     except PackageNotFoundError:
-        pyproject = Path(__file__).with_name("pyproject.toml")
+        pyproject = Path(__file__).resolve().parents[2] / "pyproject.toml"
         with pyproject.open("rb") as stream:
             return str(tomllib.load(stream)["project"]["version"])
 

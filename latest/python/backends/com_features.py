@@ -12,7 +12,8 @@ from ezdxf.math import has_clockwise_orientation
 from ezdxf.revcloud import REQUIRED_BULGE, REVCLOUD_PROPS
 from engineering.measure import is_self_intersecting, polygon_area_perimeter
 
-DLL=Path(r'C:\Users\h2\AppData\Roaming\Autodesk\ApplicationPlugins\CadMcpNative2026.bundle\Contents\Win64\CadMcpNative2026.dll')
+from cad_mcp_paths import native_dll
+DLL = native_dll('CadMcpNative2026')
 VERSION='1.0.0'
 
 def vertices(points,closed=True):

@@ -1,0 +1,17 @@
+# Prefer: autocad-mcp-config --workspace <your absolute drawing directory>
+# Merge only this section. Do not replace other client settings.
+[mcp_servers."autocad-mcp"]
+command = "autocad-mcp"
+startup_timeout_sec = 120
+
+[mcp_servers."autocad-mcp".env]
+AUTOCAD_MCP_BACKEND = "com"
+CAD_PROGID = "AutoCAD.Application.25.1"
+ALLOWED_PATHS = "REPLACE_WITH_ABSOLUTE_DRAWING_DIRECTORY"
+TOOL_PROFILE = "full"
+TOOL_PACKS = "all"
+DISCOVERY_MODE = "search"
+DISABLED_TOOLS = "drawing_deliver,drawing_finalize,validation_check"
+PYTHONUTF8 = "1"
+PYTHONIOENCODING = "utf-8"
+# Optional: CAD_MCP_NATIVE_ROOT = "ABSOLUTE_CUSTOM_PLUGIN_ROOT"

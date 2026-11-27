@@ -5,6 +5,11 @@
 !/README.md
 !/LICENSE
 !/NOTICE.md
+!/pyproject.toml
+!/MANIFEST.in
+!/uv.lock
+!/tests/
+!/scripts/
 !/tools/
 /tools/*
 !/tools/git_content_filter.py
@@ -17,9 +22,13 @@
 /latest/docs/*
 !/latest/docs/工具目录.md
 !/latest/docs/工具目录.json
+!/latest/docs/DEPLOYMENT.md
+!/latest/docs/PORTABILITY-VALIDATION.md
 !/latest/config/
 /latest/config/*
 !/latest/config/autocad-mcp.example.json
+!/latest/config/autocad-mcp.example.toml
+!/latest/config/dependencies.lock.txt
 !/latest/metadata/
 /latest/metadata/*
 !/latest/metadata/METADATA
@@ -34,3 +43,4 @@
 **/*.log
 **/.env
 **/.env.*
+**/*.egg-info/

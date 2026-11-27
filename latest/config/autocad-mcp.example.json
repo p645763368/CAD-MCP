@@ -1,7 +1,7 @@
 {
   "mcp_servers": {
     "autocad-mcp": {
-      "command": "C:\\Users\\YOUR_USER\\.local\\bin\\autocad-mcp.exe",
+      "command": "autocad-mcp",
       "startup_timeout_sec": 120,
       "env": {
         "DISABLED_TOOLS": "drawing_deliver,drawing_finalize,validation_check",
@@ -9,11 +9,10 @@
         "PYTHONUTF8": "1",
         "AUTOCAD_MCP_BACKEND": "com",
         "CAD_PROGID": "AutoCAD.Application.25.1",
-        "ALLOWED_PATHS": "D:\\YOUR_CAD_WORKSPACE",
+        "ALLOWED_PATHS": "REPLACE_WITH_ABSOLUTE_DRAWING_DIRECTORY",
         "TOOL_PROFILE": "full",
         "TOOL_PACKS": "all",
-        "DISCOVERY_MODE": "search",
-        "ENABLE_3D": "true"
+        "DISCOVERY_MODE": "search"
       }
     }
   }

@@ -3,7 +3,8 @@ from pathlib import Path
 from typing import Annotated,Literal
 from fastmcp import Context
 import json,time,uuid,math,functools,inspect
-DLL=Path(r'C:\Users\h2\AppData\Roaming\Autodesk\ApplicationPlugins\CadMcpProjectFix2026.bundle\Contents\Win64\CadMcpProjectFix2026.dll')
+from cad_mcp_paths import native_dll
+DLL = native_dll('CadMcpProjectFix2026')
 UNITS={1:('inch',25.4),2:('ft',304.8),4:('mm',1.),5:('cm',10.),6:('m',1000.)}
 FACTORS={name:mm for name,mm in UNITS.values()}
 

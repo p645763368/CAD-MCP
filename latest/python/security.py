@@ -88,18 +88,8 @@ def validate_path(path: str, *, allow_write: bool = False) -> Path:
     if os.name == "nt":
         _reject_non_local_anchor(path, resolved)
 
-    _SYSTEM_DIRS = [
-        Path("C:/Windows").resolve(),
-        Path("C:/Program Files").resolve(),
-        Path("C:/Program Files (x86)").resolve(),
-        Path("/etc").resolve(),
-        Path("/usr").resolve(),
-        Path("/bin").resolve(),
-        Path("/sbin").resolve(),
-        Path("/boot").resolve(),
-        Path("/sys").resolve(),
-        Path("/proc").resolve(),
-    ]
+    from cad_mcp_paths import system_directories
+    _SYSTEM_DIRS = system_directories()
     for sys_dir in _SYSTEM_DIRS:
         try:
             if resolved.is_relative_to(sys_dir):

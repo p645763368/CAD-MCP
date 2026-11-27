@@ -37,6 +37,7 @@ from engineering.fits import fit_lookup
 from engineering.measure import is_self_intersecting, polygon_area_perimeter
 from security import sanitize_command, sanitize_lisp, validate_path
 from version import __version__
+from cad_mcp_paths import BUILD_ID
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -5206,6 +5207,8 @@ async def system_status(ctx: Context = None) -> dict:
     if b is None:
         out = {
             "server": "AutoCAD MCP Pro",
+            "version": __version__,
+            "build": BUILD_ID,
             "backend": "none",
             "connected": False,
             "unsafe_mode": unsafe,
@@ -5217,6 +5220,8 @@ async def system_status(ctx: Context = None) -> dict:
         return out
     status = await b.system_status()
     status["server"] = "AutoCAD MCP Pro"
+    status["version"] = __version__
+    status["build"] = BUILD_ID
     if tool_count is not None:
         status["tool_count"] = tool_count
     status["unsafe_mode"] = unsafe

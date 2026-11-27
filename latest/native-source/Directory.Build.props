@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <AutoCADInstallDir Condition="'$(AutoCADInstallDir)' == '' and '$(CAD_MCP_AUTOCAD_DIR)' != ''">$(CAD_MCP_AUTOCAD_DIR)</AutoCADInstallDir>
+    <AutoCADInstallDir Condition="'$(AutoCADInstallDir)' == ''">$(ProgramW6432)\Autodesk\AutoCAD 2026</AutoCADInstallDir>
+  </PropertyGroup>
+  <Target Name="CheckAutoCADReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(AutoCADInstallDir)\acdbmgd.dll')" Text="AutoCAD SDK assemblies not found. Set -p:AutoCADInstallDir=ABSOLUTE_PATH or CAD_MCP_AUTOCAD_DIR." />
+  </Target>
+</Project>

@@ -1,66 +1,70 @@
 # CAD-MCP
 
-面向 AutoCAD 2026 建筑二维制图的本地修改版 MCP 工具集。基于
-[AutoCAD MCP Pro 1.6.0](https://github.com/U-C4N/Autocad-MCP)，保留上游 MIT 许可证。
+面向 AutoCAD 2026 建筑二维制图的 MCP 工具集，基于
+[AutoCAD MCP Pro 1.6.0](https://github.com/U-C4N/Autocad-MCP) 的维护版本，保留上游 MIT 许可。
 
-当前实现快照与本机部署文件已于 **2026-11-27** 核对一致。239 项注册、236 项启用；
-`drawing_deliver`、`drawing_finalize`、`validation_check` 继续禁用。
+当前版本：**1.6.0.post1**，构建标识 **portable-20261127.1**。
+239 项注册、236 项启用；`drawing_deliver`、`drawing_finalize`、`validation_check`继续禁用。
 
-## 主要内容
+## 安装与启动
 
-- Windows COM 控制当前 AutoCAD，支持中文工具检索。
-- 建筑曲线编辑、局部拉伸、批量属性、尺寸链、绘图顺序和公司配置机制。
-- 模型实体批量读取、主视口识别和删除保护。
-- 图纸单位校核、米制面积/尺寸及物理视口比例换算。
-- 三个 AutoCAD 2026 原生桥接模块及对应 C# 源码。
+需要Git、uv；实际DWG操作需要Windows x64和完整AutoCAD 2026。
 
-## 目录
+```powershell
+git clone https://github.com/p645763368/CAD-MCP.git
+cd CAD-MCP
+uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_Work"
+```
 
-|目录|内容|
+将工作目录换成你自己的路径。安装脚本会构建本仓库代码、按锁定依赖安装、部署三个正式DLL，
+并打印当前主机可用的CAD专用配置。**不会改写客户端配置、启动CAD或调整安全设置。**
+将生成片段合并到客户端，先打开AutoCAD，再启动MCP连接。
+
+```powershell
+autocad-mcp-doctor --require-native
+autocad-mcp-config --workspace "D:\CAD_Work"
+```
+
+详细说明：[部署与更新](latest/docs/DEPLOYMENT.md)。无需再手工覆盖site-packages或改用户名路径。
+自定义原生模块位置可用`--native-root`，SDK编译位置可用`AutoCADInstallDir`/`CAD_MCP_AUTOCAD_DIR`。
+
+## 功能与目录
+
+- 中文检索、COM图纸控制、曲线编辑、局部拉伸、批量属性、尺寸链、绘图顺序及公司配置机制。
+- 模型实体批量读取、主视口识别/删除保护、米制面积/尺寸和物理视口比例换算。
+- DLL路径按当前用户解析，预编译原生模块随安装包提供。
+
+|位置|内容|
 |---|---|
-|`latest/python/`|当前修改版 Python 源码及基础包模板资源|
-|`latest/native/`|三个当前使用的原生 DLL，按 bundle 目录组织|
-|`latest/native-source/`|对应 C# 源码和 .NET 项目|
-|`latest/docs/`|当前工具摘要及完整参数目录|
-|`latest/config/autocad-mcp.example.json`|不含本机或项目路径的配置示例|
-|`latest/metadata/`|上游包依赖、入口及许可信息|
-|`tools/git_content_filter.py`|本机透明加密环境使用的可选 Git clean driver|
+|`pyproject.toml`、`uv.lock`|安装元数据及依赖锁|
+|`scripts/install.py`|安装/升级脚本，临时构建环境自动清理|
+|`latest/python/`|完整维护源码及通用资源|
+|`latest/native/`|三个正式原生模块|
+|`latest/native-source/`|对应C#源代码、可配置SDK路径|
+|`latest/config/`|通用配置示例、依赖约束；实际本机配置不提交|
+|`latest/docs/`|工具目录、部署说明和验证范围|
+|`tests/`|隔离路径/安装测试和强制DXF后端协议测试|
+|`tools/git_content_filter.py`|可选透明加密授权读取过滤器|
 
 [工具目录](latest/docs/工具目录.md) · [完整参数](latest/docs/工具目录.json) · [许可证](LICENSE)
 
-## 部署范围
+## 验证和边界
 
-本仓库是修改版源码与二进制快照，不包含 Python 解释器、完整第三方环境或 Autodesk SDK。
-目前部署针对 Windows、完整 AutoCAD 2026 与 `AutoCAD.Application.25.1`。
+安装及协议验证必须使用干净克隆和独立环境。`tests/test_wire.py`强制`ezdxf`，只创建内存图元，
+不启动CAD、不加载DLL、不写项目图或更改默认模板。原生CAD运行仍需目标主机具备兼容软件及许可；
+无界面测试不等于所有AutoCAD功能在所有主机均验收通过。
 
-1. 先建立兼容的 Python 环境，并安装 `autocad-mcp-pro[full]==1.6.0` 基础依赖。
-2. 备份该环境的原有文件，将 `latest/python/` 覆盖到对应 `site-packages`；包括新增的顶层模块。
-3. 将 `latest/native/` 中三个 bundle 放入目标用户的 Autodesk ApplicationPlugins 目录。
-4. 检查 `arch_tools.py`、`project_fixes.py`、`backends/com_features.py` 中的本机 DLL 路径。
-   当前源码保留实际部署路径，换机器时必须调整并同步源码与运行安装。
-5. 按配置示例合并 CAD 专用连接设置，修正启动命令和 `ALLOWED_PATHS`，然后重启 MCP。
-   配置示例为 JSON 结构说明，不可直接替换 Codex 的整份 TOML 配置。
-6. 如 AutoCAD 请求安全加载确认，核对模块后加载；不要关闭安全加载检查。
+部分高级建筑生成功能仍限毫米模型；尺寸链为非关联尺寸，复杂房间、动态块、外参存在既有能力边界。
+工具返回无错误不等于几何正确，写入后应读回；超时须先查状态再决定是否重试。
 
-原生项目使用 .NET 8 Windows/x64，并引用已安装的 AutoCAD 2026 程序集。
-不要直接升级基础包覆盖本地修复；本次仅做推送前静态校验，没有重新安装或修改运行环境。
+## 维护约定
 
-## 已知边界
+本地统一工作目录、运行安装和GitHub对应源码/正式DLL同步维护。分别确认磁盘版本与已载入进程版本，
+更新后按需重启MCP；原生DLL有变化时需重新加载或重启CAD。
 
-- 注册成功不代表全部参数分支经过现场验收。
-- 部分高级建筑生成功能仍限毫米模型，非毫米单位会在执行前拒绝。
-- 尺寸链为非关联尺寸；任意既有线稿的全自动标注及复杂避碰尚未完成。
-- 复杂房间边界、动态块、外参等仍存在适用范围限制。
-- 使用前确认活动文档、单位和目标句柄。超时可能留下副作用，必须读回后再决定下一步。
+采用提交白名单，项目图纸、公司项目模板、客户数据、私人配置、迁移备份和测试导出物不入库。
+基础包自带的通用模板资源可以随代码分发。每次测试结束后恢复原状并核对清理结果。
 
-## 维护与安全
-
-开发与更新在本地统一 CAD-MCP 工作目录进行。每次更新分别确认：文件同步、MCP进程载入、
-AutoCAD模块载入。测试须隔离，结束后恢复原状态并清理测试文件、模板选择和系统设置。
-
-仓库采用提交白名单；业务图纸、项目结果、历史私人配置、迁移备份和测试导出物保留在本地。
-`latest/python/templates/` 是基础发行包附带的通用资源，不是项目图纸。
-
-在透明加密环境中，普通 Git 读取可能获得加密包装。本机配置了可选 clean driver：仅通过
-已有授权文件读取接口获取源码，不修改加密服务或安全设置；若仍读到包装则拒绝提交。
-普通未加密机器无需配置该 driver。首次在另一加密环境提交前，应先验证暂存内容可读。
+透明加密环境只通过已有授权读取获取真实代码；无法得到可读内容就停止提交，不修改加密服务或权限。
+普通未加密机器无需配置clean driver。新版本更新使用`git pull --ff-only`后重跑安装脚本，
+不要用升级同名上游包替换此维护版本。
