@@ -44,3 +44,8 @@
 **/.env
 **/.env.*
 **/*.egg-info/
+
+# README illustrations (synthetic data only)
+!/latest/docs/media/
+/latest/docs/media/*
+!/latest/docs/media/*.gif
