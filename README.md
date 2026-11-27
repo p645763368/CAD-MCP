@@ -44,10 +44,13 @@ autocad-mcp-config --workspace "D:\CAD_Work"
 |`latest/native-source/`|对应C#源代码、可配置SDK路径|
 |`latest/config/`|通用配置示例、依赖约束；实际本机配置不提交|
 |`latest/docs/`|工具目录、部署说明和验证范围|
+|`latest/metadata/`|上游1.6.0来源信息；当前维护版本以根目录pyproject.toml为准|
 |`tests/`|隔离路径/安装测试和强制DXF后端协议测试|
 |`tools/git_content_filter.py`|可选透明加密授权读取过滤器|
 
 [工具目录](latest/docs/工具目录.md) · [完整参数](latest/docs/工具目录.json) · [许可证](LICENSE)
+
+本轮结果与生效边界见[跨主机部署验证记录](latest/docs/PORTABILITY-VALIDATION.md)。
 
 ## 验证和边界
 
