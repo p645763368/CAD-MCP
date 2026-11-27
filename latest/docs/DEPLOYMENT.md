@@ -16,7 +16,7 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 ```
 
 把工作目录换成该主机实际绝对路径。脚本构建当前检出的代码，按锁定依赖安装为uv工具，
-部署四个正式DLL，并在末尾打印当前主机的**CAD专用TOML片段**。将该片段合并到MCP客户端，
+部署五个正式DLL，并在末尾打印当前主机的**CAD专用TOML片段**。将该片段合并到MCP客户端，
 不要覆盖其他连接或上传生成的本机配置。安装脚本不自动改客户端文件、不启动CAD、不改注册表。
 
 安装脚本使用独立版本目录：Windows默认在`%LOCALAPPDATA%\CAD-MCP\runtimes\<源码摘要>`，
@@ -38,7 +38,7 @@ autocad-mcp-config --workspace "D:\CAD_Work" --workspace "E:\SharedCAD"
 ## DLL路径
 
 默认使用当前用户 `%APPDATA%\Autodesk\ApplicationPlugins`；APPDATA未设置时从当前用户home推导。
-四个模块分别为CadMcpNative2026、CadMcpArch2026V2Safe、CadMcpProjectFix2026和CadMcpStatus2026。
+五个模块分别为CadMcpNative2026、CadMcpArch2026V2Safe、CadMcpProjectFix2026、CadMcpStatus2026和CadMcpStatusIcons2026；后两个模块放在同一个状态栏bundle中。
 
 指定其他位置时，安装和启动配置必须使用同一根目录：
 
@@ -47,7 +47,7 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 ```
 
 生成的配置会写明`CAD_MCP_NATIVE_ROOT`。此变量必须是绝对路径；设置错误不会静默回退到另一套DLL。
-DLL随wheel携带，无需从维护者机器另拷文件。安装器复制这四个DLL及状态栏的PackageContents.xml，内容相同则不覆盖，保留其他插件。状态栏清单启用AutoCAD 2026启动加载；已打开的CAD需首次NETLOAD或重启后加载。自定义插件根目录时，需在CAD中手动NETLOAD状态栏DLL。
+DLL随wheel携带，无需从维护者机器另拷文件。安装器复制这五个DLL及状态栏的PackageContents.xml，内容相同则不覆盖，保留其他插件。状态栏清单启用AutoCAD 2026启动加载；已打开的CAD需首次NETLOAD或重启后加载。自定义插件根目录时，需在CAD中手动NETLOAD状态栏DLL。
 如果DLL被AutoCAD占用，先保存自己的工作并关闭AutoCAD，再重新执行安装；安装器不会替你关闭CAD。
 
 首次调用原生功能可能请求AutoCAD加载确认。核对模块名称后按CAD提示加载，绝不能关闭安全加载检查。
@@ -61,7 +61,7 @@ autocad-mcp --help
 ```
 
 doctor只读文件及版本，不连接CAD。实际COM连接需在MCP客户端调用`system_status`，检查
-`version=1.6.0.post3`、`build=status-20261127.1`以及实际后端状态。
+`version=1.6.0.post4`、`build=icons-20261127.1`以及实际后端状态。
 注册数量240不代表239项工具在每台机器上所有分支均可用。
 
 命令行直接启动示例：

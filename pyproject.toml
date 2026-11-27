@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autocad-mcp-pro"
-version = "1.6.0.post3"
+version = "1.6.0.post4"
 description = "Maintained portable AutoCAD 2026 MCP architectural tooling"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -41,5 +41,5 @@ discovery = ["*.tsv", "*.json"]
 "share/cad-mcp/native/CadMcpArch2026V2Safe.bundle/Contents/Win64" = ["latest/native/CadMcpArch2026V2Safe.bundle/Contents/Win64/CadMcpArch2026V2Safe.dll"]
 "share/cad-mcp/native/CadMcpProjectFix2026.bundle/Contents/Win64" = ["latest/native/CadMcpProjectFix2026.bundle/Contents/Win64/CadMcpProjectFix2026.dll"]
 
-"share/cad-mcp/native/CadMcpStatus2026.bundle/Contents/Win64" = ["latest/native/CadMcpStatus2026.bundle/Contents/Win64/CadMcpStatus2026.dll"]
+"share/cad-mcp/native/CadMcpStatus2026.bundle/Contents/Win64" = ["latest/native/CadMcpStatus2026.bundle/Contents/Win64/CadMcpStatus2026.dll", "latest/native/CadMcpStatus2026.bundle/Contents/Win64/CadMcpStatusIcons2026.dll"]
 "share/cad-mcp/native/CadMcpStatus2026.bundle" = ["latest/native/CadMcpStatus2026.bundle/PackageContents.xml"]

@@ -4,8 +4,8 @@ import os
 import sys
 from pathlib import Path
 
-BUILD_ID = "status-20261127.1"
-NATIVE_MODULES = ("CadMcpNative2026", "CadMcpArch2026V2Safe", "CadMcpProjectFix2026", "CadMcpStatus2026")
+BUILD_ID = "icons-20261127.1"
+NATIVE_MODULES = ("CadMcpNative2026", "CadMcpArch2026V2Safe", "CadMcpProjectFix2026", "CadMcpStatus2026", "CadMcpStatusIcons2026")
 
 def absolute_directory(value: str, name: str) -> Path:
     path = Path(value).expanduser()
@@ -24,7 +24,8 @@ def native_root() -> Path:
 def native_relative(name: str) -> Path:
     if name not in NATIVE_MODULES:
         raise ValueError(f"Unknown native module: {name}")
-    return Path(name + ".bundle") / "Contents" / "Win64" / (name + ".dll")
+    bundle = "CadMcpStatus2026" if name == "CadMcpStatusIcons2026" else name
+    return Path(bundle + ".bundle") / "Contents" / "Win64" / (name + ".dll")
 
 def native_dll(name: str) -> Path:
     return native_root() / native_relative(name)

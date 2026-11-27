@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><TargetFramework>net8.0-windows</TargetFramework><PlatformTarget>x64</PlatformTarget><UseWPF>true</UseWPF><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AssemblyName>CadMcpStatusIcons2026</AssemblyName></PropertyGroup>
+ <ItemGroup>
+  <Reference Include="acmgd"><HintPath>$(AutoCADInstallDir)\acmgd.dll</HintPath><Private>false</Private></Reference>
+  <Reference Include="accoremgd"><HintPath>$(AutoCADInstallDir)\accoremgd.dll</HintPath><Private>false</Private></Reference>
+  <Reference Include="acdbmgd"><HintPath>$(AutoCADInstallDir)\acdbmgd.dll</HintPath><Private>false</Private></Reference>
+  <Reference Include="AdWindows"><HintPath>$(AutoCADInstallDir)\AdWindows.dll</HintPath><Private>false</Private></Reference>
+ </ItemGroup>
+</Project>

@@ -4,7 +4,7 @@
 
 基于 [AutoCAD MCP Pro 1.6.0](https://github.com/U-C4N/Autocad-MCP) 持续维护，重点补充建筑制图能力、中文工具检索和跨主机部署。
 
-当前版本：**1.6.0.post3** · 构建：**status-20261127.1** · 注册 **240** 项工具，默认启用 **237** 项。
+当前版本：**1.6.0.post4** · 构建：**icons-20261127.1** · 注册 **240** 项工具，默认启用 **237** 项。
 
 [开发原因](#为什么开发) · [功能介绍](#能做什么) · [适配环境](#适配环境) · [安装使用](#安装与首次使用) · [使用示例](#日常使用示例) · [更新方法](#更新方法)
 
@@ -46,7 +46,7 @@
 |安装工具|Git、uv；安装时需要获取 Python 和依赖的网络条件|
 |Python|项目声明 3.11 及以上；当前安装验证使用 **3.14**，建议采用下方命令|
 |仓库访问|这是私有仓库，克隆账户必须具备访问权限|
-|原生模块|安装包附带四个 AutoCAD 2026 DLL，普通使用不需要自行编译|
+|原生模块|安装包附带五个 AutoCAD 2026 DLL，普通使用不需要自行编译|
 |可选源码编译|修改 C# 模块时需 .NET 8 SDK 和 AutoCAD 2026 对应程序集|
 
 目前面向 Windows 上的完整版 AutoCAD 2026 提供制图支持。AutoCAD LT、其他年份和其他 CAD 品牌的兼容性尚待验证。
@@ -72,7 +72,7 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 安装脚本会：
 
 1. 构建当前仓库代码，并按锁定依赖安装到独立运行环境。
-2. 将四个正式 DLL 部署到当前用户的 AutoCAD 插件目录。
+2. 将五个正式 DLL 部署到当前用户的 AutoCAD 插件目录。
 3. 检查安装结果，打印命令所在目录和当前主机的 CAD 专用 MCP 配置。
 
 默认运行环境位于 `%LOCALAPPDATA%\CAD-MCP\runtimes\<源码摘要>`，原生模块位于 `%APPDATA%\Autodesk\ApplicationPlugins`。不同代码版本并列安装，避免覆盖正在运行的 Python 环境。
@@ -96,8 +96,8 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 当前版本的预期状态：
 
 ```text
-version:    1.6.0.post3
-build:      status-20261127.1
+version:    1.6.0.post4
+build:      icons-20261127.1
 backend:    com
 connected:  true
 tool_count: 240
@@ -105,7 +105,7 @@ tool_count: 240
 
 默认采用工具搜索模式：客户端可能只直接显示 `search_tools` 和 `call_tool` 两个入口。AI 通过这两个入口查找并调用已启用的具体工具。
 
-首次使用原生功能时，AutoCAD 可能请求加载 DLL。核对名称后按提示处理：`CadMcpNative2026.dll`、`CadMcpArch2026V2Safe.dll`、`CadMcpProjectFix2026.dll`、`CadMcpStatus2026.dll`。
+首次使用原生功能时，AutoCAD 可能请求加载 DLL。核对名称后按提示处理：`CadMcpNative2026.dll`、`CadMcpArch2026V2Safe.dll`、`CadMcpProjectFix2026.dll`、`CadMcpStatus2026.dll`、`CadMcpStatusIcons2026.dll`。
 
 ### 5. 开始制图
 
@@ -118,6 +118,8 @@ tool_count: 240
 - **连接状态**：MCP服务是否运行、客户端是否完成连接握手、是否已连上AutoCAD。
 - **工具接入**：点击“暂停接入”拦截后续操作，点击“恢复接入”继续使用。已经开始的操作会继续完成。
 - **最近调用**：显示最近两条记录；点击“查看调用历史”打开完整列表，查看时间、工具、结果和耗时。
+
+面板各项配有小图标：连接正常显示绿色或蓝色，暂停显示橙色，调用失败显示红色。
 
 调用历史保留最近200条，存放在当前CAD会话的内存中。关闭CAD后清空，图纸内容、参数和返回结果不会写入历史。
 
@@ -206,7 +208,7 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 |位置|内容|
 |---|---|
 |`latest/python/`|维护中的 Python 源码及通用资源|
-|`latest/native/`、`latest/native-source/`|四个正式 DLL 及对应 C# 源码|
+|`latest/native/`、`latest/native-source/`|五个正式 DLL 及对应 C# 源码|
 |`scripts/install.py`|安装与更新脚本|
 |`pyproject.toml`、`uv.lock`|包元数据与依赖锁|
 |`latest/config/`|通用配置示例和安装依赖约束|

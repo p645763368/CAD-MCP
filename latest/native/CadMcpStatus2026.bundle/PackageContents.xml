@@ -4,5 +4,6 @@
  <Components>
   <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.1" SeriesMax="R25.1" />
   <ComponentEntry AppName="CadMcpStatus2026" Version="1.0.0" ModuleName="./Contents/Win64/CadMcpStatus2026.dll" AppDescription="CAD-MCP status ribbon" LoadOnAutoCADStartup="True" LoadOnAppearance="False" />
+  <ComponentEntry AppName="CadMcpStatusIcons2026" Version="1.0.0" ModuleName="./Contents/Win64/CadMcpStatusIcons2026.dll" AppDescription="CAD-MCP ribbon icons" LoadOnAutoCADStartup="True" LoadOnAppearance="False" />
  </Components>
 </ApplicationPackage>
