@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--backend',choices=['com','ezdxf'],default='com' if os.name=='nt' else 'ezdxf')
     parser.add_argument('--native-root',help='Override ApplicationPlugins root')
     parser.add_argument('--skip-native',action='store_true',help='Headless-only installation')
-    parser.add_argument('--constraints',help='Override bundled dependencies.lock.txt constraints')
+    parser.add_argument('--dependency-lock',help='Override bundled exact dependency list')
     args=parser.parse_args()
     uv=shutil.which('uv')
     if not uv:raise SystemExit('Install uv first; this script does not download/execute installers')
@@ -60,9 +60,15 @@ def main():
                 if data.startswith(b'%TSD-Header-###%'):raise RuntimeError('Encrypted wheel entry: '+n)
                 if n.endswith('.py'):compile(data.decode('utf-8'),n,'exec')
         command=[uv,'tool','install','--force','--python',args.python]
-        constraints=Path(args.constraints).resolve() if args.constraints else ROOT/'latest/config/dependencies.lock.txt'
-        if not constraints.is_file():raise FileNotFoundError('Dependency constraints missing: '+str(constraints))
-        command.extend(['--constraints',constraints])
+        constraints=Path(args.dependency_lock).resolve() if args.dependency_lock else ROOT/'latest/config/dependencies.lock.txt'
+        if not constraints.is_file():raise FileNotFoundError('Dependency lock missing: '+str(constraints))
+        # Pass exact requirements, not a space-containing constraints pathname.
+        # Some uv tool versions split that pathname internally on Windows.
+        locked=[line.strip() for line in constraints.read_text(encoding='utf-8').splitlines() if line.strip() and not line.lstrip().startswith('#')]
+        for requirement in locked:
+            if requirement.startswith('-') or '==' not in requirement or requirement.endswith('\\'):
+                raise ValueError('Expected one exact requirement per lockfile line')
+            command.extend(['--with',requirement])
         command.append(wheels[0]);run(command,env=env)
     bindir=Path(run([uv,'tool','dir','--bin'],env=env,stdout=subprocess.PIPE,text=True,encoding='utf-8').stdout.strip())
     suffix='.exe' if os.name=='nt' else ''
