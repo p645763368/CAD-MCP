@@ -28,17 +28,15 @@
 
 ## 生效状态边界
 
-磁盘部署和新建COM服务进程已经验证。任务执行时，Codex原有连接仍持有旧进程，需要重启Codex/重新加载该MCP连接后，再通过`system_status`确认build。
-收到“好的”不等于已经完成重启；不得把旧连接的载入状态记作通过。
+磁盘部署和新建COM服务进程已经验证。2026-11-27用户重启Codex后，当前连接的`system_status`实测返回version=`1.6.0.post1`、build=`portable-20261127.1`、backend=`com`、connected=`true`、tool_count=`239`，当前连接新版已生效。
 本次DLL本体未改变，无需为了路径改造重启AutoCAD。旧占用进程释放后再清理遗留旧运行目录。
 
 验证仅在当前Windows主机的隔离用户路径/环境完成，不能扩大为另一台物理主机所有AutoCAD功能已全量验收。
 无界面协议测试强制ezdxf，只创建内存图元，不创建测试DWG、不执行NETLOAD、不修改默认模板或私人配置。
 安装和校验过程的实际机器路径、完整客户端配置备份及项目文档状态仅保留本地，不提交GitHub。
 
-## 收尾待办（如实记录）
+## 收尾核验（2026-11-27）
 
-临时验证目录的递归删除被工具自动安全审查拒绝，先后缩小范围后仍返回blocked by policy，因此不能记为测试环境已全部清理。
-需要用户在本地工作目录删除`.validation`、`build`、`latest/python/autocad_mcp_pro.egg-info`和`tests/__pycache__`后再复核。
+临时验证目录的自动递归删除曾被安全审查拒绝（blocked by policy）。随后用户手动删除；已只读复核以下四个目录均不存在：`.validation`、`build`、`latest/python/autocad_mcp_pro.egg-info`和`tests/__pycache__`。本次临时验证与构建目录清理完成。
 这些目录均在Git忽略范围内，未上传私有仓库；正式源码、运行安装和项目图纸不在上述删除范围内。
 本地`.deployment-backup`为部署回退/核验记录，不能与临时环境混同删除。
