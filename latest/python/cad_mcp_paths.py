@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 
-BUILD_ID = "portable-20261127.1"
+BUILD_ID = "precision-20261127.1"
 NATIVE_MODULES = ("CadMcpNative2026", "CadMcpArch2026V2Safe", "CadMcpProjectFix2026")
 
 def absolute_directory(value: str, name: str) -> Path:

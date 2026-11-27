@@ -17,7 +17,8 @@ SCENES=[
  ('door-layers','按规则整理图层',['核对选中门线','修改所属图层','检查修改数量'],['门线图层整理','目标：A-SingleDoor','对象：选中的 3 条门线','原图层：A-DOOR','修改后：A-SingleDoor','已核对：3 / 3 条']),
  ('dimension-chain','标注尺寸',['指定测量点','生成水平尺寸链','核对尺寸数值'],['水平尺寸链','图纸单位：毫米','测量点：4 个','分段：3000 / 2400 / 3600','总长：9000 mm','结果：3 段尺寸']),
  ('room-detection','识别房间',['读取墙线','识别闭合区域','查看候选房间'],['房间识别结果','闭合候选：3 个','面积：12 / 18 / 15 m²','待核对：右下方缺口','下一步：确认用途与名称','房间名称尚未写入']),
- ('viewport-scale','检查布局',['选定普通视口','设置 1:100','锁定并核对'],['布局视口设置','对象：指定普通视口','原比例：1:150','目标比例：1:100','视口状态：已锁定','其他视口：保留原设置'])]
+ ('viewport-scale','检查布局',['选定普通视口','设置 1:100','锁定并核对'],['布局视口设置','对象：指定普通视口','原比例：1:150','目标比例：1:100','视口状态：已锁定','其他视口：保留原设置']),
+ ('geometry-rounding','整理图纸碎数',['预览实际几何','检查连接与位移','归整并核对'],['碎数整理结果','网格：1 mm','位移上限：0.01 mm','整理前：2999.997 mm','整理后：3000 mm','接点保持连接 · Z保持原值'])]
 
 def text(d,xy,s,size=18,color=WHITE): d.text(xy,s,font=FONT[size],fill=color)
 def line(d,points,color=GREEN,width=3):d.line(points,fill=color,width=width)
@@ -113,6 +114,22 @@ def render(idx,frame):
   if phase==2:
    d.arc((361,326,381,351),180,360,fill=GREEN,width=3)
    d.rectangle((358,339,384,360),fill=GREEN)
+ elif idx==5:
+  # Local magnification highlights movement; labels use the actual example.
+  t=0 if phase==0 else progress if phase==1 else 1
+  x=460+20*t
+  for gy in range(180,411,30):line(d,[(80,gy),(580,gy)],GRID,1)
+  for gx in range(80,581,30):line(d,[(gx,180),(gx,410)],GRID,1)
+  line(d,[(100,330),(x,330),(x,190)],GREEN,4)
+  d.ellipse((x-5,325,x+5,335),fill=BLUE)
+  line(d,[(100,348),(100,382)],BLUE,1)
+  line(d,[(x,348),(x,382)],BLUE,1)
+  line(d,[(100,370),(x,370)],BLUE,2)
+  text(d,(220,385),'3000 mm' if phase==2 else '2999.997 mm',24,WHITE)
+  d.ellipse((x-25,305,x+25,355),outline=ORANGE,width=2)
+  text(d,(110,201),'相连的两段墙线共同调整',18,MUTED)
+  text(d,(110,233),'端点最大位移约 0.0036 mm',16,BLUE)
+  text(d,(110,266),'局部位移放大示意',14,MUTED)
  text(d,(30,472),['确认对象与范围','按指令处理','查看结果，继续下一步'][phase],20)
  text(d,(30,508),'示例数据与图形仅用于说明操作流程',14,MUTED)
  d.rounded_rectangle((650,489,930,495),radius=3,fill=PANEL)
@@ -126,7 +143,7 @@ for idx,scene in enumerate(SCENES):
  frames[0].save(OUT/(scene[0]+'.gif'),save_all=True,append_images=frames[1:],duration=durations,loop=0,optimize=True,disposal=2)
  print(scene[0],(OUT/(scene[0]+'.gif')).stat().st_size)
 # One contact sheet lets maintainers inspect all three stages of every scene.
-contact=Image.new('RGB',(960,900),BG)
-for idx in range(5):
+contact=Image.new('RGB',(960,180*len(SCENES)),BG)
+for idx in range(len(SCENES)):
  for phase in range(3):contact.paste(render(idx,phase*12+11).resize((320,180)),(phase*320,idx*180))
 contact.save(OUT/'demo-overview.png')

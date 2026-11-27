@@ -61,8 +61,8 @@ autocad-mcp --help
 ```
 
 doctor只读文件及版本，不连接CAD。实际COM连接需在MCP客户端调用`system_status`，检查
-`version=1.6.0.post1`、`build=portable-20261127.1`以及实际后端状态。
-注册数量239不代表239项工具在每台机器上所有分支均可用。
+`version=1.6.0.post2`、`build=precision-20261127.1`以及实际后端状态。
+注册数量240不代表239项工具在每台机器上所有分支均可用。
 
 命令行直接启动示例：
 

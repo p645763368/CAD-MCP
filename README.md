@@ -4,7 +4,7 @@
 
 基于 [AutoCAD MCP Pro 1.6.0](https://github.com/U-C4N/Autocad-MCP) 持续维护，重点补充建筑制图能力、中文工具检索和跨主机部署。
 
-当前版本：**1.6.0.post1** · 构建：**portable-20261127.1** · 注册 **239** 项工具，默认启用 **236** 项。
+当前版本：**1.6.0.post2** · 构建：**precision-20261127.1** · 注册 **240** 项工具，默认启用 **237** 项。
 
 [开发原因](#为什么开发) · [功能介绍](#能做什么) · [适配环境](#适配环境) · [安装使用](#安装与首次使用) · [使用示例](#日常使用示例) · [更新方法](#更新方法)
 
@@ -21,6 +21,7 @@
 |能力|典型用途|代表工具|
 |---|---|---|
 |图纸与实体查询|确认活动图纸、保存状态、图层及实体属性；按区域或类型定位对象|`document_list`、`drawing_info`、`analysis_find_in_region`|
+|图纸碎数整理|将墙线端点和多段线顶点归整到指定网格，预览位移与长度变化，检查相连线段|`drawing_round_geometry`|
 |二维绘制与编辑|绘制基础图元，修剪、延伸、连接曲线及局部拉伸|`curve_trim`、`curve_extend`、`curve_join`、`stretch_window`|
 |图层、样式与公司标准|整理实体属性，选用公司图层映射，从已打开图纸导入指定标准|`arch_company_profile`、`arch_profile_config`、`drawing_import_standards`|
 |建筑平面辅助|按参数生成墙体网络、门窗洞口、楼梯、轴网及建筑符号|`arch_wall`、`arch_opening`、`arch_stair`、`arch_grid`|
@@ -94,11 +95,11 @@ uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_
 当前版本的预期状态：
 
 ```text
-version:    1.6.0.post1
-build:      portable-20261127.1
+version:    1.6.0.post2
+build:      precision-20261127.1
 backend:    com
 connected:  true
-tool_count: 239
+tool_count: 240
 ```
 
 默认采用工具搜索模式：客户端可能只直接显示 `search_tools` 和 `call_tool` 两个入口。AI 通过这两个入口查找并调用已启用的具体工具。
@@ -142,6 +143,14 @@ tool_count: 239
 > 列出当前布局的普通视口和比例，区分纸空间主视口。将指定普通视口设为 1:100 并锁定，保留其他视口。
 
 ![将指定普通视口调整为 1:100 并锁定的操作示意](latest/docs/media/viewport-scale.gif)
+
+**整理图纸碎数**
+
+> 对选中的墙线做碎数整理，按 1 mm 网格归整，单点最大移动 0.01 mm。以项目轴网基点为网格原点，先预览实际坐标和长度变化；检查相连墙线，确认后执行。
+
+![预览碎数并将实际墙线长度2999.997毫米整理为3000毫米](latest/docs/media/geometry-rounding.gif)
+
+支持直线和零宽、无圆弧段的轻量多段线，整理后线段应为水平或垂直。步长和最大位移按毫米输入，可自动换算米制图纸。执行时使用预览返回的 token；图纸或参数变化后需要重新预览。可能拉开接点、改变交叉关系或产生零长度段的方案会停止执行。详细范围见[碎数整理说明与验证](latest/docs/PRECISION-CLEANUP.md)。
 
 ## 已知限制
 

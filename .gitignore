@@ -49,3 +49,5 @@
 !/latest/docs/media/
 /latest/docs/media/*
 !/latest/docs/media/*.gif
+
+!/latest/docs/PRECISION-CLEANUP.md

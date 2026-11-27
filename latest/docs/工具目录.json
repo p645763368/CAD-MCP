@@ -5666,6 +5666,104 @@
     "enabled": true
   },
   {
+    "name": "drawing_round_geometry",
+    "description": "图纸碎数整理：预览并将直线网端点/顶点归整到指定毫米网格。\n实际修改XY坐标，保留Z、句柄、图层和闭合状态；归整后须为水平/垂直线段。最大100实体/500线段，模型快照上限50000实体。检查模型空间线段端点连接和交叉关系；位移超限、零长、关系改变整次拒绝。锁层、斜线、弧线、宽多段线、块、外参及扩展字典对象跳过；附近不支持对象或缺失包围盒会阻止执行。相连未选对象保持原位。仅COM，依赖已有CadMcpProjectFix2026桥；尺寸、填充和建筑元数据需另行核对，不自动保存；失败尝试恢复并报告读回结果。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "handles": {
+          "description": "明确选择的1–100个模型空间实体句柄；支持LINE及零宽直线段LWPOLYLINE",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "step_mm": {
+          "description": "XY网格步长，毫米；如1表示归整到1mm网格",
+          "type": "number"
+        },
+        "max_move_mm": {
+          "description": "单个端点/顶点最大二维位移，毫米；大于0且不超过步长的一半",
+          "type": "number"
+        },
+        "origin": {
+          "description": "网格基点[WCS x,y]，使用图纸单位；应与项目轴网基点一致",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "null读取INSUNITS；已核对实际单位后可显式覆盖，不改INSUNITS"
+        },
+        "dry_run": {
+          "default": true,
+          "description": "默认只预览，返回坐标/段长变化和连接检查；false才写入",
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "执行必须携带相同参数最新预览token；文档、实体或单位变化会使其失效"
+        }
+      },
+      "required": [
+        "handles",
+        "step_mm",
+        "max_move_mm",
+        "origin"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "图纸碎数整理：预览并将直线网端点/顶点归整到指定毫米网格",
+        "limits": "实际修改XY坐标，保留Z、句柄、图层和闭合状态；归整后须为水平/垂直线段。最大100实体/500线段，模型快照上限50000实体。检查模型空间线段端点连接和交叉关系；位移超限、零长、关系改变整次拒绝。锁层、斜线、弧线、宽多段线、块、外参及扩展字典对象跳过；附近不支持对象或缺失包围盒会阻止执行。相连未选对象保持原位。仅COM，依赖已有CadMcpProjectFix2026桥；尺寸、填充和建筑元数据需另行核对，不自动保存；失败尝试恢复并报告读回结果。",
+        "cost": "mutate",
+        "risk": "write",
+        "zh_aliases": [
+          "碎数",
+          "碎数整理",
+          "图纸碎数",
+          "坐标取整",
+          "几何取整",
+          "墙线归整",
+          "小数整理"
+        ],
+        "synonyms": [
+          "round geometry",
+          "coordinate rounding",
+          "grid cleanup"
+        ],
+        "catalog_revision": "2026-11-27.precision1"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "drawing_save",
     "description": "保存当前图纸到当前或指定路径。\n限制/副作用：会写入或覆盖文件；指定路径可能改变文档绑定。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing save。",
     "parameters": {

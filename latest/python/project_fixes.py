@@ -10,13 +10,13 @@ FACTORS={name:mm for name,mm in UNITS.values()}
 
 def dispatch(op,**args):
  from backends import com_backend as com
- doc=com._acad_doc();identity=str(doc.FullName)
+ doc=com._acad_doc();identity=str(doc.FullName or doc.Name)
  if int(doc.GetVariable('CMDACTIVE')):raise RuntimeError('AutoCAD命令未结束')
  saved=doc.GetVariable('USERS5');filedia=doc.GetVariable('FILEDIA')
  try:
   doc.SetVariable('FILEDIA',0)
   def invoke(expr):
-   if str(com._acad_doc().FullName)!=identity:raise RuntimeError('Active document changed')
+   if str(com._acad_doc().FullName or com._acad_doc().Name)!=identity:raise RuntimeError('Active document changed')
    marker='PROJECT_PENDING_'+uuid.uuid4().hex;doc.SetVariable('USERS5',marker)
    doc.SendCommand('(setvar "USERS5" '+expr+')\n');end=time.monotonic()+15
    while time.monotonic()<end:

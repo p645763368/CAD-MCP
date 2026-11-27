@@ -26,11 +26,12 @@ async def main():
                 assert not r.is_error and not (isinstance(data,dict) and data.get('ok') is False),(name,data)
                 return data
             status=await call('system_status')
-            assert status['backend']=='ezdxf' and status['build']=='portable-20261127.1',status
-            assert status['version']=='1.6.0.post1' and status['tool_count']==239,status
-            for name in ['drawing_unit_context','viewport_list','dimension_chain']:
+            assert status['backend']=='ezdxf' and status['build']=='precision-20261127.1',status
+            assert status['version']=='1.6.0.post2' and status['tool_count']==240,status
+            for name in ['drawing_unit_context','viewport_list','dimension_chain','drawing_round_geometry']:
                 r=unpack(await client.call_tool('search_tools',{'query':name,'limit':1,'detail':True}))
                 assert r['tools'][0]['name']==name
+            r=unpack(await client.call_tool('search_tools',{'query':'碎数','limit':1,'detail':True}));assert r['tools'][0]['name']=='drawing_round_geometry'
             for name in ['drawing_deliver','drawing_finalize','validation_check']:
                 r=await client.call_tool('call_tool',{'name':name,'arguments':{}},raise_on_error=False)
                 assert r.is_error,name
@@ -43,5 +44,5 @@ async def main():
             assert rows['total']==1 and rows['rows'][0][0]==line['handle'],rows
         assert not (root/'unused-plugins').exists(),'Unexpected native deployment'
         print(json.dumps({'ok':True,'backend':'ezdxf','build':status['build'],'version':status['version'],
-                          'registered':239,'disabled_checked':3,'in_memory_line_verified':True,'autocad_contacted':False}))
+                          'registered':240,'disabled_checked':3,'in_memory_line_verified':True,'autocad_contacted':False}))
 if __name__=='__main__':asyncio.run(main())

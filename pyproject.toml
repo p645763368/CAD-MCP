@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autocad-mcp-pro"
-version = "1.6.0.post1"
+version = "1.6.0.post2"
 description = "Maintained portable AutoCAD 2026 MCP architectural tooling"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -24,7 +24,7 @@ autocad-mcp-doctor = "cad_mcp_deploy:doctor_main"
 
 [tool.setuptools]
 package-dir = {"" = "latest/python"}
-py-modules = ["server", "config", "security", "version", "arch_tools", "arch_deep_tools", "project_fixes", "cad_mcp_paths", "cad_mcp_launcher", "cad_mcp_deploy"]
+py-modules = ["server", "config", "security", "version", "arch_tools", "arch_deep_tools", "project_fixes", "cad_mcp_paths", "cad_mcp_launcher", "cad_mcp_deploy", "precision_tools"]
 include-package-data = true
 
 [tool.setuptools.packages.find]

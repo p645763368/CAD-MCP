@@ -11823,6 +11823,8 @@ import arch_deep_tools as _arch_deep_tools
 _arch_deep_tools.register(__import__(__name__))
 import project_fixes as _project_fixes
 _project_fixes.register(__import__(__name__))
+import precision_tools as _precision_tools
+_precision_tools.register(__import__(__name__))
 
 def main() -> None:
     """Run the MCP server from the installed ``autocad-mcp`` command."""
