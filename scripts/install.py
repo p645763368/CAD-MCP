@@ -26,7 +26,29 @@ def main():
     for p in args.workspace:
         if not Path(p).is_absolute() or ',' in p:raise SystemExit('Workspaces must be absolute and contain no commas')
     if args.native_root and not Path(args.native_root).is_absolute():raise SystemExit('--native-root must be absolute')
+    # Never replace an in-use tool environment. Runtime identity follows source,
+    # native payload and dependency lock, not the user's name or checkout path.
+    fingerprint=hashlib.sha256()
+    for directory in ['latest/python','latest/native']:
+        for p in sorted((ROOT/directory).rglob('*')):
+            if not p.is_file() or any(x=='__pycache__' or x.endswith('.egg-info') for x in p.parts):continue
+            if p.suffix in ['.pyc','.pyo','.bak','.log']:continue
+            fingerprint.update(p.relative_to(ROOT).as_posix().encode());fingerprint.update(b'\0');fingerprint.update(p.read_bytes())
+    for name in ['pyproject.toml','latest/config/dependencies.lock.txt']:
+        fingerprint.update((ROOT/name).read_bytes())
+    identity=fingerprint.hexdigest()
+    local=Path(os.environ.get('LOCALAPPDATA',str(Path.home()/'.local/share')))
+    runtime=local/'CAD-MCP/runtimes'/identity[:16]
     env=dict(os.environ,PYTHONUTF8='1',PYTHONIOENCODING='utf-8',UV_LINK_MODE='copy')
+    env.setdefault('UV_TOOL_DIR',str(runtime/'tools'))
+    env.setdefault('UV_TOOL_BIN_DIR',str(runtime/'bin'))
+    receipt=Path(env['UV_TOOL_DIR'])/'.cad-mcp-source.json'
+    existing=Path(env['UV_TOOL_DIR'])/'autocad-mcp-pro'
+    reuse=False
+    if existing.exists():
+        if not receipt.is_file() or json.loads(receipt.read_text(encoding='utf-8')).get('source_sha256')!=identity:
+            raise SystemExit('Selected runtime already exists without a matching source receipt. Choose a new UV_TOOL_DIR/UV_TOOL_BIN_DIR; refusing to replace an in-use environment.')
+        reuse=True
     with tempfile.TemporaryDirectory(prefix='cad-mcp-build-') as t:
         tmp=Path(t);builder=tmp/'builder'
         run([uv,'venv',builder,'--python',args.python],env=env)
@@ -59,7 +81,7 @@ def main():
                 data=z.read(n)
                 if data.startswith(b'%TSD-Header-###%'):raise RuntimeError('Encrypted wheel entry: '+n)
                 if n.endswith('.py'):compile(data.decode('utf-8'),n,'exec')
-        command=[uv,'tool','install','--force','--python',args.python]
+        command=[uv,'tool','install','--python',args.python]
         constraints=Path(args.dependency_lock).resolve() if args.dependency_lock else ROOT/'latest/config/dependencies.lock.txt'
         if not constraints.is_file():raise FileNotFoundError('Dependency lock missing: '+str(constraints))
         # Pass exact requirements, not a space-containing constraints pathname.
@@ -69,9 +91,21 @@ def main():
             if requirement.startswith('-') or '==' not in requirement or requirement.endswith('\\'):
                 raise ValueError('Expected one exact requirement per lockfile line')
             command.extend(['--with',requirement])
-        command.append(wheels[0]);run(command,env=env)
+        command.append(wheels[0])
+        if not reuse:
+            run(command,env=env)
+            receipt.write_text(json.dumps({'source_sha256':identity},indent=2),encoding='utf-8')
     bindir=Path(run([uv,'tool','dir','--bin'],env=env,stdout=subprocess.PIPE,text=True,encoding='utf-8').stdout.strip())
     suffix='.exe' if os.name=='nt' else ''
+    print('Installed command directory: '+str(bindir),flush=True)
+    runtime_python=existing/('Scripts/python.exe' if os.name=='nt' else 'bin/python')
+    purelib=Path(run([runtime_python,'-c','import sysconfig; print(sysconfig.get_path("purelib"))'],env=env,stdout=subprocess.PIPE,text=True,encoding='utf-8').stdout.strip())
+    for p in (ROOT/'latest/python').rglob('*'):
+        if not p.is_file() or any(x=='__pycache__' or x.endswith('.egg-info') for x in p.parts):continue
+        if p.suffix in ['.pyc','.pyo','.bak','.log']:continue
+        target=purelib/p.relative_to(ROOT/'latest/python')
+        if not target.is_file() or target.read_bytes()!=p.read_bytes():
+            raise RuntimeError('Installed source differs: '+str(target)+'. Choose a new runtime or repair it while stopped.')
     if not args.skip_native:
         install=[bindir/('autocad-mcp-install-native'+suffix)]
         if args.native_root:install.extend(['--destination',args.native_root])

@@ -69,6 +69,17 @@ class Portability(unittest.TestCase):
         self.assertNotEqual(result.returncode,0)
         self.assertIn(b'ALLOWED_PATHS',result.stderr)
 
+    def test_installer_refuses_existing_unowned_runtime(self):
+        with tempfile.TemporaryDirectory() as t:
+            root=Path(t);existing=root/'tools/autocad-mcp-pro';existing.mkdir(parents=True)
+            protected=existing/'user.txt';protected.write_text('preserve')
+            env=dict(os.environ,UV_TOOL_DIR=str(root/'tools'),UV_TOOL_BIN_DIR=str(root/'bin'),PYTHONUTF8='1')
+            installer=Path(__file__).resolve().parents[1]/'scripts/install.py'
+            result=subprocess.run([sys.executable,str(installer),'--workspace',t,'--backend','ezdxf'],env=env,capture_output=True,timeout=20)
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn(b'refusing to replace',result.stderr)
+            self.assertEqual(protected.read_text(),'preserve')
+
     @unittest.skipUnless(os.name=='nt','Windows-specific system-directory mapping')
     def test_system_directory_follows_environment(self):
         with tempfile.TemporaryDirectory() as t:

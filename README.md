@@ -16,9 +16,10 @@ cd CAD-MCP
 uv run --no-project --python 3.14 python scripts/install.py --workspace "D:\CAD_Work"
 ```
 
-将工作目录换成你自己的路径。安装脚本会构建本仓库代码、按锁定依赖安装、部署三个正式DLL，
+将工作目录换成你自己的路径。安装脚本会构建本仓库代码、按锁定依赖安装到独立版本目录、部署三个正式DLL，
 并打印当前主机可用的CAD专用配置。**不会改写客户端配置、启动CAD或调整安全设置。**
-将生成片段合并到客户端，先打开AutoCAD，再启动MCP连接。
+将生成片段合并到客户端，先打开AutoCAD，再启动MCP连接。脚本不修改PATH；以下命令如未在PATH，
+使用脚本输出的命令目录中的完整路径。不同代码版本并列安装，不强行替换运行中的文件。
 
 ```powershell
 autocad-mcp-doctor --require-native
