@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD" Name="CAD-MCP Status" AppVersion="1.0.0" Description="CAD-MCP connection status and tool history" ProductCode="{0A3732BC-09C4-491B-B334-9B6492C9F789}">
+ <CompanyDetails Name="CAD-MCP" />
+ <Components>
+  <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R25.1" SeriesMax="R25.1" />
+  <ComponentEntry AppName="CadMcpStatus2026" Version="1.0.0" ModuleName="./Contents/Win64/CadMcpStatus2026.dll" AppDescription="CAD-MCP status ribbon" LoadOnAutoCADStartup="True" LoadOnAppearance="False" />
+ </Components>
+</ApplicationPackage>

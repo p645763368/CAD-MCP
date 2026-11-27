@@ -76,7 +76,7 @@ def main():
         if len(wheels)!=1:raise RuntimeError('Expected one wheel')
         with zipfile.ZipFile(wheels[0]) as z:
             names=z.namelist()
-            if sum(n.endswith('.dll') for n in names)!=3:raise RuntimeError('Wheel native payload incomplete')
+            if sum(n.endswith('.dll') for n in names)!=4:raise RuntimeError('Wheel native payload incomplete')
             for n in names:
                 data=z.read(n)
                 if data.startswith(b'%TSD-Header-###%'):raise RuntimeError('Encrypted wheel entry: '+n)

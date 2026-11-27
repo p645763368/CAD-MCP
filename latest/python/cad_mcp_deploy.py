@@ -9,6 +9,7 @@ import json
 import os
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from cad_mcp_paths import BUILD_ID, NATIVE_MODULES, absolute_directory, native_relative, native_root, native_payload_root
 from version import __version__
@@ -30,6 +31,14 @@ def install_native(destination: Path | None = None, dry_run: bool = False) -> li
             raise ValueError("Native destination escaped requested root")
         same = target.is_file() and target.read_bytes() == data
         jobs.append((name, data, target, same))
+    # The UI bundle has a manifest so the status ribbon returns at CAD startup.
+    relative = Path("CadMcpStatus2026.bundle/PackageContents.xml")
+    data = (source / relative).read_bytes()
+    root_element = ET.fromstring(data)
+    if root_element.tag != "ApplicationPackage":
+        raise ValueError("Invalid CAD-MCP status manifest")
+    target = root / relative
+    jobs.append(("CadMcpStatus2026 manifest", data, target, target.is_file() and target.read_bytes() == data))
     result = []
     for name, data, target, same in jobs:
         status = "unchanged" if same else "would_install" if dry_run else "installed"
@@ -52,7 +61,7 @@ def install_native(destination: Path | None = None, dry_run: bool = False) -> li
     return result
 
 def install_main() -> None:
-    parser = argparse.ArgumentParser(description="Copy only the three native bridges; no CAD launch/NETLOAD/registry edits")
+    parser = argparse.ArgumentParser(description="Install native bridges and status ribbon; no CAD launch/NETLOAD/registry edits")
     parser.add_argument("--destination", help="Absolute ApplicationPlugins root; default APPDATA/Autodesk/ApplicationPlugins")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -101,8 +110,11 @@ def doctor_main() -> None:
         installed = native_root() / native_relative(name)
         modules.append({"name": name, "path": str(installed), "payload_readable": expected.startswith(b"MZ"),
                         "installed_matches": installed.is_file() and installed.read_bytes() == expected})
+    relative = Path("CadMcpStatus2026.bundle/PackageContents.xml")
+    manifest = native_root() / relative
+    manifest_matches = manifest.is_file() and manifest.read_bytes() == (source / relative).read_bytes()
     core = all(m["payload_readable"] for m in modules)
     print(json.dumps({"version": __version__, "build": BUILD_ID, "python": sys.executable,
-                      "native_root": str(native_root()), "modules": modules, "autocad_contacted": False}, ensure_ascii=False, indent=2))
-    if not core or (args.require_native and not all(m["installed_matches"] for m in modules)):
+                      "native_root": str(native_root()), "modules": modules, "status_manifest_matches": manifest_matches, "autocad_contacted": False}, ensure_ascii=False, indent=2))
+    if not core or (args.require_native and (not manifest_matches or not all(m["installed_matches"] for m in modules))):
         raise SystemExit(1)

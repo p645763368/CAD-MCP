@@ -38,6 +38,7 @@ from engineering.measure import is_self_intersecting, polygon_area_perimeter
 from security import sanitize_command, sanitize_lisp, validate_path
 from version import __version__
 from cad_mcp_paths import BUILD_ID
+from cad_mcp_status import monitor as _status_monitor, StatusMiddleware
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -139,11 +140,14 @@ async def autocad_lifespan(server):
     try:
         backend = await _make_backend()
         log.info("Backend ready: %s", backend.name)
+        await _status_monitor.start(backend)
         yield {"backend": backend}
     except Exception as exc:
         log.error("Backend initialization failed: %s", exc)
+        await _status_monitor.start(None)
         yield {"backend": None, "init_error": str(exc)}
     finally:
+        await _status_monitor.stop()
         log.info("AutoCAD MCP Pro shutting down")
 
 
@@ -273,6 +277,7 @@ COM控制已打开AutoCAD；ezdxf操作可读DXF。以 system_capabilities 与�
 
 mcp.add_middleware(ErrorHandlingMiddleware())
 mcp.add_middleware(AuditMiddleware())
+mcp.add_middleware(StatusMiddleware())
 mcp.add_middleware(TimingMiddleware())
 mcp.add_middleware(LoggingMiddleware())
 # Added last on purpose: first-added is outermost, so this sits innermost —
@@ -11833,6 +11838,7 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
+    _status_monitor.transport = args.transport
 
     if args.transport == "stdio":
         mcp.run()

@@ -35,7 +35,7 @@ class Portability(unittest.TestCase):
             self.assertFalse(dest.exists())
             self.assertEqual({x['status'] for x in preview},{'would_install'})
             actual=install_native(dest)
-            self.assertEqual(len(actual),3)
+            self.assertEqual(len(actual),len(NATIVE_MODULES)+1)
             for name in NATIVE_MODULES:
                 self.assertEqual((dest/native_relative(name)).read_bytes(),(native_payload_root()/native_relative(name)).read_bytes())
             unrelated=dest/'user-plugin.txt';unrelated.write_text('keep',encoding='utf-8')

@@ -1,4 +1,4 @@
 include LICENSE NOTICE.md README.md
-recursive-include latest/native *.dll
+recursive-include latest/native *.dll *.xml
 recursive-include latest/python/templates *.dwt *.dxf *.md
 recursive-include latest/python/discovery *.tsv *.json
