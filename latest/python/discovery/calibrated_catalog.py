@@ -232,4 +232,26 @@ def zh_score(tool,query):
             if tool.name=='view_screenshot':score+=10
         elif any(w in query for w in ['缩放','调整','范围','放大']):
             if tool.name=='view_zoom_and_screenshot':score+=9
+    # Resolve common Chinese task phrases before weak character overlap.
+    # Object and action must both match; bare numbers never imply an edit.
+    preferred = set()
+    if '面积' in query and any(w in query for w in ['这个', '已有', '现有', '测量', '闭合多段线']) and not any(w in query for w in ['坐标', '顶点', '汇总', '计容']):
+        preferred.add('analysis_measure_entity')
+    if any(w in query for w in ['重合', '重线', '重复']) and any(w in query for w in ['检查', '查找', '找出', '查询']) and not any(w in query for w in ['编号', '轴号', '型号']):
+        preferred.add('validation_check')
+    if '框选' in query and '拉伸' in query:
+        preferred.add('stretch_window')
+    if '模板' in query and '图层' in query and not any(w in query for w in ['导入', '应用', '创建', '修改']):
+        preferred.add('template_list')
+    if '门窗' in query and any(w in query for w in ['表格', '门窗表', '明细']) and any(w in query for w in ['更新', '刷新', '统计']):
+        preferred.add('schedule_update')
+    if any(w in query for w in ['dwg', '图纸']) and any(w in query for w in ['副本', '保留原图', '交付']):
+        if 'pdf' in query or '交付' in query:
+            preferred.add('drawing_deliver')
+        elif '截图' in query or '副本' in query:
+            preferred.add('drawing_finalize')
+    if '另存' in query and not any(w in query for w in ['模板', 'dxf', '版本']):
+        preferred.add('drawing_save_as')
+    if tool.name in preferred:
+        score += 24
     return score

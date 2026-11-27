@@ -11498,6 +11498,10 @@ _building_delivery.register(__import__(__name__))
 ARCHITECTURE_RETIRED_TOOLS = frozenset(['mech_hole_pattern', 'std_feature_draw', 'std_part_insert', 'std_part_list', 'drawing_scale_check'])
 assert not (ARCHITECTURE_RETIRED_TOOLS & {t.name for t in _local_tool_components()})
 
+# Apply user-facing contracts after all replacement registrations.
+from discovery.chinese_review import apply_review as _apply_chinese_review
+_apply_chinese_review(_local_tool_components(), config.settings.backend)
+
 def main() -> None:
     """Run the MCP server from the installed ``autocad-mcp`` command."""
     parser = argparse.ArgumentParser(description="Run the AutoCAD MCP server")

@@ -26,8 +26,8 @@ async def main():
                 assert not r.is_error and not (isinstance(data,dict) and data.get('ok') is False),(name,data)
                 return data
             status=await call('system_status')
-            assert status['backend']=='ezdxf' and status['build']=='building-20261127.1',status
-            assert status['version']=='1.7.0' and status['tool_count']==248,status
+            assert status['backend']=='ezdxf' and status['build']=='descriptions-20261127.1',status
+            assert status['version']=='1.7.1' and status['tool_count']==248,status
             for name in ['drawing_unit_context','viewport_list','dimension_chain','drawing_round_geometry','validation_check','drawing_finalize','drawing_deliver','grid_label','grid_renumber','parking_row','parking_layout','door_window_tag','schedule_update','area_schedule','column_place','beam_place','wall_join','ramp_draw','stair_check','arch_units_migrate']:
                 r=unpack(await client.call_tool('search_tools',{'query':name,'limit':1,'detail':True}))
                 assert r['tools'][0]['name']==name

@@ -61,8 +61,8 @@ autocad-mcp --help
 ```
 
 doctor只读文件及版本，不连接CAD。实际COM连接需在MCP客户端调用`system_status`，检查
-`version=1.7.0`、`build=building-20261127.1`以及实际后端状态。
-注册数量248不代表239项工具在每台机器上所有分支均可用。
+`version=1.7.1`、`build=descriptions-20261127.1`以及实际后端状态。
+注册数量248表示入口数量；各工具的对象范围、参数和后端限制见工具说明。
 
 命令行直接启动示例：
 
@@ -110,6 +110,6 @@ Autodesk SDK DLL不随本仓库分发。构建后须同时更新对应latest/nat
 任何CAD现场测试开始前记录原图、模板、变量和加载状态；结束或失败恢复后清理测试残留。
 此次克隆验证不修改正式CAD，不能把无界面协议测试宣称为另一台物理主机上的完整AutoCAD验收。
 
-## v1.7.0启用开关
+## v1.7.1启用开关
 
 升级后请从CAD-MCP连接的DISABLED_TOOLS中移除drawing_deliver、drawing_finalize、validation_check。安装器生成的新配置默认不禁用这些入口；保留你主动禁用的其他工具。

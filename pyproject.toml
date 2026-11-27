@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autocad-mcp-pro"
-version = "1.7.0"
+version = "1.7.1"
 description = "Maintained portable AutoCAD 2026 MCP architectural tooling"
 readme = "README.md"
 requires-python = ">=3.11"

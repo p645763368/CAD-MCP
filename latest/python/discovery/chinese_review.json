@@ -1,0 +1,1748 @@
+{
+  "analysis_measure_entity": {
+    "parameters": {
+      "flatten_tolerance": "近似曲线离散时允许的最大弦偏差，图纸单位；用于样条及非完整椭圆等。"
+    },
+    "summary": "读取已有面域或曲线的面积与周长"
+  },
+  "arch_catalogue_insert": {
+    "parameters": {
+      "rotation": "绕插入点逆时针旋转的度数；0时家具背侧沿正X、主体向正Y。",
+      "name": "arch_catalogue_list返回的目录name，如double_bed、wc。"
+    },
+    "summary": "插入目录中的家具或洁具块"
+  },
+  "arch_catalogue_list": {
+    "parameters": {
+      "query": "匹配目录名称、类别和已实现语言标签的词；各词需同时匹配。具体名称先查目录，不假定任意中文俗称均可匹配。",
+      "family": "目录类别：furniture家具，sanitary洁具。"
+    },
+    "summary": "查询家具和洁具目录及尺寸"
+  },
+  "arch_dimension_chains": {
+    "parameters": {
+      "sides": "生成尺寸链的侧面列表：bottom下、top上、left左、right右；null默认bottom和left。",
+      "first_offset": "第一道尺寸线距建筑外边的距离，毫米；null采用纸上10毫米乘出图比例分母。",
+      "step": "相邻尺寸链间距，毫米；null采用纸上8毫米乘出图比例分母。",
+      "scale": "出图比例分母，如50表示1:50；null优先使用当前图纸建筑配置，未配置时使用50。"
+    },
+    "summary": "为工具记录的建筑平面生成外部尺寸链"
+  },
+  "arch_grid": {
+    "parameters": {
+      "labels": "直轴轴号映射：{\"x\":[\"1\",\"2\"],\"y\":[\"A\",\"B\"]}；各列表与轴坐标一一对应，null自动编号；同组轴号不可重复。",
+      "scale": "出图比例分母，如50表示1:50；控制纸面文字和符号尺寸。",
+      "origin": "基点[x,y]，WCS图纸单位。",
+      "rotation_deg": "平面旋转角，度；从正X方向逆时针计。",
+      "sides": "轴号标注端：start起点、end终点、both两端。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "axis_layer": "轴线目标图层名称。",
+      "label_layer": "编号文字及符号的目标图层名称。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "在模型空间创建直轴网和圆弧轴。直轴需同时给非空x_axes/y_axes，使用局部坐标后按origin与rotation_deg变换；弧轴独立使用WCS，不受该变换影响。总轴数最多200；同组禁止重复轴号。默认图层A-GRID-E-N缺失时先应用建筑图层标准。replace只替换本工具记录的同组轴网。坐标与弧半径为图纸单位，extension毫米，scale为出图比例分母。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "aliases": [
+      "轴网",
+      "画轴网",
+      "绘制轴网",
+      "弧形轴网",
+      "旋转轴网"
+    ],
+    "summary": "生成正交、斜向及弧形轴网和轴号"
+  },
+  "arch_opening": {
+    "parameters": {
+      "wall": "由arch_wall建立的宿主墙ID，取自墙记录，不能传普通墙线句柄。",
+      "offset": "从墙轴线首点沿轴线至近侧门窗边的距离，毫米。",
+      "width": "洞口净宽，毫米。",
+      "kind": "door门、window窗。",
+      "swing": "门开启侧：in为沿墙轴线前进方向的左侧，out为右侧；逆时针封闭墙轴的左侧为内侧。",
+      "hand": "从开启侧面向墙体时的铰链侧：left左、right右。",
+      "sill": "窗台高度，毫米，仅用于明细记录。",
+      "height": "洞口高度，毫米，仅用于明细记录。",
+      "tag": "门窗编号；null按语言自动分配，zh中文为M/C，en为D/W，tr为K/P。",
+      "opening_id": "洞口记录ID；null使用门窗编号。",
+      "poche": "是否对墙体剖切面按材料规则填充。",
+      "lang": "输出语言：zh中文、en英文、tr土耳其文；null优先使用当前图纸建筑配置，未配置时沿用工具原默认语言。"
+    },
+    "summary": "在已记录墙体上生成门窗洞口"
+  },
+  "arch_room": {
+    "parameters": {
+      "name": "要标注的房间名称，如客房；工具按输入写入，不自动判断用途。",
+      "number": "房间编号文字；null不显示编号。",
+      "room_id": "房间记录ID；null取首个未使用的R加序号。",
+      "lang": "输出语言：zh中文、en英文、tr土耳其文；null优先使用当前图纸建筑配置，未配置时沿用工具原默认语言。",
+      "scale": "出图比例分母，如50表示1:50；null优先使用当前图纸建筑配置，未配置时使用50。"
+    },
+    "summary": "在指定房间内写入用户给定的名称和面积",
+    "aliases": [
+      "标注房间名称",
+      "写客房名称",
+      "房间面积标注"
+    ]
+  },
+  "arch_rooms_detect": {
+    "parameters": {
+      "layers": "墙线图层列表；null选择名称含WALL或DUVAR的层（不区分大小写）。纯中文墙层应显式传入。",
+      "min_area": "最小候选面积，平方毫米，1000000表示1平方米；与模型单位无关。",
+      "tol": "端点归并容差，毫米；只用于识别计算，不修改或补齐原墙线。"
+    },
+    "summary": "只读识别墙线围合的房间候选及面积",
+    "description": "读取指定图层的LINE和直线段LWPOLYLINE，计算闭合候选；平均宽度小于600毫米的狭长区域会过滤。已有建筑洞口记录可用于计算性闭合，外来散线门洞不自动封闭，连通房间可能合为一个候选。圆弧、带弧段多段线、旧式POLYLINE及块列入skipped；结合omitted、confidence和label_conflicts核对结果。坐标/area为图纸单位及其平方，area_m2为平方米；min_area和tol分别使用平方毫米和毫米。只识别候选，不判断客房等用途、不写房间名、不修补原图。",
+    "aliases": [
+      "识别房间",
+      "查找闭合房间",
+      "房间候选",
+      "统计封闭房间"
+    ]
+  },
+  "arch_schedule": {
+    "parameters": {
+      "kind": "doors门表、windows窗表、rooms房间表；读取ACADMCP_ARCH记录。",
+      "lang": "输出语言：zh中文、en英文、tr土耳其文；null优先使用当前图纸建筑配置，未配置时沿用工具原默认语言。",
+      "scale": "出图比例分母，如50表示1:50；null优先使用当前图纸建筑配置，未配置时使用50。"
+    },
+    "summary": "将CAD-MCP墙洞口或房间记录生成明细表",
+    "description": "读取ACADMCP_ARCH建筑记录绘制门表、窗表或房间表；任意既有门窗属性块需先door_window_tag，再schedule_update。坐标为WCS图纸单位，scale为出图比例分母；创建表格，不自动保存。",
+    "aliases": [
+      "建筑记录门窗表",
+      "房间明细表"
+    ]
+  },
+  "arch_stair": {
+    "parameters": {
+      "stair_id": "楼梯记录ID，须在图中唯一。",
+      "width": "梯段净宽，毫米。",
+      "risers": "从起点楼层到终点楼层的踢面数量，正整数。",
+      "riser_height": "每级踢面高度，毫米。",
+      "going": "踏步进深，毫米。",
+      "direction_deg": "从正X方向逆时针计的方向角，单位度。",
+      "kind": "straight直梯、l为L形、u为U形。",
+      "turn": "L形或U形楼梯后续梯段的转向：left左转，right右转。",
+      "lang": "输出语言：zh中文、en英文、tr土耳其文；null优先使用当前图纸建筑配置，未配置时沿用工具原默认语言。",
+      "scale": "出图比例分母，如50表示1:50；null优先使用当前图纸建筑配置，未配置时使用50。"
+    },
+    "summary": "按踏步和层高参数绘制平面楼梯"
+  },
+  "arch_symbol": {
+    "parameters": {
+      "kind": "north_arrow指北针、section_mark剖切标记、level标高符号、elevation_mark立面索引。",
+      "params": "按kind给参数：north_arrow:{rotation}从正Y逆时针度；section_mark:{p1,p2,label,side}，p1/p2为相对插入点的图纸单位坐标，side=left/right；level:{value}单位米；elevation_mark:{label,directions}方向up/right/down/left。",
+      "lang": "输出语言：zh中文、en英文、tr土耳其文；null优先使用当前图纸建筑配置，未配置时沿用工具原默认语言。",
+      "scale": "出图比例分母，如50表示1:50；null优先使用当前图纸建筑配置，未配置时使用50。"
+    },
+    "summary": "绘制北箭头、剖切或标高等建筑符号"
+  },
+  "arch_units_migrate": {
+    "parameters": {
+      "source_record_units": "旧记录数值的实际单位，须由用户确认：mm保留数值并标记毫米；model按实际模型单位换算为毫米。只改记录，不缩放图形。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "预览并迁移旧建筑记录的单位标识。\n只转换建筑记录中的数值及单位标识，不缩放任何几何。source_record_units由用户确认：mm保留原数值，model将记录长度/坐标按实际模型单位换算为毫米；执行必须带预览token。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "预览并迁移旧建筑记录的单位标识"
+  },
+  "arch_wall": {
+    "parameters": {
+      "poche": "是否对墙体剖切面按材料规则填充。",
+      "walls": "墙列表：{id,axis:[[x,y],...],thickness,justification,material,closed}；axis为WCS图纸单位直线轴，至少2点；厚度毫米；justification=center/left/right（沿轴前进左右）；material=brick/aac/concrete/reinforced_concrete/gypsum_board/stone/timber/generic；id须唯一。"
+    },
+    "summary": "按轴线和厚度建立并更新墙体网络"
+  },
+  "area_schedule": {
+    "parameters": {
+      "zones": "区域列表：{id,floor,rule,boundary:[[x,y],...]或boundary_handle,name?,zone?,area_type?,deductions?:[多边形]}；area_type默认building，全部坐标用图纸单位。同楼层同面积类型的外轮廓不能重叠。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "at": "表格插入点[x,y]，WCS图纸单位。",
+      "scale": "出图比例分母，如50表示1:50；控制纸面文字和符号尺寸。",
+      "layer": "目标图层名称。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "用户指定区域边界、面积类型与项目计算规则。扣减区必须位于外边界内，先取并集再扣减；同楼层、同area_type的外轮廓重叠时拒绝，不同面积类型分别统计。返回按面积类型/楼层/分区的汇总；图中表格包含逐区数据和各面积类型合计。边界为图纸单位，结果平方米；不自行确定法定面积系数。模型空间。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "按项目规则计算面积、扣减并按楼层分区汇总"
+  },
+  "balloon_add": {
+    "parameters": {
+      "item": "气泡编号，采用bom_extract返回的item序号。",
+      "leader_x": "引线指向位置的WCS X坐标，图纸单位。",
+      "leader_y": "引线指向位置的WCS Y坐标，图纸单位。",
+      "targets": "此编号关联的INSERT块参照句柄列表，供后续对应条目重编号。"
+    },
+    "summary": "绘制编号气泡及指向引线"
+  },
+  "batch_plot": {
+    "parameters": {
+      "output_dir": "输出目录的绝对路径，须在允许目录内；执行时可创建缺失目录。",
+      "layouts": "要输出的布局名称列表；null选择全部纸空间布局，仅显式指定Model时输出模型空间。",
+      "file_pattern": "每张PDF的文件名模板；{drawing}替换图名，{layout}替换布局名。"
+    },
+    "summary": "将多个布局批量输出为 PDF"
+  },
+  "beam_place": {
+    "parameters": {
+      "axes": "每根梁的两个端点：[[[x1,y1],[x2,y2]],...]，WCS图纸单位。",
+      "width_mm": "宽度，毫米，须为正数。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "layer": "目标图层名称。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "按每根梁的两个WCS端点及毫米宽度生成模型空间闭合二维轮廓，记录轴线。仅平面梁边界；未创建三维梁或自动连接柱，可另用wall_join处理柱梁收口。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "沿直轴绘制梁平面边界并记录宽度"
+  },
+  "block_define": {
+    "parameters": {
+      "entities": "块局部坐标图元列表：line{x1,y1,x2,y2}、circle{cx,cy,r}、arc{cx,cy,r,start_deg,end_deg}、polyline{points,closed,bulges?}、text{text,x,y,height,rotation_deg?,align?}、solid{points:3至4点}；每项带type，可选layer默认0。",
+      "attdefs": "属性定义列表：{tag,x,y,height,prompt?,default?,rotation_deg?,align?,invisible?}，坐标为块局部坐标。",
+      "overwrite": "true替换已有同名块定义内容，影响其全部块参照。",
+      "create_layers": "是否创建图元使用但尚不存在的图层；false时缺层会拒绝。",
+      "name": "块定义名称；创建时为新名称，查询/插入时须使用已有名称。"
+    },
+    "summary": "按图元及属性定义规格建立块"
+  },
+  "block_insert": {
+    "parameters": {
+      "scale_x": "块在X方向的缩放因子。",
+      "scale_y": "块在Y方向的缩放因子。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "attributes": "属性TAG到文本值的映射，如{\"编号\":\"M01\"}；字段必须对应已有属性定义。",
+      "name": "块定义名称；创建时为新名称，查询/插入时须使用已有名称。"
+    },
+    "summary": "插入已有块并可赋属性值"
+  },
+  "block_set_attributes": {
+    "parameters": {
+      "attributes": "属性TAG到文本值的映射，如{\"编号\":\"M01\"}；字段必须对应已有属性定义。"
+    },
+    "summary": "更新块参照中已有属性的值"
+  },
+  "bom_extract": {
+    "parameters": {
+      "group_by": "相同条目的分组字段：designation名称、standard标准、material材料；空字符串逐块输出。"
+    },
+    "summary": "从块和标准件元数据提取材料明细行"
+  },
+  "bom_table": {
+    "parameters": {
+      "rows": "明细行列表；null先从当前图纸的材料记录提取。",
+      "size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "direction": "up从下向上排列条目，表头在底部；down从上向下。"
+    },
+    "summary": "把材料明细行绘制成表格"
+  },
+  "cad_batch": {
+    "parameters": {
+      "steps": "顺序步骤列表，每项{tool:工具名,args:参数,bind:可选结果名}；后续可用$name取句柄、$name.field或$name.list.0取字段；$$表示字面美元符号。",
+      "on_error": "stop遇错停止并保留已执行结果；continue继续后续步骤；rollback尝试撤销到检查点。实际回滚范围见返回atomicity。",
+      "verbose": "是否返回每一步的完整结果；false使用简要结果。"
+    },
+    "summary": "顺序批量执行工具并处理步骤依赖"
+  },
+  "centre_marks": {
+    "parameters": {
+      "centers": "显式中心列表，每项[x,y]或[x,y,radius]；style=lines时须提供半径，使用图纸单位。",
+      "style": "mark短十字中心标记；lines延伸到轮廓外的中心线。",
+      "extension": "mark模式短十字的臂长，或lines模式超过轮廓的长度，按图形数值单位输入；毫米图中数值为毫米。"
+    },
+    "summary": "为圆或给定中心绘制中心标记"
+  },
+  "column_place": {
+    "parameters": {
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "width_mm": "矩形柱宽度或圆柱直径，毫米。",
+      "depth_mm": "矩形柱进深，毫米，须为正；圆柱模式仍需正数，但圆直径由width_mm决定。",
+      "points": "柱中心点列表[[x,y],...]，WCS图纸单位；与axis_handles二选一。",
+      "axis_handles": "模型空间直线轴线句柄列表；取有限线段的交点落柱，与points二选一。",
+      "shape": "柱平面形状：rectangle矩形、circle圆形。",
+      "rotation_deg": "平面旋转角，度；从正X方向逆时针计。",
+      "layer": "目标图层名称。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "在给定点或有限LINE轴线交点绘制模型空间圆/矩形柱轮廓，记录尺寸和来源。width_mm为矩形宽或圆直径；depth_mm为矩形进深，圆模式仅作正数校验。不会持续跟随轴线移动；重合轴拒绝。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "按点位或直轴交点布置圆柱和矩形柱"
+  },
+  "construction_xline": {
+    "parameters": {
+      "angle_deg": "方向角，度；正X为0，逆时针为正。"
+    },
+    "summary": "创建无限长构造线"
+  },
+  "curve_extend": {
+    "parameters": {
+      "end": "延伸端：start起点、end终点。"
+    },
+    "summary": "将开放曲线指定端延伸至有限边界"
+  },
+  "data_extract": {
+    "parameters": {
+      "fmt": "文件格式：csv或xlsx；xlsx需要openpyxl。",
+      "group_by": "相同条目的分组字段：designation名称、standard标准、material材料；空字符串逐块输出。"
+    },
+    "summary": "将材料明细提取为 CSV 或 XLSX"
+  },
+  "dimension_aligned": {
+    "parameters": {
+      "dim_x": "尺寸线定位点WCS X坐标，图纸单位。",
+      "dim_y": "尺寸线定位点WCS Y坐标，图纸单位。"
+    },
+    "summary": "创建沿两点连线方向的对齐尺寸"
+  },
+  "dimension_angular": {
+    "parameters": {
+      "vertex_x": "角度尺寸顶点WCS X坐标，图纸单位。",
+      "vertex_y": "角度尺寸顶点WCS Y坐标，图纸单位。",
+      "text_x": "角度尺寸文字定位点WCS X坐标，图纸单位。",
+      "text_y": "角度尺寸文字定位点WCS Y坐标，图纸单位。"
+    },
+    "summary": "按顶点和两条射线创建角度尺寸"
+  },
+  "dimension_auto": {
+    "parameters": {
+      "style": "chain连续、baseline基线、ordinate坐标标注。"
+    },
+    "summary": "对给定直线实体自动生成尺寸"
+  },
+  "dimension_chain": {
+    "parameters": {
+      "angle_deg": "方向角，度；正X为0，逆时针为正。",
+      "overall": "是否另加首末测量点的总尺寸。",
+      "style": "已有尺寸样式名称；null使用当前样式。",
+      "layer": "已有目标图层名称；null使用当前图层。"
+    },
+    "summary": "按图纸实际单位创建毫米显示的尺寸链"
+  },
+  "dimension_diameter": {
+    "parameters": {
+      "leader_length": "尺寸引线长度，图纸单位。",
+      "tol_upper": "上偏差数值，沿用标注测量单位；与fit互斥。",
+      "tol_lower": "下偏差的幅值，例如0.01显示为负0.01；沿用标注测量单位，与fit互斥。",
+      "tol_mode": "公差显示：none无、symmetric对称±、deviation上下偏差、limit极限尺寸、basic方框基本尺寸。",
+      "text_override": "替换显示的标注文字；<>占位符保留实际测量值。",
+      "fit": "ISO 286配合代号，如H7、g6；按测量名义值查已收录偏差表。表值以毫米为基础，先核对模型及标注单位；与tol_*互斥。"
+    },
+    "summary": "创建直径尺寸标注"
+  },
+  "dimension_linear": {
+    "parameters": {
+      "dim_x": "尺寸线定位点WCS X坐标，图纸单位。",
+      "dim_y": "尺寸线定位点WCS Y坐标，图纸单位。",
+      "rotation": "尺寸测量方向角，度；0水平，90竖直。",
+      "tol_upper": "上偏差数值，沿用标注测量单位；与fit互斥。",
+      "tol_lower": "下偏差的幅值，例如0.01显示为负0.01；沿用标注测量单位，与fit互斥。",
+      "tol_mode": "公差显示：none无、symmetric对称±、deviation上下偏差、limit极限尺寸、basic方框基本尺寸。",
+      "text_override": "替换显示的标注文字；<>占位符保留实际测量值。",
+      "fit": "ISO 286配合代号，如H7、g6；按测量名义值查已收录偏差表。表值以毫米为基础，先核对模型及标注单位；与tol_*互斥。"
+    },
+    "summary": "在给定两点间创建线性尺寸标注"
+  },
+  "dimension_radius": {
+    "parameters": {
+      "chord_x": "圆或圆弧上的测量点WCS X坐标，图纸单位。",
+      "chord_y": "圆或圆弧上的测量点WCS Y坐标，图纸单位。",
+      "leader_length": "尺寸引线长度，图纸单位。",
+      "tol_upper": "上偏差数值，沿用标注测量单位；与fit互斥。",
+      "tol_lower": "下偏差的幅值，例如0.01显示为负0.01；沿用标注测量单位，与fit互斥。",
+      "tol_mode": "公差显示：none无、symmetric对称±、deviation上下偏差、limit极限尺寸、basic方框基本尺寸。",
+      "text_override": "替换显示的标注文字；<>占位符保留实际测量值。",
+      "fit": "ISO 286配合代号，如H7、g6；按测量名义值查已收录偏差表。表值以毫米为基础，先核对模型及标注单位；与tol_*互斥。"
+    },
+    "summary": "创建半径尺寸标注"
+  },
+  "dimstyle_create": {
+    "parameters": {
+      "overrides": "要设置的DIM*变量映射，如{\"DIMDEC\":0,\"DIMTXT\":2.5}；仅支持实现已收录的变量。",
+      "set_current": "是否同时将新建样式设为当前样式。",
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "新建尺寸标注样式"
+  },
+  "dimstyle_modify": {
+    "parameters": {
+      "overrides": "要设置的DIM*变量映射，如{\"DIMDEC\":0,\"DIMTXT\":2.5}；仅支持实现已收录的变量。",
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "修改已有尺寸样式变量"
+  },
+  "document_activate": {
+    "parameters": {
+      "name_or_path": "document_list返回的文档名或完整路径；document_close省略时指当前文档。"
+    },
+    "summary": "激活指定已打开文档"
+  },
+  "document_close": {
+    "parameters": {
+      "name_or_path": "document_list返回的文档名或完整路径；document_close省略时指当前文档。"
+    },
+    "summary": "关闭指定文档并明确处理保存或放弃"
+  },
+  "door_window_tag": {
+    "parameters": {
+      "handles": "目标实体句柄列表，先确认图纸、空间和对象类型。",
+      "kind": "door门、window窗；由用户给定类别，工具按属性映射读取规格。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "prefix": "编号前缀，按输入文字使用。",
+      "start_number": "起始编号整数，允许0；按所选对象顺序或首次出现的规格递增。",
+      "numbering": "instance每个门窗独立编号；type同规格共用型号，后续表格汇总数量。",
+      "attribute_units": "宽、高、窗台等数值属性的单位：mm毫米，model当前模型单位；不根据块缩放自动修正属性值。",
+      "label_offset": "标注相对源块插入点的位移[dx,dy]，图纸单位。",
+      "text_height_mm": "模型中文字的实际高度，毫米；不自动乘出图比例。",
+      "layer": "目标图层名称。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "summary": "按指定门窗块属性分配实例编号或同规格型号",
+    "description": "仅处理所选模型空间本地INSERT块，由kind指定门或窗、mapping指定属性字段；宽高必填，不能从散线或外观识别类别。instance逐实例编号；type按规格共用型号。写入关联记录，按需更新tag属性，并创建或更新文字标签；随后调用schedule_update生成数量表。锁层和外参拒绝，缩放块只提示核对，规格按属性值读取。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "aliases": [
+      "门窗编号",
+      "门窗型号",
+      "同规格门窗编号",
+      "门窗属性映射"
+    ]
+  },
+  "drawing_apply_iso_layers": {
+    "parameters": {
+      "standard": "图层集合：arch建筑、iso13567命名规则、mech机械、pid工艺；默认arch。"
+    },
+    "summary": "创建或应用标准专业图层集合"
+  },
+  "drawing_apply_standard": {
+    "parameters": {
+      "standard": "iso使用ISO-25/ISOCP和逗号小数分隔；ansi使用ANSI/ROMANS和点号分隔。",
+      "layers": "是否同时创建mech工程图层；建筑图层请单独调用drawing_apply_iso_layers(standard=\"arch\")。"
+    },
+    "summary": "应用尺寸文字样式、单位和可选图层标准"
+  },
+  "drawing_deliver": {
+    "parameters": {
+      "output_dir": "输出目录的绝对路径，须在允许目录内；执行时可创建缺失目录。",
+      "formats": "非空格式列表，仅dwg/pdf；null输出两者，不追加DXF。",
+      "prefix": "交付文件名前缀，1至80字符，符合Windows文件名规则；不带路径。",
+      "layouts": "PDF布局名称列表；null输出Model，每个指定布局单独生成PDF。",
+      "expected": "附加交付要求：min_entities最少模型实体数（默认1）、max_entities最多数、required_layers必需图层、forbid_layers禁止图层、required_layouts必需布局；图层存在性包含空层。",
+      "strict_critique": "true时warning也阻止输出；false仅error阻止。此参数作用于validation_check的发现，不调用drawing_critique。",
+      "checks": "检查项列表：empty_layers空图层、zero_length零长、duplicate_entities重合几何、duplicate_tags记录编号、assets依赖。null或空列表运行全部检查。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "默认预览，先执行validation_check及expected要求；strict_critique=true将warning也阻断，否则重合几何等warning允许输出。执行顺序：暂存导出、DWG独立数据库重开/PDF文件头核验、发布文件和manifest清单。拒绝覆盖目标；失败暂存可用resume_id继续，源图或参数改变需新任务。仅DWG/PDF；PDF每布局一文件，模型按范围适合纸张、纸布局按1:1打印，需预先设置布局视口及页面。依赖清单随交付提供，外参/字体/打印样式需另行整理。保留当前图纸路径及未保存状态；依赖AutoCAD 2026 COM原生桥。\n执行须dry_run=false并传expected_token=相同参数预览返回的preview_token。",
+    "aliases": [
+      "交付图纸",
+      "检查与交付",
+      "DWG和PDF交付",
+      "导出图纸副本",
+      "交付包"
+    ],
+    "summary": "检查后生成可恢复的DWG/PDF交付包"
+  },
+  "drawing_diff": {
+    "parameters": {
+      "tol": "几何比较的坐标量化间距，图纸单位。",
+      "move_tol": "未匹配对象在同类型同图层内配对为变更的最大距离，图纸单位；null取图纸稳健对角线长度的2%。",
+      "markup": "是否在当前新版图纸中为变更区域添加修订云线及记录；true会修改图纸。",
+      "rev": "修订号，1至3个大写字母或数字，如A、01。",
+      "description": "markup=true时的修订说明文字；空字符串使用变更数量摘要。"
+    },
+    "summary": "比较两图实体几何变化并可生成修订标记"
+  },
+  "drawing_export_dwg": {
+    "parameters": {
+      "version": "目标DWG版本：R2000、R2004、R2007、R2010、R2013、R2018。"
+    },
+    "summary": "将当前图纸保存为指定版本 DWG"
+  },
+  "drawing_finalize": {
+    "parameters": {
+      "save_path": "可选DWG副本的绝对路径；目标已存在时拒绝。检查通过且dry_run=false后写入，当前图纸路径不变。",
+      "screenshot_path": "可选PNG截图绝对路径；目标已存在时拒绝。截图为当前CAD窗口画面，检查通过且执行时写入。",
+      "expected": "附加交付要求：min_entities最少模型实体数（默认1）、max_entities最多数、required_layers必需图层、forbid_layers禁止图层、required_layouts必需布局；图层存在性包含空层。",
+      "strict_critique": "true时warning也阻止输出；false仅error阻止。此参数作用于validation_check的发现，不调用drawing_critique。",
+      "checks": "检查项列表：empty_layers空图层、zero_length零长、duplicate_entities重合几何、duplicate_tags记录编号、assets依赖。null或空列表运行全部检查。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "summary": "检查图纸并可生成DWG副本和当前窗口截图",
+    "description": "默认预览；checks采用validation_check，expected附加数量/图层/布局要求，默认至少1个模型实体。strict_critique=true把warning也作为阻断，false仅阻断error。检查通过且执行时按给定路径生成DWG副本/PNG，未给路径则只完成检查。拒绝覆盖；DWG独立数据库重开核验，不改变当前图纸路径。截图为当前窗口；中途失败可能留下已生成文件，见outputs/status。依赖AutoCAD 2026 COM原生桥。\n执行须dry_run=false并传expected_token=相同参数预览返回的preview_token。",
+    "aliases": [
+      "完成图纸检查",
+      "检查并保存副本",
+      "DWG副本截图"
+    ]
+  },
+  "drawing_import_standards": {
+    "parameters": {
+      "on_conflict": "同名冲突：keep保留目标已有定义并报告；error拒绝本次导入。"
+    },
+    "summary": "从另一已打开图纸导入指定图层、样式或块定义"
+  },
+  "drawing_new": {
+    "parameters": {
+      "template": "drawing_template_list返回的模板名，或DWT/DXF模板完整路径；null按后端默认创建图纸。",
+      "bootstrap": "是否额外加载CENTER/HIDDEN/PHANTOM线型及预置工程图层；false保留模板原有内容。"
+    },
+    "summary": "新建图纸，可使用模板及标准图层"
+  },
+  "drawing_plan": {
+    "parameters": {
+      "intent": "一句话说明本次绘图任务的内容和用途。",
+      "sheet_size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "layer_set_id": "计划使用的图层预置：arch建筑、iso13567命名规则、mech机械、pid工艺。预检本身不创建图层。",
+      "dim_style": "计划采用的标注方式：chain连续、baseline基线、ordinate坐标、mixed混合。",
+      "notes": "自由文本形式的约束说明列表。",
+      "spec_hash": "最近一次就绪预检返回的规格哈希，用于核对计划与预检要求一致。",
+      "scale": "计划几何比例因子：1表示1:1，0.01表示1:100；与arch_grid等工具的比例分母不同。"
+    },
+    "summary": "记录本次建筑绘图计划和出图要求",
+    "description": "将任务要求、图幅和比例记录为当前后端会话中的计划；不创建图元、不保存DWG，也不表示已完成设计。默认arch图层预置，scale为几何比例因子。"
+  },
+  "drawing_preflight": {
+    "parameters": {
+      "intent": "一句话说明本次绘图任务的内容和用途。",
+      "sheet_size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "layer_set_id": "计划使用的图层预置：arch建筑、iso13567命名规则、mech机械、pid工艺。预检本身不创建图层。",
+      "dim_style": "计划采用的标注方式：chain连续、baseline基线、ordinate坐标、mixed混合。",
+      "allow_assumptions": "是否允许预检补充并记录缺省单位及容差策略。"
+    },
+    "summary": "只读核对建筑任务要求并返回预检结果",
+    "description": "检查输入的单位、范围、幅面、比例和约束是否完整，默认arch图层预置；返回规范化要求和规格哈希。它检查任务输入，不分析现有几何质量；质量问题用validation_check或drawing_critique。",
+    "aliases": [
+      "绘图前预检",
+      "检查任务要求",
+      "绘图需求核对"
+    ]
+  },
+  "drawing_properties_set": {
+    "parameters": {
+      "title": "标题文字，按输入原样使用。",
+      "subject": "图纸文档属性中的主题。",
+      "author": "图纸文档属性中的作者。",
+      "keywords": "图纸文档属性中的关键词。",
+      "comments": "图纸文档属性中的备注。",
+      "custom": "自定义属性{键:文本}；值为null删除该键，未提供的键保持原值。"
+    },
+    "summary": "修改图纸标题作者及自定义属性"
+  },
+  "drawing_template_save": {
+    "parameters": {
+      "description": "模板说明文字；COM写入DWT文档摘要的Comments。"
+    },
+    "summary": "将当前图纸保存为模板文件"
+  },
+  "drawing_topology_check": {
+    "parameters": {
+      "layers": "网络图层列表；null选择词表识别为管线或电气且置信度至少0.9的层。建筑墙线须显式指定。",
+      "gap": "网络端点与端点或线之间的近接阈值，图纸单位；null取网络对角线的0.2%，且至少为tol的10倍。",
+      "tol": "端点视为连接的距离容差，图纸单位。"
+    },
+    "summary": "检查管线网络的断头、近接和交叉"
+  },
+  "entity_array_polar": {
+    "parameters": {
+      "count": "阵列总数量，包含原对象。",
+      "fill_angle": "环形阵列覆盖角，度；360表示整圆。",
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "绕中心创建实体副本的环形阵列"
+  },
+  "entity_array_rectangular": {
+    "parameters": {
+      "rows": "矩形阵列行数。",
+      "cols": "矩形阵列列数。",
+      "row_spacing": "沿Y方向的行间距，图纸单位。",
+      "col_spacing": "沿X方向的列间距，图纸单位。",
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "创建实体副本的矩形阵列"
+  },
+  "entity_batch_create": {
+    "parameters": {
+      "entities": "每项包含type及该类型参数，支持line、circle、arc、polyline、rectangle、text、point；使用各创建工具对应的坐标和属性字段。"
+    },
+    "summary": "批量创建基础实体"
+  },
+  "entity_batch_modify": {
+    "parameters": {
+      "operations": "顺序操作列表：{handle,action,...}；action支持move(dx,dy)、rotate(base_x,base_y,angle_deg)、scale(base_x,base_y,factor)、delete、set_properties(layer,color,...)。"
+    },
+    "summary": "批量移动、旋转、缩放、删改实体"
+  },
+  "entity_change_space": {
+    "parameters": {
+      "direction": "to_paper从模型转纸空间；to_model从纸空间转模型。"
+    },
+    "summary": "经视口在模型与布局间转移实体"
+  },
+  "entity_copy": {
+    "parameters": {
+      "dx": "X方向位移，图纸单位。",
+      "dy": "Y方向位移，图纸单位。",
+      "dz": "Z方向位移，图纸单位。"
+    },
+    "summary": "复制已有实体并偏移新副本"
+  },
+  "entity_create_arc": {
+    "parameters": {
+      "start_angle": "圆弧起始角，度；正X为0，逆时针为正。",
+      "end_angle": "圆弧结束角，度；正X为0，逆时针为正。"
+    },
+    "summary": "按圆心、半径和起止角创建圆弧"
+  },
+  "entity_create_block_ref": {
+    "parameters": {
+      "scale_x": "块在X方向的缩放因子。",
+      "scale_y": "块在Y方向的缩放因子。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "name": "块定义名称；创建时为新名称，查询/插入时须使用已有名称。"
+    },
+    "summary": "插入已有块定义的参照"
+  },
+  "entity_create_ellipse": {
+    "parameters": {
+      "major_x": "中心指向长轴端点的向量X分量，图纸单位。",
+      "major_y": "中心指向长轴端点的向量Y分量，图纸单位。",
+      "ratio": "短半轴与长半轴之比，须大于0且不大于1。"
+    },
+    "summary": "按中心和长轴向量创建椭圆"
+  },
+  "entity_create_hatch": {
+    "parameters": {
+      "pattern": "填充图案名称，如SOLID、ANSI31；hatch_edit传空字符串时保留原图案。",
+      "boundary_points": "闭合边界顶点[[x,y],...]，图纸单位。",
+      "angle": "填充图案旋转角，单位度。"
+    },
+    "summary": "在给定多边形内创建填充"
+  },
+  "entity_create_line": {
+    "parameters": {
+      "z1": "直线起点WCS Z坐标，图纸单位。",
+      "z2": "直线终点WCS Z坐标，图纸单位。"
+    },
+    "summary": "按起终点创建直线"
+  },
+  "entity_create_mtext": {
+    "parameters": {
+      "text": "多行文字内容；支持\\P换段及AutoCAD格式码。",
+      "width": "文字框宽度，图纸单位。",
+      "height": "字符高度，图纸单位。",
+      "rotation": "旋转角，单位度，逆时针为正。"
+    },
+    "summary": "创建可换行的多行文字"
+  },
+  "entity_create_spline": {
+    "parameters": {
+      "fit_points": "样条经过的拟合点[[x,y],...]，WCS图纸单位。"
+    },
+    "summary": "按拟合点创建样条曲线"
+  },
+  "entity_create_table": {
+    "parameters": {
+      "rows": "二维数据行列表；所有行列数必须相同。",
+      "headers": "可选列标题，数量应与数据列数一致。",
+      "title": "标题文字，按输入原样使用。"
+    },
+    "summary": "创建表格及表头"
+  },
+  "entity_create_text": {
+    "parameters": {
+      "text": "写入的文字内容；entity_edit_text省略时保留原值。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "height": "文字高度，图纸单位。"
+    },
+    "summary": "创建单行文字"
+  },
+  "entity_draw_order": {
+    "parameters": {
+      "handles": "当前空间或block_name指定块定义内的1至100个目标句柄。",
+      "position": "绘图顺序：top置顶、bottom置底、above位于参考对象上方、below位于参考对象下方。",
+      "relative_to": "above/below模式所需的参考实体句柄；须与目标位于同一空间或块定义，且不在handles中。"
+    },
+    "summary": "调整当前空间或指定静态块定义的绘图顺序"
+  },
+  "entity_edit_geometry": {
+    "parameters": {
+      "start_angle": "圆弧起始角，度；正X为0，逆时针为正。",
+      "end_angle": "圆弧结束角，度；正X为0，逆时针为正。"
+    },
+    "summary": "直接修改已有基础几何的定义参数"
+  },
+  "entity_edit_text": {
+    "parameters": {
+      "text": "写入的文字内容；entity_edit_text省略时保留原值。",
+      "height": "新的文字高度，图纸单位；null保留。",
+      "rotation": "旋转角，单位度，逆时针为正。"
+    },
+    "summary": "修改已有文字内容、字号或旋转"
+  },
+  "entity_get_xdata": {
+    "parameters": {
+      "app_name": "XDATA注册应用名；读取时null返回全部应用数据，写入时缺失的应用名会注册。"
+    },
+    "summary": "读取实体的扩展数据 XDATA"
+  },
+  "entity_list": {
+    "parameters": {
+      "type_filter": "实体类型筛选，如LINE、CIRCLE、ARC、LWPOLYLINE、TEXT、MTEXT、INSERT；null不限制。",
+      "layer_filter": "图层名称筛选；null不限制图层。",
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "分页列出活动布局中的实体"
+  },
+  "entity_mirror": {
+    "parameters": {
+      "delete_original": "镜像后是否删除源实体。"
+    },
+    "summary": "沿两点确定的轴镜像实体"
+  },
+  "entity_modify_where": {
+    "parameters": {
+      "dry_run": "true只返回预览；false执行修改。",
+      "expect_count": "预期匹配数量；执行时数量不同则拒绝，建议使用预览返回的matched。",
+      "scope": "current当前空间、model模型、paper纸空间布局、all模型与纸空间；include_blocks另控制块定义。",
+      "expected_token": "可选预览返回的preview_token；提供时检查匹配对象及旧属性是否改变，缺省不会强制先预览。"
+    },
+    "summary": "按通配条件和空间范围批量修改对象属性"
+  },
+  "entity_move": {
+    "parameters": {
+      "dx": "X方向位移，图纸单位。",
+      "dy": "Y方向位移，图纸单位。",
+      "dz": "Z方向位移，图纸单位。"
+    },
+    "summary": "按位移移动已有实体"
+  },
+  "entity_offset": {
+    "parameters": {
+      "distance": "偏移距离，图纸单位；正负方向受曲线方向及类型影响，指定侧向时同时提供side_x和side_y。",
+      "side_x": "偏移侧参考点WCS X坐标，与side_y一起提供。",
+      "side_y": "偏移侧参考点WCS Y坐标，与side_x一起提供。"
+    },
+    "description": "调用CAD Offset创建偏移副本并保留源对象；可指定侧向参考点，按候选包围盒中心选择较近一侧。复杂曲线产生多个偏移结果时仅保留首个，其余新结果删除；不能据此假定已得到全部分支。偏移距离和侧向坐标为图纸单位。",
+    "summary": "按距离生成平行或同心偏移副本"
+  },
+  "entity_rotate": {
+    "parameters": {
+      "angle_deg": "方向角，度；正X为0，逆时针为正。"
+    },
+    "summary": "绕基点旋转已有实体"
+  },
+  "entity_scale": {
+    "parameters": {
+      "factor": "等比缩放因子；大于1放大，0到1缩小。"
+    },
+    "summary": "绕基点等比缩放已有实体"
+  },
+  "entity_select_smart": {
+    "parameters": {
+      "predicate": "筛选条件按AND组合：type类型、layer层名、near:[x,y,半径]、length_range:[最小,最大]（LINE/ARC）、color:ACI颜色；坐标和长度为图纸单位。",
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "按类型、图层、位置和长度条件查询实体"
+  },
+  "entity_set_properties": {
+    "parameters": {
+      "visible": "是否显示目标对象；system_launch中指应用窗口。"
+    },
+    "summary": "修改实体图层、颜色、线型和可见性"
+  },
+  "entity_set_xdata": {
+    "parameters": {
+      "app_name": "XDATA注册应用名；读取时null返回全部应用数据，写入时缺失的应用名会注册。"
+    },
+    "summary": "替换指定应用名下的实体 XDATA"
+  },
+  "grid_label": {
+    "parameters": {
+      "handles": "目标实体句柄列表，先确认图纸、空间和对象类型。",
+      "labels": "与handles顺序一一对应的轴号文字列表；非空且不可重复。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "scale": "出图比例分母，如50表示1:50；控制纸面文字和符号尺寸。",
+      "extension_mm": "轴号相对轴线端点的外伸距离，毫米。",
+      "sides": "轴号标注端：start起点、end终点、both两端。",
+      "layer": "目标图层名称。",
+      "replace": "新建标注分支中，true删除同组同轴线旧标注后重建；existing_labels分支不使用此开关。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。",
+      "existing_labels": "源轴线句柄→既有TEXT/MTEXT句柄列表；提供时更新并关联文字、保留位置，跳过新圆圈和延伸线生成。"
+    },
+    "description": "为既有直线或弧轴补轴号并刷新位置。\n保留原轴线；标注记录源句柄。replace仅删除同group、同源轴线的已有轴号/圆圈/延伸线，再按当前源几何补标。\n仅支持AutoCAD 2026 COM及建筑原生桥。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "为既有直线或弧轴补轴号并刷新位置"
+  },
+  "grid_renumber": {
+    "parameters": {
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "批量修改已记录轴号并检查重号。\n只更新本工具记录的轴网标签，保留位置。一次支持交换轴号；与未改轴线发生重号时拒绝。\n仅支持AutoCAD 2026 COM及建筑原生桥。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "批量修改已记录轴号并检查重号"
+  },
+  "hatch_add_boundary": {
+    "parameters": {
+      "edges": "闭合内边界的边列表：line用start/end；arc用center/radius/start_angle/end_angle/ccw；ellipse用center/major_axis/ratio。坐标和半径为图纸单位，角度单位度。"
+    },
+    "summary": "为已有填充增加内边界岛屿"
+  },
+  "hatch_edit": {
+    "parameters": {
+      "pattern": "填充图案名称，如SOLID、ANSI31；hatch_edit传空字符串时保留原图案。",
+      "angle": "填充图案旋转角，单位度。",
+      "style": "填充岛屿规则：normal普通、outer外部、ignore忽略；空值保留。"
+    },
+    "summary": "修改已有填充图案、比例和颜色"
+  },
+  "hatch_material": {
+    "parameters": {
+      "boundary": "闭合多边形顶点[[x,y],...]，图纸单位；至少三个点。",
+      "angle": "填充图案旋转角，单位度。"
+    },
+    "summary": "按材料规则填充剖切面"
+  },
+  "hatch_set_gradient": {
+    "parameters": {
+      "color1": "渐变起始RGB颜色，[r,g,b]各分量0至255。",
+      "color2": "渐变结束RGB颜色，[r,g,b]各分量0至255。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "centered": "渐变居中参数：0单侧，1居中。",
+      "one_color": "是否使用单色渐变；true采用color1与背景色过渡。",
+      "tint": "单色渐变的色调比例，0至1。"
+    },
+    "summary": "把已有填充改为渐变填充"
+  },
+  "image_attach": {
+    "parameters": {
+      "rotation": "旋转角，单位度，逆时针为正。"
+    },
+    "summary": "按图像比例插入栅格底图"
+  },
+  "layer_state_restore": {
+    "parameters": {
+      "properties": "恢复属性列表，可选on、frozen、locked、color、linetype、lineweight、plot、current；null恢复全部支持属性。",
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "恢复已保存的图层状态"
+  },
+  "layer_state_save": {
+    "parameters": {
+      "description": "与图层状态一起保存的备注文字。",
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "保存当前图层状态快照"
+  },
+  "layout_copy": {
+    "parameters": {
+      "source": "要复制的纸空间布局名，不能为Model。",
+      "new_name": "新布局名称，须非空且符合AutoCAD布局命名规则。"
+    },
+    "summary": "复制布局及页面设置和几何"
+  },
+  "layout_rename": {
+    "parameters": {
+      "old_name": "当前已有的布局名称。",
+      "new_name": "新布局名称，须非空且符合AutoCAD布局命名规则。"
+    },
+    "summary": "重命名图纸空间布局"
+  },
+  "leader_create_mleader": {
+    "parameters": {
+      "text": "写入的文字内容；entity_edit_text省略时保留原值。"
+    },
+    "summary": "创建带箭头和文字的多重引线"
+  },
+  "linetype_load": {
+    "parameters": {
+      "file": "可选LIN线型定义文件；null按MEASUREMENT选acadiso.lin或acad.lin。ezdxf忽略此参数。"
+    },
+    "summary": "从线型定义文件加载一个线型"
+  },
+  "mleaderstyle_create": {
+    "parameters": {
+      "preset": "iso预置：箭头2.5、落地段1、ISOCP字高2.5；ansi预置：3、1.5、ROMANS字高3。",
+      "overrides": "覆盖预置属性：arrow_size箭头、landing_gap落地段、text_style文字样式、text_height字高。",
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "新建多重引线样式"
+  },
+  "page_setup_apply": {
+    "parameters": {
+      "paper": "纸张名称：ISO_A0至ISO_A4、ANSI_A至ANSI_E，也接受A3、ansi_b等简写。",
+      "plot_style": "打印样式表名称，如monochrome.ctb；可从plot_style_list查询。",
+      "scale": "打印比例字符串：fit适合纸张，或1:1、1:2、1:5、1:10、1:20、1:50、1:100、2:1、5:1、10:1。",
+      "plot_area": "打印范围：layout布局、extents图形范围。",
+      "device": "打印设备名称或PC3配置文件名，须在本机可用。",
+      "margins_mm": "[上,下,左,右]页边距，毫米；仅ezdxf使用，COM采用PC3设备边距。",
+      "center": "是否将打印范围居中放到纸张。"
+    },
+    "summary": "设置布局纸张、打印设备和比例"
+  },
+  "parking_layout": {
+    "parameters": {
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "clearance_mm": "车位及侧向预留范围到障碍的附加净距，毫米；通道检查为相交判定，不附加此净距。",
+      "layer": "目标图层名称。",
+      "label_layer": "编号文字及符号的目标图层名称。",
+      "text_height_mm": "模型中文字的实际高度，毫米；不自动乘出图比例。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "summary": "按给定停车行方案排布车位、避让障碍并统计",
+    "description": "用户给出各行origin/count/direction及尺寸，工具过滤超界、车位与通道冲突、障碍和重叠车位，报告遗漏原因。没有自动搜索场地最优排布；边界/障碍省略时对应检查不执行。输出车位轮廓、编号和可选侧向预留范围；通道参与计算但不绘制通道线。圆障碍采用128段外包多边形保守避让，未检查车辆转弯轨迹。模型空间；坐标图纸单位，*_mm毫米。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "aliases": [
+      "停车位排布",
+      "停车场布置",
+      "排车位",
+      "车位避让",
+      "车位编号"
+    ]
+  },
+  "parking_row": {
+    "parameters": {
+      "origin": "通道中心线的起点[x,y]，WCS图纸单位；direction_deg定义排布前进方向。",
+      "count": "每侧候选位置数量，1至500；双排最多2×count个，最终数量扣除避让位置。",
+      "width_mm": "宽度，毫米，须为正数。",
+      "length_mm": "车位长度，毫米。",
+      "aisle_mm": "通道总宽度，毫米；双排车位位于通道两侧。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "angle_deg": "车位轴向与排布方向的夹角：0平行停车，15至90为斜列或垂直停车。",
+      "direction_deg": "从正X方向逆时针计的方向角，单位度。",
+      "sides": "single单排；double通道两侧各一排，共用中间通道。",
+      "prefix": "编号前缀，按输入文字使用。",
+      "start_number": "编号起始整数；按处理顺序递增。",
+      "bay_overrides": "从0起的纵向车位索引字符串→{width_mm,access_strip_mm,kind}；覆盖该位置车宽、侧向预留宽度和类型。双排时同时作用于两侧。",
+      "boundary": "可选闭合场地边界[[x,y],...]，图纸单位；null不检查外边界。",
+      "obstacles": "障碍多边形列表，每个多边形为[[x,y],...]，WCS图纸单位。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "summary": "在通道一侧或两侧排布一组车位并编号",
+    "description": "按origin/direction_deg/count生成候选位置；single位于通道一侧，double位于通道两侧。提供边界或障碍后过滤冲突位置，保留候选顺序进行连续编号；不会搜索整个场地的最优排布。宽、长、通道使用毫米，origin/边界/障碍用图纸单位；同位置覆盖同时作用于双排两侧。模型空间，未做车辆转弯扫掠。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "aliases": [
+      "单排车位",
+      "双排车位",
+      "平行停车",
+      "斜列车位"
+    ]
+  },
+  "point_from_snap": {
+    "parameters": {
+      "ref_x": "用于选择最近候选的参考点WCS X坐标；垂足或近点捕捉时必需。",
+      "ref_y": "参考点WCS Y坐标，与ref_x一起提供。"
+    },
+    "summary": "计算实体上的端点、中点等捕捉点"
+  },
+  "point_intersection": {
+    "parameters": {
+      "handle1": "第一实体句柄，此工具支持LINE或CIRCLE。",
+      "handle2": "第二实体句柄，此工具支持LINE或CIRCLE。",
+      "ref_x": "用于选择最近候选的参考点WCS X坐标；垂足或近点捕捉时必需。",
+      "ref_y": "参考点WCS Y坐标，与ref_x一起提供。"
+    },
+    "summary": "计算两个支持实体的几何交点"
+  },
+  "point_tangent": {
+    "parameters": {
+      "circle_handle": "目标CIRCLE实体句柄。",
+      "from_x": "圆外点WCS X坐标，图纸单位。",
+      "from_y": "圆外点WCS Y坐标，图纸单位。",
+      "ref_x": "用于选择最近候选的参考点WCS X坐标；垂足或近点捕捉时必需。",
+      "ref_y": "参考点WCS Y坐标，与ref_x一起提供。"
+    },
+    "summary": "从圆外点计算圆的切点"
+  },
+  "polyline_corner": {
+    "parameters": {
+      "kind": "fillet圆角、chamfer倒角。"
+    },
+    "summary": "将多段线的直线顶点改为圆角或倒角"
+  },
+  "ramp_draw": {
+    "parameters": {
+      "path": "坡道路径点[[x,y],...]，WCS图纸单位；与elevations_mm一一对应。",
+      "width_mm": "宽度，毫米，须为正数。",
+      "elevations_mm": "与路径点一一对应的完成面标高列表，毫米。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "max_slope": "最大允许坡度比，如0.08表示8%；null不作上限检查。",
+      "layer": "目标图层名称。",
+      "replace": "true替换本工具记录的同组内容；false遇已有同组内容时拒绝。先预览替换范围。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "按用户路径、宽度和各点标高生成模型空间二维坡道轮廓及坡度文字。平台需显式提供边界与标高；检查衔接和可选最大坡度，返回分段结果。几何位于XY平面，标高作为计算和记录数据；未创建三维坡道。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "按路径和标高绘制坡道平面及坡度标注"
+  },
+  "revision_add": {
+    "parameters": {
+      "rev": "修订号，1至3个大写字母或数字，如A、01。",
+      "description": "本次修订内容，按原文保存。",
+      "by": "修订发布人文字。",
+      "clouds": "需加修订云线的矩形列表，每项[x0,y0,x1,y1]，WCS图纸单位。",
+      "tags": "修订三角标记的位置列表，每项[x,y]，WCS图纸单位。",
+      "size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "cloud_segment": "修订云线分段尺寸，按图纸数值单位输入。"
+    },
+    "summary": "增加修订记录及可选云线标记"
+  },
+  "schedule_update": {
+    "parameters": {
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "at": "新建表格的WCS插入点[x,y]，图纸单位；更新已有表格时沿用原位置。",
+      "scale": "出图比例分母；新建默认50，更新省略沿用表格记录值。",
+      "layer": "新建表格的图层；更新或重建已有表格时沿用原图层。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "summary": "从已关联门窗块生成或更新型号数量表",
+    "description": "重读door_window_tag在指定group中记录的门窗块属性，更新标签及明细；type模式同规格汇总数量，instance逐门窗列行。属性改成同号异规格时拒绝，需重新编号；不会自动重新分配全部型号。首次创建表格；已有表格行列数或比例改变时删除并重建，保留位置及样式属性但句柄会变化。每次显式调用才更新，未设置后台监听。模型空间；尺寸栏毫米。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "risk": "destructive",
+    "aliases": [
+      "门窗表",
+      "门窗统计",
+      "更新门窗表",
+      "门窗数量统计",
+      "同型号数量"
+    ]
+  },
+  "section_line": {
+    "parameters": {
+      "label": "剖切编号文字，如A，写在剖切线两端。",
+      "direction": "剖切观察方向[dx,dy]，不得与剖切线平行；null采用[0,-1]。",
+      "style": "剖切类型记录：full全剖、half半剖、offset阶梯剖、revolved旋转剖；只记录类型，不生成剖面。",
+      "height": "剖切编号的文字高度，按图纸数值单位输入。"
+    },
+    "summary": "绘制剖切线、方向箭头和编号",
+    "description": "按两端点绘制剖切标记，返回p1/p2/label/direction/style参数。仅绘制定位符号，不生成剖面图；尺寸数值按图形单位使用。",
+    "aliases": [
+      "剖切线",
+      "剖面索引",
+      "剖切方向"
+    ]
+  },
+  "selection_filter": {
+    "parameters": {
+      "entity_type": "实体类型筛选，如LINE、CIRCLE、LWPOLYLINE；空字符串不限制。",
+      "min_area": "保留的闭合图形最小面积，图纸单位的平方。"
+    },
+    "summary": "按类型、图层、颜色等属性查询实体"
+  },
+  "selection_polygon": {
+    "parameters": {
+      "mode": "window仅完全包含；crossing包含与边界相交的对象。具体几何判定见工具说明。",
+      "entity_type": "实体类型筛选，如LINE、CIRCLE、LWPOLYLINE；空字符串不限制。"
+    },
+    "summary": "按多边形与实体包围盒角点查询对象"
+  },
+  "selection_window": {
+    "parameters": {
+      "mode": "window仅完全包含；crossing包含与边界相交的对象。具体几何判定见工具说明。",
+      "entity_type": "实体类型筛选，如LINE、CIRCLE、LWPOLYLINE；空字符串不限制。"
+    },
+    "summary": "按矩形与实体包围盒关系查询对象"
+  },
+  "sheet_frame": {
+    "parameters": {
+      "size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "zones": "是否在图框边缘添加字母和数字分区标记。",
+      "marks": "是否添加图框对中及裁切标记。"
+    },
+    "summary": "绘制标准图框及可选分区标记"
+  },
+  "stair_check": {
+    "parameters": {
+      "risers": "从起点楼层到终点楼层的踢面数量，正整数。",
+      "riser_height_mm": "踢面高度，毫米。",
+      "going_mm": "踏步进深，毫米。",
+      "width_mm": "宽度，毫米，须为正数。"
+    },
+    "description": "仅计算输入的楼梯尺寸及断面，不读取图中楼梯几何。limits由用户提供；净高取障碍覆盖区间最不利值，缺少断面或障碍资料时headroom_complete=false。可离线计算，所有长度及标高为毫米；不自动采用法规阈值。",
+    "aliases": [
+      "楼梯检查",
+      "楼梯净高",
+      "净高校核",
+      "踏步尺寸检查"
+    ],
+    "summary": "按给定规则检查梯段尺寸和断面净高"
+  },
+  "system_launch": {
+    "parameters": {
+      "visible": "是否显示目标对象；system_launch中指应用窗口。",
+      "open_path": "连接CAD后要打开的DWG或DXF完整路径；null只连接应用。"
+    },
+    "summary": "连接或启动 CAD 应用，可打开指定图纸"
+  },
+  "system_preferences_get": {
+    "parameters": {
+      "keys": "要读取的首选项键列表；null返回全部允许查询的键。可用键见后附清单。 Subset of OpenSave.SaveAsType, OpenSave.AutoSaveInterval, OpenSave.CreateBackup, OpenSave.IncrementalSavePercent, Display.CursorSize, Drafting.AutoSnapMarkerSize, Drafting.AutoSnapTooltip, Selection.PickBoxSize, Output.DefaultPlotStyleTable, Output.DefaultOutputDevice, Files.SupportPath, Files.TemplateDwgPath, Files.PrinterStyleSheetPath, Files.PrinterConfigPath; omit for all"
+    },
+    "summary": "读取允许查询的 CAD 应用首选项"
+  },
+  "system_prompt_message": {
+    "parameters": {
+      "text": "写入的文字内容；entity_edit_text省略时保留原值。"
+    },
+    "summary": "在 CAD 命令行显示提示文字"
+  },
+  "system_run_command": {
+    "parameters": {
+      "command": "AutoCAD命令字符串，如_REGEN；执行前须确认活动文档、命令输入状态和副作用。"
+    },
+    "summary": "向 AutoCAD 发送原生命令"
+  },
+  "system_run_lisp": {
+    "parameters": {
+      "expression": "AutoLISP表达式字符串；受命令安全审查限制。"
+    },
+    "summary": "执行受审查的AutoLISP表达式"
+  },
+  "system_set_variable": {
+    "parameters": {
+      "value": "系统变量的新值，类型须符合变量要求。",
+      "name": "AutoCAD系统变量名称，如INSUNITS、CLAYER、LTSCALE。"
+    },
+    "summary": "设置一个 AutoCAD 系统变量"
+  },
+  "template_apply_layers": {
+    "parameters": {
+      "template": "预置图层模板名称：architectural建筑、mechanical机械、electrical电气、piping管道。"
+    },
+    "summary": "应用预置图层集合"
+  },
+  "text_find_replace": {
+    "parameters": {
+      "find": "要查找的原文，按字面匹配，不使用正则表达式。",
+      "replace": "要写入的替换文本。",
+      "match_case": "匹配时是否区分大小写。"
+    },
+    "summary": "批量查找替换文字和块属性文本"
+  },
+  "text_set_background": {
+    "parameters": {
+      "enabled": "是否开启多行文字背景遮罩；false移除遮罩。"
+    },
+    "summary": "设置多行文字背景遮罩"
+  },
+  "textstyle_create": {
+    "parameters": {
+      "font": "字体名或字体文件，如isocp.shx、arial.ttf；须在本机可用。",
+      "oblique_deg": "文字倾斜角，单位度，允许范围-85至85。",
+      "set_current": "是否同时将新建样式设为当前样式。",
+      "height": "固定字高，图纸单位；0允许各文字对象单独指定高度。",
+      "width_factor": "文字宽度因子，须大于0。",
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "新建文字样式"
+  },
+  "titleblock_apply": {
+    "parameters": {
+      "title": "标题文字，按输入原样使用。",
+      "drawing_no": "图纸编号文字，按输入原样使用。",
+      "size": "图纸幅面：A4、A3、A2、A1或A0。",
+      "projection": "投影法符号：first第一角法、third第三角法；空字符串不绘制。",
+      "frame": "是否同时绘制图框。",
+      "zones": "是否在图框边缘添加字母和数字分区标记。",
+      "marks": "是否添加图框对中及裁切标记。"
+    },
+    "summary": "按指定纸张绘制标题栏及可选图框"
+  },
+  "titleblock_apply_iso_a3": {
+    "parameters": {
+      "title": "标题文字，按输入原样使用。",
+      "drawing_no": "图纸编号文字，按输入原样使用。"
+    },
+    "summary": "添加 ISO A3 图框及标题栏"
+  },
+  "ucs_set": {
+    "parameters": {
+      "origin": "新坐标系原点[x,y,z]，WCS图纸单位。",
+      "x_axis": "新UCS的X轴方向向量，可为非单位向量。",
+      "y_axis": "新UCS的Y轴方向向量，必须与x_axis垂直。",
+      "name": "命名UCS名称；ucs_restore可传world恢复世界坐标系。"
+    },
+    "summary": "保存并切换命名用户坐标系"
+  },
+  "validation_check": {
+    "parameters": {
+      "checks": "检查项列表：empty_layers空图层、zero_length零长、duplicate_entities重合几何、duplicate_tags记录编号、assets依赖。null或空列表运行全部检查。",
+      "scope": "model只检查模型空间；all包括模型、纸空间及本地块定义，外参内部不展开。",
+      "tolerance_mm": "零长度及重合几何量化检查的正容差，毫米；不表示自动修剪或合并距离。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。"
+    },
+    "summary": "只读检查零长、重合几何、记录编号和外部依赖",
+    "description": "ok表示执行成功，passed表示无error，complete表示读取完整；三者含义不同。零长为error，重合几何为warning，空图层为info，因此passed=true仍可能有重线。重合检查按容差量化，对比空间、图层、颜色、线型及支持的几何/文字属性；未覆盖所有样式属性，不能直接作为自动删除依据。支持LINE/CIRCLE/ARC/LWPOLYLINE/TEXT/MTEXT/INSERT，其他类型见coverage。编号仅检查本工具记录的轴网、车位及门窗，同型门窗允许同号。all读取本地块定义并排除外参内部；零长/重合跳过自动生成匿名块内部。最多200000实体，超限拒绝；读取失败返回complete=false。",
+    "aliases": [
+      "检查图纸",
+      "图纸检查",
+      "查重线",
+      "重线检查",
+      "重复图元",
+      "零长线",
+      "外部依赖检查"
+    ]
+  },
+  "view_named_save": {
+    "parameters": {
+      "center": "视图中心WCS [x,y]；null取COM当前视图，ezdxf取图形范围。",
+      "height": "视图高度，图纸单位；null沿用当前视图或图形范围。",
+      "width": "视图宽度，图纸单位；null按高度和当前视口宽高比计算。",
+      "name": "命名视图名称；保存时可指定新名，恢复时须已存在。"
+    },
+    "summary": "保存当前或指定范围为命名视图"
+  },
+  "viewport_create": {
+    "parameters": {
+      "center_x": "视口在纸空间的中心X坐标，纸空间单位。",
+      "center_y": "视口在纸空间的中心Y坐标，纸空间单位。",
+      "width": "视口宽度，纸空间单位。",
+      "height": "视口高度，纸空间单位。",
+      "scale": "原始纸空间/模型数值比例。仅模型与纸空间单位相同时0.01对应1:100；跨单位设置物理比例用viewport_set_scale的scale_denominator。"
+    },
+    "summary": "在布局中创建指定比例的模型视口"
+  },
+  "viewport_lock": {
+    "parameters": {
+      "locked": "true锁定视口显示比例，false解锁。"
+    },
+    "summary": "锁定或解锁视口比例"
+  },
+  "wall_join": {
+    "parameters": {
+      "handles": "corner恰好两条墙面LINE；columns为待裁切的LINE或本工具记录的闭合梁多段线，模型空间。",
+      "group": "本工具关联记录的组名；后续更新或替换须使用相同组名。",
+      "mode": "corner将两条直线指定端修剪/延伸至交点；columns从墙面直线或本工具生成的闭合梁中扣除柱范围。",
+      "ends": "corner模式两条直线各选哪个端点，顺序与handles一致：0起点、1终点，如[1,0]。",
+      "column_handles": "columns模式的柱轮廓句柄列表；直线墙支持圆/多边形柱，闭合梁裁切只支持多边形柱。",
+      "max_shift_mm": "corner模式端点到理论交点的最大允许位移，毫米。",
+      "model_units": "实际模型单位：mm毫米、cm厘米、m米、inch英寸、ft英尺；null读取INSUNITS。只控制本次单位解释，不修改INSUNITS或缩放原图。",
+      "dry_run": "true只返回预览；false执行修改。",
+      "expected_token": "执行时传入相同参数预览返回的preview_token；图纸或参数变化后须重新预览。"
+    },
+    "description": "预览并处理墙面角点或柱墙收口。\ncorner将两条墙面线指定端点延伸/修剪到交点；columns从直线墙面或本工具生成的闭合梁边界中扣除柱范围，可能拆分并产生新句柄；闭合梁使用多边形柱。保留图层/颜色/线型/线宽并记录关联。拒绝锁层及既有ACADMCP_ARCH墙记录。\n仅支持AutoCAD 2026 COM及建筑原生桥。\n默认dry_run=true仅预览；执行须dry_run=false并传expected_token=本次preview_token，其他参数保持一致。只操作当前文档模型空间，读取不完整拒绝写入；执行后不自动保存。",
+    "summary": "预览并处理墙面角点或柱墙收口"
+  },
+  "weld_symbol": {
+    "parameters": {
+      "kind": "焊缝符号：square方形坡口、v为V形、bevel单斜坡口、u为U形、j为J形、fillet角焊缝。",
+      "size": "符号前尺寸文字；角焊缝数值5显示a5，可用字符串z7明确焊脚尺寸。",
+      "length": "焊缝长度标注值，毫米。",
+      "pitch": "间断焊缝节距标注值，毫米。",
+      "side": "焊缝侧：arrow箭头侧、other另一侧、both双侧。",
+      "field_weld": "是否绘制现场焊接旗形标记。",
+      "all_around": "是否绘制周边焊接圆圈标记。",
+      "process": "尾部工艺说明，如ISO 4063工艺编号。",
+      "leader_to": "焊缝引线指向点[x,y]，WCS图纸单位。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "height": "符号文字高度，按图纸数值单位输入；毫米图中数值为毫米。"
+    },
+    "summary": "绘制焊接符号及尺寸说明"
+  },
+  "xref_attach": {
+    "parameters": {
+      "scale": "外参插入的统一缩放因子。",
+      "rotation": "旋转角，单位度，逆时针为正。",
+      "kind": "attach附加：嵌套引用随宿主传递；overlay覆盖：宿主再被引用时该参照不随之传递。"
+    },
+    "summary": "附加或覆盖方式插入外部参照"
+  },
+  "xref_manage": {
+    "parameters": {
+      "action": "外参操作：list列表、reload重载、bind绑定、detach拆离、path修改路径。",
+      "new_path": "action=path时必填的新外参文件路径。"
+    },
+    "summary": "列出或管理外参的加载绑定及路径"
+  },
+  "arch_plan_from_spec": {
+    "parameters": {
+      "spec": "结构化对象：sheet:{intent,sheet_size,scale:出图比例分母}；lang:zh/en/tr；poche:是否填充；walls:[{id,axis,thickness,justification,material,closed}]；openings:[{id,wall,kind,offset,width,swing,hand,sill,height,tag}]；stairs:[{id,start,direction_deg,width,risers,riser_height,going,kind,turn}]；rooms:[{id,name,number,at}]；chains:{sides}；schedules:[{kind,at}]。axis/start/at用WCS图纸单位，构件尺寸及洞口offset用毫米。字段含义分别参照对应arch_*工具。"
+    },
+    "summary": "按规格生成墙门窗楼梯及标注平面"
+  },
+  "arch_company_profile": {
+    "description": "settings={}读取；提供字段时选用当前图中已有图层、文字/尺寸样式及比例。保留原样式定义和旧实体；角色图层映射和默认语言另用arch_profile_config。作用于当前文档，不自动保存。",
+    "parameters": {},
+    "summary": "读取或选用图中已有公司图层和文字尺寸样式"
+  },
+  "curve_split": {
+    "description": "在LINE/ARC/CIRCLE/LWPOLYLINE上的指定点分割并返回子曲线新句柄。replace=true删除原对象，false保留原对象；外部尺寸等关联需调用者另行核对。当前空间，WCS图纸单位，原生事务执行，不自动保存。",
+    "parameters": {},
+    "summary": "在指定曲线上点打断曲线"
+  },
+  "stretch_window": {
+    "description": "按WCS矩形查询当前空间全库对象，预览并拉伸LINE/LWPOLYLINE的框内端点或顶点。move_fully_inside=true还可整体移动完全框入的圆、弧、块、TEXT/MTEXT；尺寸始终跳过。锁层或非法索引拒绝，不自动随动尺寸或约束。位移图纸单位，执行需最新预览凭证；不保存图纸。",
+    "parameters": {},
+    "summary": "框选端点或顶点并预览或执行局部拉伸"
+  },
+  "dimension_edit": {
+    "description": "修改已有尺寸的样式、文字位置、尺寸线位置或DIMSCALE覆盖，保留测量点。样式变化可能影响显示精度和文字外观；不提供任意测量值替换。plot_scale拒绝注释性尺寸，注释上下文另用annotation_scales。当前空间，事务内执行，不自动保存。",
+    "parameters": {},
+    "summary": "修改已有尺寸样式、文字位置和出图比例"
+  },
+  "selection_polygon_exact": {
+    "description": "使用AutoCAD原生多边形窗口/交叉选择，读取当前空间及当前视图可选择对象；离屏对象可能未命中。最多返回100个句柄并报告截断。只读选择，不创建图形。",
+    "parameters": {},
+    "summary": "使用原生多边形窗口或交叉选择"
+  },
+  "layer_merge": {
+    "description": "将源层对象改到目标层；默认不允许改块定义，include_blocks=true才允许处理本地块定义及属性，影响全部参照。外参源、锁层、保护层拒绝；delete_sources=true删除源层，仍被引用时回滚。命名图层状态不会随名称自动迁移；建筑角色配置引用的源层拒绝。",
+    "parameters": {},
+    "summary": "将源图层对象归并到目标图层"
+  },
+  "drawing_critique": {
+    "summary": "按选定规则评审尺寸、重复实体和建筑记录",
+    "description": "默认检查dim_overlap尺寸重叠、untrimmed_corner未修剪角、duplicate_entities重复实体、construction_left构造线、arch_room_unlabelled未标房间、arch_wall_gap墙缺口、arch_opening_clash洞口冲突；建筑规则依赖ACADMCP_ARCH记录，未识别到记录不代表所有建筑构件已检查。返回问题列表，不自动修复。其他可选focus：iso128、layer_color、gdt、pid_dangling_line、pid_duplicate_tag、pid_incompatible_connection、pid_untagged_instrument、pid_illegal_tag、pid_unconnected_equipment、mech_missing_centreline、mech_unhatched_section、mech_view_misaligned、mech_duplicate_dimension、mech_thread_unrepresented、mech_bom_balloon_mismatch、topo_dangling_endpoint、topo_near_miss、topo_interior_crossing。",
+    "aliases": [
+      "评审图纸",
+      "检查尺寸重叠",
+      "建筑记录检查"
+    ],
+    "parameters": {
+      "focus": "null默认dim_overlap尺寸重叠、untrimmed_corner未修剪角、duplicate_entities重复实体、construction_left构造线、arch_room_unlabelled未标房间、arch_wall_gap墙缺口、arch_opening_clash洞口冲突。可显式指定其他已实现focus，完整可用名称见描述。"
+    }
+  },
+  "drawing_refine": {
+    "summary": "预览或执行重复实体清理及尺寸调整",
+    "aliases": [
+      "自动整理",
+      "自动修复图纸",
+      "清理重复实体",
+      "调整重叠尺寸"
+    ],
+    "parameters": {
+      "focus": "null默认dim_overlap、duplicate_entities、arch_room_unlabelled、arch_wall_gap、arch_opening_clash。显式focus可用名称与drawing_critique一致。"
+    }
+  },
+  "drawing_export_dxf": {
+    "description": "将当前图纸写为 DXF 文件。\n限制/副作用：COM 使用 SaveAs，改变当前文档路径；可能覆盖文件。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing export dxf。",
+    "parameters": {},
+    "summary": "将当前图纸写为 DXF 文件"
+  },
+  "drawing_export_pdf": {
+    "description": "将模型或指定布局打印为 PDF。\n限制/副作用：写文件可能覆盖；COM 原生打印。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing export pdf。",
+    "parameters": {},
+    "summary": "将模型或指定布局打印为 PDF"
+  },
+  "view_screenshot": {
+    "description": "截取当前 CAD 视图画面。\n限制/副作用：COM 是窗口截图；overlay_handles 不受支持。\n风险：只读查询，不写入图形或输出文件。\n检索：view screenshot。",
+    "parameters": {},
+    "summary": "截取当前 CAD 视图画面"
+  },
+  "analysis_find_in_region": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "查询矩形内及穿过矩形的实体"
+  },
+  "analysis_select_by_layer": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "查询指定图层上的实体"
+  },
+  "analysis_select_by_type": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "查询指定类型的实体"
+  },
+  "block_create_from_entities": {
+    "parameters": {
+      "name": "块定义名称；创建时为新名称，查询/插入时须使用已有名称。"
+    },
+    "summary": "从现有实体创建块定义"
+  },
+  "block_find_references": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。",
+      "name": "块定义名称；创建时为新名称，查询/插入时须使用已有名称。"
+    },
+    "summary": "查找引用指定块定义的块参照"
+  },
+  "block_list": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "列出块定义及其统计信息"
+  },
+  "dimstyle_set_current": {
+    "parameters": {
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "设置当前尺寸样式"
+  },
+  "layer_create": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "创建指定名称和属性的图层"
+  },
+  "layer_delete": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "删除空图层"
+  },
+  "layer_freeze": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "冻结图层使其不显示及参与常规再生"
+  },
+  "layer_hide": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "关闭图层显示"
+  },
+  "layer_isolate": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "只显示指定图层并隐藏其他层"
+  },
+  "layer_list": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "列出图层属性和当前图层"
+  },
+  "layer_lock": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "锁定图层以防修改其中实体"
+  },
+  "layer_modify": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "修改图层颜色、线型或线宽"
+  },
+  "layer_set_current": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "设置新建实体使用的当前图层"
+  },
+  "layer_show": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "打开图层显示"
+  },
+  "layer_state_delete": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "删除一个保存的图层状态"
+  },
+  "layer_thaw": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "解冻已冻结图层"
+  },
+  "layer_unlock": {
+    "parameters": {
+      "name": "图层名称；创建时为新名称，其他操作使用已有名称。"
+    },
+    "summary": "解锁图层以允许编辑"
+  },
+  "selection_get": {
+    "parameters": {
+      "fields": "按给定顺序投影返回字段，如[\"handle\",\"type\"]；properties.<key>取一层嵌套字段；null返回完整记录，无效字段拒绝。",
+      "compact": "true返回紧凑字段/行结构，并包含total、truncated、next_offset等完整性字段；false返回普通对象列表。"
+    },
+    "summary": "读取用户已预选的实体"
+  },
+  "system_get_variable": {
+    "parameters": {
+      "name": "AutoCAD系统变量名称，如INSUNITS、CLAYER、LTSCALE。"
+    },
+    "summary": "读取一个 AutoCAD 系统变量"
+  },
+  "system_variable_describe": {
+    "parameters": {
+      "name": "AutoCAD系统变量名称，如INSUNITS、CLAYER、LTSCALE。"
+    },
+    "summary": "查询已收录系统变量的类型和用途"
+  },
+  "textstyle_set_current": {
+    "parameters": {
+      "name": "样式名称；创建时为新名称，修改或选用时须已存在。"
+    },
+    "summary": "设置当前文字样式"
+  },
+  "ucs_restore": {
+    "parameters": {
+      "name": "命名UCS名称；ucs_restore可传world恢复世界坐标系。"
+    },
+    "summary": "恢复世界或已命名的 UCS"
+  },
+  "view_named_restore": {
+    "parameters": {
+      "name": "命名视图名称；保存时可指定新名，恢复时须已存在。"
+    },
+    "summary": "恢复一个命名视图的显示范围"
+  },
+  "analysis_bounding_box": {
+    "summary": "逐实体计算模型空间的包围盒"
+  },
+  "analysis_entity_stats": {
+    "summary": "按实体类型和图层统计数量"
+  },
+  "analysis_layer_stats": {
+    "summary": "统计各图层的实体数量及类型"
+  },
+  "analysis_list_properties": {
+    "summary": "读取实体可用的属性详情"
+  },
+  "analysis_measure_area": {
+    "summary": "按输入顶点计算多边形面积和周长"
+  },
+  "analysis_measure_distance": {
+    "summary": "计算输入两点间的二维距离"
+  },
+  "annotation_scales": {
+    "summary": "读取注释比例并设置文字或尺寸的比例上下文"
+  },
+  "arch_profile_config": {
+    "summary": "读取或保存当前图纸的建筑角色图层与输出配置"
+  },
+  "block_explode": {
+    "summary": "将块参照炸开为组成实体"
+  },
+  "block_get_attributes": {
+    "summary": "读取块参照的属性值"
+  },
+  "boundary_from_entities": {
+    "summary": "将指定线弧或多段线组成闭合边界"
+  },
+  "boundary_trace": {
+    "summary": "从区域内种子点生成外边界及岛屿"
+  },
+  "construction_clear": {
+    "summary": "删除指定构造图层上的全部实体"
+  },
+  "curve_join": {
+    "summary": "将首尾相连的开放曲线连接"
+  },
+  "curve_trim": {
+    "summary": "按真实交点修剪直线、弧、圆或多段线"
+  },
+  "dimension_arrange": {
+    "summary": "等距排列平行尺寸线并重置文字居中"
+  },
+  "dimstyle_list": {
+    "summary": "列出尺寸标注样式及可读设置"
+  },
+  "document_list": {
+    "summary": "列出打开文档及活动、保存状态"
+  },
+  "drawing_audit": {
+    "summary": "审计并修复图纸数据库问题"
+  },
+  "drawing_close": {
+    "summary": "关闭当前图纸，可先保存"
+  },
+  "drawing_info": {
+    "summary": "读取当前图纸名称、路径、单位及对象数量"
+  },
+  "drawing_open": {
+    "summary": "打开图纸并设为活动文档"
+  },
+  "drawing_properties_get": {
+    "summary": "读取图纸标题作者等文档属性"
+  },
+  "drawing_purge": {
+    "summary": "清理图纸中未使用的定义和样式"
+  },
+  "drawing_redo": {
+    "summary": "重做刚撤销的图纸操作"
+  },
+  "drawing_round_geometry": {
+    "summary": "图纸碎数整理：预览并将直线网端点/顶点归整到指定毫米网格"
+  },
+  "drawing_save": {
+    "summary": "保存当前图纸到当前或指定路径"
+  },
+  "drawing_save_as": {
+    "summary": "将当前图纸另存为 DWG、DXF 或 DWT"
+  },
+  "drawing_settings": {
+    "summary": "读取或修改常用图纸设置"
+  },
+  "drawing_template_list": {
+    "summary": "列出可用于新图纸的模板"
+  },
+  "drawing_understand": {
+    "summary": "分析已打开图纸的单位、图层、文字及几何分布"
+  },
+  "drawing_undo": {
+    "summary": "撤销最近的图纸操作"
+  },
+  "drawing_unit_context": {
+    "summary": "读取图纸单位并用已知长度校核；不修改图形或INSUNITS",
+    "description": "读取当前图纸INSUNITS或显式实际单位，返回每图纸单位对应毫米数。可同时传reference_length与reference_mm校核已知长度；reference_consistent=false时须先解决单位冲突。只读，不修改INSUNITS或缩放几何，不凭外观猜单位。"
+  },
+  "entity_chamfer": {
+    "summary": "在两条直线之间创建倒角线"
+  },
+  "entity_create_circle": {
+    "summary": "按圆心和半径创建圆"
+  },
+  "entity_create_point": {
+    "summary": "创建坐标点标记"
+  },
+  "entity_create_polyline": {
+    "summary": "按顶点创建二维多段线"
+  },
+  "entity_create_rectangle": {
+    "summary": "按对角点创建闭合矩形多段线"
+  },
+  "entity_create_revcloud": {
+    "summary": "创建带圆弧段和云线属性的修订云线"
+  },
+  "entity_create_wipeout": {
+    "summary": "创建原生遮挡区域并置于绘图顺序顶部"
+  },
+  "entity_delete": {
+    "summary": "按句柄删除一个实体"
+  },
+  "entity_delete_many": {
+    "summary": "按句柄列表批量删除实体"
+  },
+  "entity_extend": {
+    "summary": "把直线端点延伸到边界线段"
+  },
+  "entity_fillet": {
+    "summary": "在两条直线之间创建圆角或尖角"
+  },
+  "entity_get": {
+    "summary": "按句柄读取实体及已暴露属性"
+  },
+  "entity_match_properties": {
+    "summary": "按白名单把源实体属性匹配给目标"
+  },
+  "entity_stretch": {
+    "summary": "按明确端点或顶点索引局部拉伸"
+  },
+  "entity_trim": {
+    "summary": "用裁剪对象修剪目标并保留指定侧"
+  },
+  "layer_rename": {
+    "summary": "重命名图层并保持对象引用"
+  },
+  "layer_state_list": {
+    "summary": "列出 MCP 保存的图层状态"
+  },
+  "layout_create": {
+    "summary": "创建图纸空间布局"
+  },
+  "layout_delete": {
+    "summary": "删除布局及其所有图纸空间实体"
+  },
+  "layout_list": {
+    "summary": "列出模型及图纸空间布局"
+  },
+  "layout_set_current": {
+    "summary": "切换活动布局"
+  },
+  "linetype_list": {
+    "summary": "列出当前图纸已加载线型"
+  },
+  "mleaderstyle_list": {
+    "summary": "列出多重引线样式"
+  },
+  "page_setup_list": {
+    "summary": "读取布局的页面打印设置"
+  },
+  "plot_style_list": {
+    "summary": "列出可用或已知的打印样式表"
+  },
+  "polyline_edit": {
+    "summary": "编辑多段线顶点、弧度和宽度"
+  },
+  "system_about": {
+    "summary": "读取版本、工具组和能力清单"
+  },
+  "system_capabilities": {
+    "summary": "读取后端支持标记和实现模式"
+  },
+  "system_status": {
+    "summary": "读取 MCP 连接、后端和活动文档状态"
+  },
+  "template_list": {
+    "summary": "列出图层模板及其内容"
+  },
+  "textstyle_list": {
+    "summary": "列出文字样式及当前样式"
+  },
+  "transaction_begin": {
+    "summary": "建立后续操作的撤销检查点"
+  },
+  "transaction_commit": {
+    "summary": "结束当前事务检查点并保留修改"
+  },
+  "transaction_rollback": {
+    "summary": "回退到当前事务的开始状态"
+  },
+  "ucs_list": {
+    "summary": "列出世界及命名用户坐标系"
+  },
+  "user_pick_point": {
+    "summary": "等待用户在 CAD 中点选坐标"
+  },
+  "user_select": {
+    "summary": "等待用户在 CAD 中点选实体"
+  },
+  "view_named_list": {
+    "summary": "列出已保存的命名视图"
+  },
+  "view_zoom_and_screenshot": {
+    "summary": "先缩放视图再截图"
+  },
+  "view_zoom_extents": {
+    "summary": "缩放视图以显示图纸整体范围"
+  },
+  "view_zoom_window": {
+    "summary": "缩放视图显示指定矩形范围"
+  },
+  "viewport_delete": {
+    "summary": "删除普通视口并强制保护纸空间主视口"
+  },
+  "viewport_list": {
+    "summary": "列出布局视口及比例、锁定等属性"
+  },
+  "viewport_set_scale": {
+    "summary": "按原始数值比例或实际单位设置普通视口出图比例"
+  }
+}

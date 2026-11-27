@@ -1,0 +1,2934 @@
+[
+  {
+    "name": "analysis_bounding_box",
+    "implementation": "latest/python/server.py:3613",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_entity_stats",
+    "implementation": "latest/python/server.py:3462",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_find_in_region",
+    "implementation": "latest/python/server.py:3477",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_layer_stats",
+    "implementation": "latest/python/server.py:3697",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_list_properties",
+    "implementation": "latest/python/server.py:3444",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_measure_area",
+    "implementation": "latest/python/server.py:3533",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_measure_distance",
+    "implementation": "latest/python/server.py:3508",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_measure_entity",
+    "implementation": "latest/python/server.py:3576",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "flatten_tolerance"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_select_by_layer",
+    "implementation": "latest/python/server.py:3623",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "analysis_select_by_type",
+    "implementation": "latest/python/server.py:3658",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "annotation_scales",
+    "implementation": "latest/python/arch_deep_tools.py:139",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_catalogue_insert",
+    "implementation": "latest/python/server.py:10083",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_catalogue_list",
+    "implementation": "latest/python/server.py:10031",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "query",
+      "family"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "arch_company_profile",
+    "implementation": "latest/python/arch_tools.py:122",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_dimension_chains",
+    "implementation": "latest/python/server.py:9799",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "sides",
+      "scale",
+      "first_offset",
+      "step"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_grid",
+    "implementation": "latest/python/building_tools.py:85",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "labels",
+      "scale",
+      "origin",
+      "rotation_deg",
+      "sides",
+      "group",
+      "axis_layer",
+      "label_layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "arch_opening",
+    "implementation": "latest/python/server.py:9644",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "wall",
+      "offset",
+      "width",
+      "kind",
+      "swing",
+      "hand",
+      "sill",
+      "height",
+      "tag",
+      "opening_id",
+      "lang",
+      "poche"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "arch_plan_from_spec",
+    "implementation": "latest/python/server.py:10269",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "spec"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "arch_profile_config",
+    "implementation": "latest/python/arch_deep_tools.py:143",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_room",
+    "implementation": "latest/python/server.py:9874",
+    "description_changed": false,
+    "summary_changed": true,
+    "parameters_changed": [
+      "name",
+      "number",
+      "room_id",
+      "lang",
+      "scale"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_rooms_detect",
+    "implementation": "latest/python/server.py:9932",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "layers",
+      "min_area",
+      "tol"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "arch_schedule",
+    "implementation": "latest/python/server.py:9985",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "kind",
+      "lang",
+      "scale"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_stair",
+    "implementation": "latest/python/server.py:9734",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "stair_id",
+      "width",
+      "risers",
+      "riser_height",
+      "going",
+      "direction_deg",
+      "kind",
+      "turn",
+      "lang",
+      "scale"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_symbol",
+    "implementation": "latest/python/server.py:10202",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "kind",
+      "params",
+      "lang",
+      "scale"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_units_migrate",
+    "implementation": "latest/python/building_units.py:180",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "source_record_units",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "arch_wall",
+    "implementation": "latest/python/server.py:9591",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "walls",
+      "poche"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "area_schedule",
+    "implementation": "latest/python/building_tools.py:252",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "zones",
+      "group",
+      "at",
+      "scale",
+      "layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "balloon_add",
+    "implementation": "latest/python/server.py:9350",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "item",
+      "leader_x",
+      "leader_y",
+      "targets"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "batch_plot",
+    "implementation": "latest/python/server.py:7541",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "output_dir",
+      "layouts",
+      "file_pattern"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "beam_place",
+    "implementation": "latest/python/building_tools.py:284",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "axes",
+      "width_mm",
+      "group",
+      "layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "block_create_from_entities",
+    "implementation": "latest/python/server.py:3285",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "block_define",
+    "implementation": "latest/python/server.py:3315",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "entities",
+      "attdefs",
+      "overwrite",
+      "create_layers"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "block_explode",
+    "implementation": "latest/python/server.py:3207",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "block_find_references",
+    "implementation": "latest/python/server.py:3366",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "block_get_attributes",
+    "implementation": "latest/python/server.py:3241",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "block_insert",
+    "implementation": "latest/python/server.py:3175",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "scale_x",
+      "scale_y",
+      "rotation",
+      "attributes"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "block_list",
+    "implementation": "latest/python/server.py:3149",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "block_set_attributes",
+    "implementation": "latest/python/server.py:3258",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "attributes"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "bom_extract",
+    "implementation": "latest/python/server.py:9199",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "group_by"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "bom_table",
+    "implementation": "latest/python/server.py:9276",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "rows",
+      "size",
+      "direction"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "boundary_from_entities",
+    "implementation": "latest/python/server.py:3425",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "boundary_trace",
+    "implementation": "latest/python/server.py:3401",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "cad_batch",
+    "implementation": "latest/python/server.py:4300",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "steps",
+      "on_error",
+      "verbose"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "centre_marks",
+    "implementation": "latest/python/server.py:8787",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "centers",
+      "style",
+      "extension"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "column_place",
+    "implementation": "latest/python/building_tools.py:264",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "group",
+      "width_mm",
+      "depth_mm",
+      "points",
+      "axis_handles",
+      "shape",
+      "rotation_deg",
+      "layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "construction_clear",
+    "implementation": "latest/python/server.py:6169",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "construction_xline",
+    "implementation": "latest/python/server.py:6150",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "angle_deg"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "curve_extend",
+    "implementation": "latest/python/arch_deep_tools.py:123",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "end"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "curve_join",
+    "implementation": "latest/python/arch_tools.py:86",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "curve_split",
+    "implementation": "latest/python/arch_tools.py:82",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "curve_trim",
+    "implementation": "latest/python/arch_deep_tools.py:119",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "data_extract",
+    "implementation": "latest/python/server.py:9512",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fmt",
+      "group_by"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "dimension_aligned",
+    "implementation": "latest/python/server.py:2051",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "dim_x",
+      "dim_y"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_angular",
+    "implementation": "latest/python/server.py:2071",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "vertex_x",
+      "vertex_y",
+      "text_x",
+      "text_y"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_arrange",
+    "implementation": "latest/python/arch_tools.py:114",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_auto",
+    "implementation": "latest/python/server.py:6217",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "style"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_chain",
+    "implementation": "latest/python/project_fixes.py:135",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "angle_deg",
+      "overall",
+      "style",
+      "layer"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_diameter",
+    "implementation": "latest/python/server.py:2145",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "leader_length",
+      "tol_upper",
+      "tol_lower",
+      "tol_mode",
+      "text_override",
+      "fit"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_edit",
+    "implementation": "latest/python/arch_tools.py:110",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_linear",
+    "implementation": "latest/python/server.py:1991",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "dim_x",
+      "dim_y",
+      "rotation",
+      "tol_upper",
+      "tol_lower",
+      "tol_mode",
+      "text_override",
+      "fit"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimension_radius",
+    "implementation": "latest/python/server.py:2095",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "chord_x",
+      "chord_y",
+      "leader_length",
+      "tol_upper",
+      "tol_lower",
+      "tol_mode",
+      "text_override",
+      "fit"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimstyle_create",
+    "implementation": "latest/python/server.py:7170",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "overrides",
+      "set_current"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimstyle_list",
+    "implementation": "latest/python/server.py:7142",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "dimstyle_modify",
+    "implementation": "latest/python/server.py:7215",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "overrides"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "dimstyle_set_current",
+    "implementation": "latest/python/server.py:7246",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "document_activate",
+    "implementation": "latest/python/server.py:7688",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name_or_path"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "document_close",
+    "implementation": "latest/python/server.py:7711",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name_or_path"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "document_list",
+    "implementation": "latest/python/server.py:7662",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "door_window_tag",
+    "implementation": "latest/python/building_tools.py:163",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "handles",
+      "kind",
+      "group",
+      "prefix",
+      "start_number",
+      "numbering",
+      "attribute_units",
+      "label_offset",
+      "text_height_mm",
+      "layer",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_apply_iso_layers",
+    "implementation": "latest/python/server.py:6187",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "standard"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_apply_standard",
+    "implementation": "latest/python/server.py:7392",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "standard",
+      "layers"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_audit",
+    "implementation": "latest/python/server.py:1430",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_close",
+    "implementation": "latest/python/server.py:1448",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_critique",
+    "implementation": "latest/python/server.py:6007",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "focus"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_deliver",
+    "implementation": "latest/python/building_delivery.py:79",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "output_dir",
+      "formats",
+      "prefix",
+      "layouts",
+      "expected",
+      "strict_critique",
+      "checks",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_diff",
+    "implementation": "latest/python/server.py:10481",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "tol",
+      "move_tol",
+      "markup",
+      "rev",
+      "description"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_export_dwg",
+    "implementation": "latest/python/server.py:9554",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "version"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_export_dxf",
+    "implementation": "latest/python/server.py:1378",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_export_pdf",
+    "implementation": "latest/python/server.py:1393",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_finalize",
+    "implementation": "latest/python/building_delivery.py:52",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "save_path",
+      "screenshot_path",
+      "expected",
+      "strict_critique",
+      "checks",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_import_standards",
+    "implementation": "latest/python/arch_deep_tools.py:147",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "on_conflict"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_info",
+    "implementation": "latest/python/server.py:1190",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_new",
+    "implementation": "latest/python/server.py:1206",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "template",
+      "bootstrap"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_open",
+    "implementation": "latest/python/server.py:1295",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_plan",
+    "implementation": "latest/python/server.py:5949",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "intent",
+      "sheet_size",
+      "scale",
+      "layer_set_id",
+      "dim_style",
+      "notes",
+      "spec_hash"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_preflight",
+    "implementation": "latest/python/server.py:5907",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "intent",
+      "sheet_size",
+      "layer_set_id",
+      "dim_style",
+      "allow_assumptions"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_properties_get",
+    "implementation": "latest/python/server.py:8157",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_properties_set",
+    "implementation": "latest/python/server.py:8178",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "title",
+      "subject",
+      "author",
+      "keywords",
+      "comments",
+      "custom"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_purge",
+    "implementation": "latest/python/server.py:1416",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_redo",
+    "implementation": "latest/python/server.py:1487",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_refine",
+    "implementation": "latest/python/server.py:6050",
+    "description_changed": false,
+    "summary_changed": true,
+    "parameters_changed": [
+      "focus"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_round_geometry",
+    "implementation": "latest/python/precision_tools.py:125",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_save",
+    "implementation": "latest/python/server.py:1329",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_save_as",
+    "implementation": "latest/python/server.py:1346",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_settings",
+    "implementation": "latest/python/server.py:5291",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "drawing_template_list",
+    "implementation": "latest/python/server.py:7588",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_template_save",
+    "implementation": "latest/python/server.py:7619",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "description"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_topology_check",
+    "implementation": "latest/python/server.py:10614",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "layers",
+      "gap",
+      "tol"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_understand",
+    "implementation": "latest/python/server.py:10331",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "drawing_undo",
+    "implementation": "latest/python/server.py:1467",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "drawing_unit_context",
+    "implementation": "latest/python/project_fixes.py:109",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "entity_array_polar",
+    "implementation": "latest/python/server.py:2459",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "count",
+      "fill_angle",
+      "fields",
+      "compact"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_array_rectangular",
+    "implementation": "latest/python/server.py:2421",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "rows",
+      "cols",
+      "row_spacing",
+      "col_spacing",
+      "fields",
+      "compact"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_batch_create",
+    "implementation": "latest/python/server.py:4700",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "entities"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_batch_modify",
+    "implementation": "latest/python/server.py:4760",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "operations"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_chamfer",
+    "implementation": "latest/python/server.py:2384",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_change_space",
+    "implementation": "latest/python/server.py:6585",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "direction"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_copy",
+    "implementation": "latest/python/server.py:2221",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "dx",
+      "dy",
+      "dz"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_arc",
+    "implementation": "latest/python/server.py:1550",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "start_angle",
+      "end_angle"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_block_ref",
+    "implementation": "latest/python/server.py:1805",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "scale_x",
+      "scale_y",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_circle",
+    "implementation": "latest/python/server.py:1531",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_ellipse",
+    "implementation": "latest/python/server.py:1758",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "major_x",
+      "major_y",
+      "ratio"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_hatch",
+    "implementation": "latest/python/server.py:1716",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "pattern",
+      "boundary_points",
+      "angle"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_line",
+    "implementation": "latest/python/server.py:1508",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "z1",
+      "z2"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_mtext",
+    "implementation": "latest/python/server.py:1642",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "text",
+      "width",
+      "height",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_point",
+    "implementation": "latest/python/server.py:1788",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_polyline",
+    "implementation": "latest/python/server.py:1573",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_rectangle",
+    "implementation": "latest/python/server.py:1597",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_revcloud",
+    "implementation": "latest/python/server.py:1932",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_spline",
+    "implementation": "latest/python/server.py:1741",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fit_points"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_table",
+    "implementation": "latest/python/server.py:1668",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "rows",
+      "headers",
+      "title"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_text",
+    "implementation": "latest/python/server.py:1621",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "text",
+      "height",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_create_wipeout",
+    "implementation": "latest/python/server.py:1914",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_delete",
+    "implementation": "latest/python/server.py:2407",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_delete_many",
+    "implementation": "latest/python/server.py:2804",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_draw_order",
+    "implementation": "latest/python/arch_deep_tools.py:159",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "handles",
+      "position",
+      "relative_to"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_edit_geometry",
+    "implementation": "latest/python/server.py:2595",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "start_angle",
+      "end_angle"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_edit_text",
+    "implementation": "latest/python/server.py:2520",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "text",
+      "height",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_extend",
+    "implementation": "latest/python/server.py:2341",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_fillet",
+    "implementation": "latest/python/server.py:2362",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_get",
+    "implementation": "latest/python/server.py:2715",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "entity_get_xdata",
+    "implementation": "latest/python/server.py:2890",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "app_name"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "entity_list",
+    "implementation": "latest/python/server.py:2729",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "type_filter",
+      "layer_filter",
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "entity_match_properties",
+    "implementation": "latest/python/arch_deep_tools.py:131",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_mirror",
+    "implementation": "latest/python/server.py:2272",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "delete_original"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_modify_where",
+    "implementation": "latest/python/arch_deep_tools.py:154",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "dry_run",
+      "expect_count",
+      "scope",
+      "expected_token"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_move",
+    "implementation": "latest/python/server.py:2204",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "dx",
+      "dy",
+      "dz"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_offset",
+    "implementation": "latest/python/server.py:2294",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "distance",
+      "side_x",
+      "side_y"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_rotate",
+    "implementation": "latest/python/server.py:2239",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "angle_deg"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_scale",
+    "implementation": "latest/python/server.py:2256",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "factor"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_select_smart",
+    "implementation": "latest/python/server.py:6245",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "predicate",
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "entity_set_properties",
+    "implementation": "latest/python/server.py:2494",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "visible"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_set_xdata",
+    "implementation": "latest/python/server.py:2904",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "app_name"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "entity_stretch",
+    "implementation": "latest/python/arch_tools.py:90",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "entity_trim",
+    "implementation": "latest/python/server.py:2317",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "grid_label",
+    "implementation": "latest/python/building_tools.py:94",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "handles",
+      "labels",
+      "group",
+      "scale",
+      "extension_mm",
+      "sides",
+      "layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token",
+      "existing_labels"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "grid_renumber",
+    "implementation": "latest/python/building_tools.py:119",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "group",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "hatch_add_boundary",
+    "implementation": "latest/python/server.py:1886",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "edges"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "hatch_edit",
+    "implementation": "latest/python/server.py:1862",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "pattern",
+      "angle",
+      "style"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "hatch_material",
+    "implementation": "latest/python/server.py:8896",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "boundary",
+      "angle"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "hatch_set_gradient",
+    "implementation": "latest/python/server.py:1838",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "color1",
+      "color2",
+      "rotation",
+      "centered",
+      "one_color",
+      "tint"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "image_attach",
+    "implementation": "latest/python/server.py:9480",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_create",
+    "implementation": "latest/python/server.py:2957",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_delete",
+    "implementation": "latest/python/server.py:2977",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "layer_freeze",
+    "implementation": "latest/python/server.py:3022",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_hide",
+    "implementation": "latest/python/server.py:3062",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_isolate",
+    "implementation": "latest/python/server.py:3082",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_list",
+    "implementation": "latest/python/server.py:2931",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "layer_lock",
+    "implementation": "latest/python/server.py:3042",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_merge",
+    "implementation": "latest/python/arch_tools.py:102",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "layer_modify",
+    "implementation": "latest/python/server.py:3005",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_rename",
+    "implementation": "latest/python/arch_tools.py:98",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_set_current",
+    "implementation": "latest/python/server.py:2991",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_show",
+    "implementation": "latest/python/server.py:3072",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_state_delete",
+    "implementation": "latest/python/server.py:7813",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "layer_state_list",
+    "implementation": "latest/python/server.py:7800",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "layer_state_restore",
+    "implementation": "latest/python/server.py:7770",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "properties"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_state_save",
+    "implementation": "latest/python/server.py:7743",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "description"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "layer_thaw",
+    "implementation": "latest/python/server.py:3032",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layer_unlock",
+    "implementation": "latest/python/server.py:3052",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layout_copy",
+    "implementation": "latest/python/server.py:6487",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "source",
+      "new_name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layout_create",
+    "implementation": "latest/python/server.py:6394",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layout_delete",
+    "implementation": "latest/python/server.py:6454",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "layout_list",
+    "implementation": "latest/python/server.py:6384",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "layout_rename",
+    "implementation": "latest/python/server.py:6473",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "old_name",
+      "new_name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "layout_set_current",
+    "implementation": "latest/python/server.py:6408",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "leader_create_mleader",
+    "implementation": "latest/python/server.py:1695",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "text"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "linetype_list",
+    "implementation": "latest/python/server.py:3103",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "linetype_load",
+    "implementation": "latest/python/server.py:3113",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "file"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "mleaderstyle_create",
+    "implementation": "latest/python/server.py:7356",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "preset",
+      "overrides"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "mleaderstyle_list",
+    "implementation": "latest/python/server.py:7337",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "page_setup_apply",
+    "implementation": "latest/python/server.py:7465",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "paper",
+      "plot_style",
+      "scale",
+      "plot_area",
+      "device",
+      "margins_mm",
+      "center"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "page_setup_list",
+    "implementation": "latest/python/server.py:7434",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "parking_layout",
+    "implementation": "latest/python/building_tools.py:136",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "group",
+      "clearance_mm",
+      "layer",
+      "label_layer",
+      "text_height_mm",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "parking_row",
+    "implementation": "latest/python/building_tools.py:158",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "origin",
+      "count",
+      "width_mm",
+      "length_mm",
+      "aisle_mm",
+      "group",
+      "angle_deg",
+      "direction_deg",
+      "sides",
+      "prefix",
+      "start_number",
+      "bay_overrides",
+      "boundary",
+      "obstacles",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "plot_style_list",
+    "implementation": "latest/python/server.py:7520",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "point_from_snap",
+    "implementation": "latest/python/server.py:6082",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "ref_x",
+      "ref_y"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "point_intersection",
+    "implementation": "latest/python/server.py:6106",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "handle1",
+      "handle2",
+      "ref_x",
+      "ref_y"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "point_tangent",
+    "implementation": "latest/python/server.py:6128",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "circle_handle",
+      "from_x",
+      "from_y",
+      "ref_x",
+      "ref_y"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "polyline_corner",
+    "implementation": "latest/python/arch_deep_tools.py:115",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "kind"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "polyline_edit",
+    "implementation": "latest/python/arch_tools.py:78",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "ramp_draw",
+    "implementation": "latest/python/building_tools.py:294",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "path",
+      "width_mm",
+      "elevations_mm",
+      "group",
+      "max_slope",
+      "layer",
+      "replace",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "revision_add",
+    "implementation": "latest/python/server.py:9129",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "rev",
+      "description",
+      "by",
+      "clouds",
+      "tags",
+      "size",
+      "cloud_segment"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "schedule_update",
+    "implementation": "latest/python/building_tools.py:211",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "group",
+      "at",
+      "scale",
+      "layer",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "write",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "section_line",
+    "implementation": "latest/python/server.py:8845",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "label",
+      "direction",
+      "style",
+      "height"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "selection_filter",
+    "implementation": "latest/python/server.py:2692",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "entity_type",
+      "min_area"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "selection_get",
+    "implementation": "latest/python/server.py:2833",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "fields",
+      "compact"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "selection_polygon",
+    "implementation": "latest/python/server.py:2673",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "mode",
+      "entity_type"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "selection_polygon_exact",
+    "implementation": "latest/python/arch_tools.py:94",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "selection_window",
+    "implementation": "latest/python/server.py:2642",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "mode",
+      "entity_type"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "sheet_frame",
+    "implementation": "latest/python/server.py:8962",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "size",
+      "zones",
+      "marks"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "stair_check",
+    "implementation": "latest/python/building_tools.py:299",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "risers",
+      "riser_height_mm",
+      "going_mm",
+      "width_mm"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "stretch_window",
+    "implementation": "latest/python/arch_deep_tools.py:127",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "system_about",
+    "implementation": "latest/python/server.py:5414",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "system_capabilities",
+    "implementation": "latest/python/server.py:5236",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "system_get_variable",
+    "implementation": "latest/python/server.py:5246",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "system_launch",
+    "implementation": "latest/python/server.py:7959",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "visible",
+      "open_path"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "system_preferences_get",
+    "implementation": "latest/python/server.py:7988",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "keys"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "system_prompt_message",
+    "implementation": "latest/python/server.py:8091",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "text"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "system_run_command",
+    "implementation": "latest/python/server.py:5359",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "command"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "system_run_lisp",
+    "implementation": "latest/python/server.py:5391",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "expression"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "system_set_variable",
+    "implementation": "latest/python/server.py:5262",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "value"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "system_status",
+    "implementation": "latest/python/server.py:5190",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "system_variable_describe",
+    "implementation": "latest/python/server.py:8106",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "template_apply_layers",
+    "implementation": "latest/python/server.py:4875",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "template"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "template_list",
+    "implementation": "latest/python/server.py:4914",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "text_find_replace",
+    "implementation": "latest/python/server.py:2568",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "find",
+      "replace",
+      "match_case"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "text_set_background",
+    "implementation": "latest/python/server.py:2545",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "enabled"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "textstyle_create",
+    "implementation": "latest/python/server.py:7280",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "font",
+      "height",
+      "width_factor",
+      "oblique_deg",
+      "set_current"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "textstyle_list",
+    "implementation": "latest/python/server.py:7264",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "textstyle_set_current",
+    "implementation": "latest/python/server.py:7322",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "titleblock_apply",
+    "implementation": "latest/python/server.py:9032",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "title",
+      "drawing_no",
+      "size",
+      "projection",
+      "frame",
+      "zones",
+      "marks"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "titleblock_apply_iso_a3",
+    "implementation": "latest/python/server.py:5657",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "title",
+      "drawing_no"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "transaction_begin",
+    "implementation": "latest/python/server.py:5129",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "transaction_commit",
+    "implementation": "latest/python/server.py:5149",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "transaction_rollback",
+    "implementation": "latest/python/server.py:5164",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "ucs_list",
+    "implementation": "latest/python/server.py:7891",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "ucs_restore",
+    "implementation": "latest/python/server.py:7942",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "ucs_set",
+    "implementation": "latest/python/server.py:7914",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "origin",
+      "x_axis",
+      "y_axis"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "user_pick_point",
+    "implementation": "latest/python/server.py:8041",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "user_select",
+    "implementation": "latest/python/server.py:8065",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "validation_check",
+    "implementation": "latest/python/building_tools.py:80",
+    "description_changed": true,
+    "summary_changed": true,
+    "parameters_changed": [
+      "checks",
+      "scope",
+      "tolerance_mm",
+      "model_units"
+    ],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "view_named_list",
+    "implementation": "latest/python/server.py:7879",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "view_named_restore",
+    "implementation": "latest/python/server.py:7855",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "view_named_save",
+    "implementation": "latest/python/server.py:7828",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "name",
+      "center",
+      "height",
+      "width"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "view_screenshot",
+    "implementation": "latest/python/server.py:5037",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "view_zoom_and_screenshot",
+    "implementation": "latest/python/server.py:5084",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "view_zoom_extents",
+    "implementation": "latest/python/server.py:5011",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "view_zoom_window",
+    "implementation": "latest/python/server.py:5021",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "viewport_create",
+    "implementation": "latest/python/server.py:6421",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "center_x",
+      "center_y",
+      "width",
+      "height",
+      "scale"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "viewport_delete",
+    "implementation": "latest/python/project_fixes.py:131",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "viewport_list",
+    "implementation": "latest/python/server.py:6508",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "read",
+    "risk_after": "read"
+  },
+  {
+    "name": "viewport_lock",
+    "implementation": "latest/python/server.py:6552",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "locked"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "viewport_set_scale",
+    "implementation": "latest/python/project_fixes.py:113",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "wall_join",
+    "implementation": "latest/python/building_tools.py:289",
+    "description_changed": true,
+    "summary_changed": false,
+    "parameters_changed": [
+      "handles",
+      "group",
+      "mode",
+      "ends",
+      "column_handles",
+      "max_shift_mm",
+      "model_units",
+      "dry_run",
+      "expected_token"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  },
+  {
+    "name": "weld_symbol",
+    "implementation": "latest/python/server.py:8708",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "kind",
+      "size",
+      "length",
+      "pitch",
+      "side",
+      "field_weld",
+      "all_around",
+      "process",
+      "leader_to",
+      "height",
+      "rotation"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "xref_attach",
+    "implementation": "latest/python/server.py:9408",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "scale",
+      "rotation",
+      "kind"
+    ],
+    "risk_before": "write",
+    "risk_after": "write"
+  },
+  {
+    "name": "xref_manage",
+    "implementation": "latest/python/server.py:9446",
+    "description_changed": false,
+    "summary_changed": false,
+    "parameters_changed": [
+      "action",
+      "new_path"
+    ],
+    "risk_before": "destructive",
+    "risk_after": "destructive"
+  }
+]
