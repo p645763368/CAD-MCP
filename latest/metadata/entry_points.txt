@@ -1,0 +1,3 @@
+[console_scripts]
+autocad-mcp = server:main
+autocad-mcp-pro = server:main

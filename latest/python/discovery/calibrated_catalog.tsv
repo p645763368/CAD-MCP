@@ -1,0 +1,247 @@
+drawing_info|r|读取当前图纸名称、路径、单位及对象数量|返回可读取的元数据，不代表几何质量已通过检查
+drawing_new|w|新建图纸，可使用模板及标准图层|会切换活动文档；bootstrap 会增加图层和线型
+drawing_open|d|打开图纸并设为活动文档|COM 可打开 DWG/DXF；ezdxf 仅 DXF，同路径重载可能替换内存状态
+drawing_save|d|保存当前图纸到当前或指定路径|会写入或覆盖文件；指定路径可能改变文档绑定
+drawing_save_as|d|将当前图纸另存为 DWG、DXF 或 DWT|COM 会改变当前文档名称和路径；不是无副作用备份
+drawing_export_dxf|d|将当前图纸写为 DXF 文件|COM 使用 SaveAs，改变当前文档路径；可能覆盖文件，透明加密仍适用
+drawing_export_pdf|d|将模型或指定布局打印为 PDF|写文件可能覆盖；COM 原生打印，外部读取受透明加密影响
+drawing_purge|d|清理图纸中未使用的定义和样式|删除未使用图层、块、线型等；不是删除所有图形
+drawing_audit|d|审计并修复图纸数据库问题|会修复数据；COM 无法可靠回读完整审计明细
+drawing_close|d|关闭当前图纸，可先保存|save=false 会放弃未保存内容；优先 document_close 明确目标和 discard
+drawing_undo|d|撤销最近的图纸操作|作用于当前文档的撤销历史，可能撤销用户操作
+drawing_redo|d|重做刚撤销的图纸操作|依赖仍有效的重做历史
+entity_create_line|w|按起终点创建直线|坐标为 WCS，长度使用图纸单位
+entity_create_circle|w|按圆心和半径创建圆|二维 XY 几何；半径必须为正
+entity_create_arc|w|按圆心、半径和起止角创建圆弧|角度为度，正 X 起算、逆时针
+entity_create_polyline|w|按顶点创建二维多段线|只接收 XY 顶点；closed 控制闭合，不自动查找边界
+entity_create_rectangle|w|按对角点创建闭合矩形多段线|轴向矩形，返回新对象句柄
+entity_create_text|w|创建单行文字|text 为实际内容，height 使用图纸单位
+entity_create_mtext|w|创建可换行的多行文字|width 控制文本框宽度；支持 AutoCAD 格式码
+entity_create_table|w|创建表格及表头|COM原生TABLE；bounds为实际读回边界，requested_bounds仅为请求值；行高列宽可能受CAD样式下限调整
+leader_create_mleader|w|创建带箭头和文字的多重引线|COM 原生 MLEADER；ezdxf 为组合表示；points 为引线顶点
+entity_create_hatch|w|在给定多边形内创建填充|输入闭合轮廓点，不自动推断墙体边界
+entity_create_spline|w|按拟合点创建样条曲线|输入点为曲线需经过的拟合点
+entity_create_ellipse|w|按中心和长轴向量创建椭圆|major_x/y 是相对向量，ratio 为短长轴比
+entity_create_point|w|创建坐标点标记|点的可见外观受图纸点样式控制
+entity_create_block_ref|w|插入已有块定义的参照|块定义必须存在；需赋属性值时用 block_insert
+hatch_set_gradient|w|把已有填充改为渐变填充|handle 必须为 HATCH；颜色为 RGB 三元组
+hatch_edit|w|修改已有填充图案、比例和颜色|只修改给定字段；空值通常保留原设置
+hatch_add_boundary|w|为已有填充增加内边界岛屿|edges 为带类型的闭合边链；不是创建独立外轮廓
+entity_create_wipeout|w|创建原生遮挡区域并置于绘图顺序顶部|COM 需 CadMcpNative2026；模型 XY 简单多边形；首次加载可能需确认
+entity_create_revcloud|w|创建带圆弧段和云线属性的修订云线|COM固定模型XY、最多10000段，分段长度不大于最短边；支持开口/闭合
+dimension_linear|w|在给定两点间创建线性尺寸标注|可设公差或配合，fit 与 tol_* 不能同时指定
+dimension_aligned|w|创建沿两点连线方向的对齐尺寸|量取两点实际距离；位置由 dim_x/y 指定
+dimension_angular|w|按顶点和两条射线创建角度尺寸|输入定义几何，工具不自动查找墙线
+dimension_radius|w|创建半径尺寸标注|用圆心和弦上点定义；可指定公差或配合
+dimension_diameter|w|创建直径尺寸标注|两点应为直径两端；可指定公差或配合
+entity_move|w|按位移移动已有实体|修改原对象；dx/dy/dz 是位移，不是目标坐标
+entity_copy|w|复制已有实体并偏移新副本|保留原对象，返回新句柄
+entity_rotate|w|绕基点旋转已有实体|修改原对象；angle_deg 为度
+entity_scale|w|绕基点等比缩放已有实体|factor 为比例因子，不是最终尺寸
+entity_mirror|d|沿两点确定的轴镜像实体|delete_original=true 会删除原对象；返回镜像副本
+entity_offset|w|按距离生成平行或同心偏移副本|支持对象受后端限制；可用 side_x/y 指定侧向
+entity_trim|d|用裁剪对象修剪目标并保留指定侧|COM仅支持平行XY的LINE目标；同空间LINE/ARC/CIRCLE/二维POLYLINE切割；使用真实交点，不隐式延长，保留点须在目标上
+entity_extend|w|把直线端点延伸到边界线段|COM仅活动布局同高XY平面LINE对；不延长边界；无外部交点或选反端点时拒绝；直接COM写入并读回
+entity_fillet|d|在两条直线之间创建圆角或尖角|COM仅活动布局内同高XY平面LINE+LINE；远端定侧、等距取EndPoint；不调用交互命令；半径0仅trim=true
+entity_chamfer|d|在两条直线之间创建倒角线|COM仅活动布局内同高XY平面LINE+LINE；远端定侧、等距取EndPoint；trim=false保留原线，过大尺寸拒绝
+entity_delete|d|按句柄删除一个实体|删除当前图纸中的对象；需要恢复时依赖撤销/事务
+entity_array_rectangular|w|创建实体副本的矩形阵列|rows/cols 与间距控制副本；返回对象列表，不保证原生关联阵列
+entity_array_polar|w|绕中心创建实体副本的环形阵列|count 和填充角控制副本；不是原生关联阵列保证
+entity_set_properties|w|修改实体图层、颜色、线型和可见性|仅应用给定属性；不会改变几何轮廓
+entity_edit_text|w|修改已有文字内容、字号或旋转|目标须为支持的文字对象，不创建新文字
+text_set_background|w|设置多行文字背景遮罩|COM 只能使用图纸背景色，不能按 color 设置任意遮罩颜色
+text_find_replace|d|批量查找替换文字和块属性文本|dry_run=true 仅预览；默认替换可能影响多处内容
+entity_edit_geometry|w|直接修改已有基础几何的定义参数|仅支持对应对象属性；未传字段不变
+selection_window|r|按矩形与实体包围盒关系查询对象|COM只查模型空间、按包围盒包含/相交判断；不是精确曲线相交，原生矩形交叉用analysis_find_in_region
+selection_polygon|r|按多边形与实体包围盒角点查询对象|COM只查模型空间，按包围盒角点测试；交叉时可能漏选/误选，不是精确图形相交
+selection_filter|r|按类型、图层、颜色等属性查询实体|COM遍历模型空间；min_area仅适用于支持测量的对象
+entity_get|r|按句柄读取实体及已暴露属性|不是完整 DWG 数据；类型专有信息可能缺失
+entity_list|r|分页列出活动布局中的实体|COM按活动布局读取；仅compact=true报告total/truncated/next_offset；单页不代表全量
+entity_delete_many|d|按句柄列表批量删除实体|可能删除多对象；先核对目标并使用事务
+selection_get|r|读取用户已预选的实体|仅 COM；依赖 PICKFIRST 和当前预选，不会主动等待点选
+entity_get_xdata|r|读取实体的扩展数据 XDATA|按应用名返回，未附加的应用可能不存在
+entity_set_xdata|d|替换指定应用名下的实体 XDATA|空列表删除该应用数据；values 是值列表，不是 DXF 组码对
+layer_list|r|列出图层属性和当前图层|读取图层表，不统计各层实体数；统计用 analysis_layer_stats
+layer_create|w|创建指定名称和属性的图层|新图层不自动成为当前图层
+layer_delete|d|删除空图层|不能删除0层或仍被使用的图层
+layer_set_current|w|设置新建实体使用的当前图层|改变当前图纸设置，不迁移现有实体
+layer_modify|w|修改图层颜色、线型或线宽|ByLayer 实体外观会随之改变
+layer_freeze|w|冻结图层使其不显示及参与常规再生|改变图层状态，不删除实体；当前图层限制由 CAD 决定
+layer_thaw|w|解冻已冻结图层|显示仍取决于 LayerOn 等其他状态
+layer_lock|w|锁定图层以防修改其中实体|锁定不等于不可查询或不可选取
+layer_unlock|w|解锁图层以允许编辑|不自动解冻或打开图层
+layer_hide|w|关闭图层显示|对象保留，LayerOn=false
+layer_show|w|打开图层显示|不会自动解除冻结或锁定
+layer_isolate|w|只显示指定图层并隐藏其他层|会改变多图层状态；可先保存图层状态
+linetype_list|r|列出当前图纸已加载线型|不是磁盘上所有可用线型
+linetype_load|w|从线型定义文件加载一个线型|名称必须在相应 LIN 文件中；不自动修改现有对象
+block_list|r|列出块定义及其统计信息|块定义与已插入参照不同
+block_insert|w|插入已有块并可赋属性值|定义必须存在；attributes 使用属性 TAG 键
+block_explode|d|将块参照炸开为组成实体|原块参照被删除，新对象句柄变化；不支持成员会报告限制
+block_get_attributes|r|读取块参照的属性值|返回 TAG→值，不等于块内全部文字
+block_set_attributes|w|更新块参照中已有属性的值|按 TAG 匹配，不创建新的属性定义
+block_create_from_entities|w|从现有实体创建块定义|保留原实体；不自动插入新块，缺失句柄可能列入skipped，需检查返回
+block_define|d|按图元及属性定义规格建立块|overwrite=true 替换已有块内容并影响其参照；create_layers 可建缺失图层
+block_find_references|r|查找引用指定块定义的块参照|返回参照对象，不展开块内部实体
+boundary_trace|w|从区域内种子点生成外边界及岛屿|COM需原生模块、模型俯视闭环；仅默认tolerance=1e-9，不支持补缝容差
+boundary_from_entities|w|将指定线弧或多段线组成闭合边界|COM限模型XY且z=0、1–200个句柄；支持单个圆/闭合线，缺口/多环拒绝
+analysis_list_properties|r|读取实体可用的属性详情|COM 为已暴露属性，并非完整原始 DXF 属性集
+analysis_entity_stats|r|按实体类型和图层统计数量|COM统计活动布局中的实体，不展开块/外参；读取异常对象可能跳过
+analysis_find_in_region|r|查询矩形内及穿过矩形的实体|交叉选择；反向角点会归一化，不创建图形
+analysis_measure_distance|r|计算输入两点间的二维距离|只计算参数坐标，不读取图纸中对象
+analysis_measure_area|r|按输入顶点计算多边形面积和周长|不是测量已有实体；曲边须传 bulge，已有对象用 analysis_measure_entity
+analysis_measure_entity|r|读取已有面域或曲线的面积与周长|LINE/TEXT/INSERT不提供面积，会拒绝；使用返回的exact/assumed_closed等字段判断精度
+analysis_bounding_box|r|逐实体计算模型空间的包围盒|COM不读Extmin；包含隐藏层；无界/不可读实体列入skipped，须检查complete；空图min/max为null
+analysis_select_by_layer|r|查询指定图层上的实体|COM全选过滤可跨布局；按字面图层名匹配，空层返回空列表
+analysis_select_by_type|r|查询指定类型的实体|COM读取活动布局，类型按ActiveX名称匹配；不展开块
+analysis_layer_stats|r|统计各图层的实体数量及类型|COM统计活动布局中最多50000个可读取实体，不是所有布局的保证全量统计
+cad_batch|d|顺序批量执行工具并处理步骤依赖|dry_run 可预检；回滚保证依后端，不能假定所有步骤均原子
+entity_batch_create|w|批量创建基础实体|输入为带 type 的图元规格列表；不保证整批原子性
+entity_batch_modify|d|批量移动、旋转、缩放、删改实体|允许 delete；操作类型有限，复杂顺序用 cad_batch
+template_apply_layers|w|应用预置图层集合|创建或配置图层，不创建整张模板图纸
+template_list|r|列出图层模板及其内容|图纸模板请用 drawing_template_list
+validation_check|r|检查空图层、零长实体等图纸问题|返回 ok=false 是检查发现问题，不等于接口异常
+view_zoom_extents|w|缩放视图以显示图纸整体范围|只改变显示范围，异常远处实体会影响结果
+view_zoom_window|w|缩放视图显示指定矩形范围|不裁剪、不删除范围外实体
+view_screenshot|r|截取当前 CAD 视图画面|COM 是窗口截图；overlay_handles 不受支持；文件预览可能受加密影响
+view_zoom_and_screenshot|w|先缩放视图再截图|会改变当前视图，不是纯只读截图
+transaction_begin|w|建立后续操作的撤销检查点|COM 使用 Undo Mark，不等同数据库级隔离事务
+transaction_commit|w|结束当前事务检查点并保留修改|不等于保存 DWG 到磁盘
+transaction_rollback|d|回退到当前事务的开始状态|可撤销期间其他操作；COM 依赖撤销历史
+system_status|r|读取 MCP 连接、后端和活动文档状态|注册数量不等于全部分支均验证成功
+system_capabilities|r|读取后端支持标记和实现模式|supported=true 仍受对象类型及参数限制
+system_get_variable|r|读取一个 AutoCAD 系统变量|区分图纸级与应用级变量
+system_set_variable|w|设置一个 AutoCAD 系统变量|可能影响当前图纸或应用全局行为
+drawing_settings|w|读取或修改常用图纸设置|settings 省略为读取；给值会修改，风险按可写分支标记
+system_run_command|d|向 AutoCAD 发送原生命令|任意操作入口，可能修改或删除；命令审查与执行状态限制仍适用
+system_run_lisp|d|执行受审查的AutoLISP表达式|可修改/删除几何或系统变量；当前COM用USERS1传结果，可能覆盖其原值
+system_about|r|读取版本、工具组和能力清单|以实际启用数和后端能力区分注册/可用
+gear_draw_helical_front_view|w|按模数齿数生成斜齿轮正视图|确定性齿形绘图；参数和适用标准需由任务提供
+gear_draw_spur_front_view|w|按模数齿数生成直齿轮正视图|生成二维图形；不代表机械强度校核
+gear_draw_section_aa|w|按齿轮元数据绘制侧向剖面|gear_metadata 使用前视图工具返回的 metadata
+keyway_draw_keyed_bore|w|绘制带键槽的轴孔正视轮廓|省略键槽尺寸时使用已收录标准，未覆盖规格可能拒绝
+keyway_draw_section|w|绘制带键槽轴孔的侧向剖面|孔径与面宽需给定，不自动推断实物尺寸
+titleblock_apply_iso_a3|w|添加 ISO A3 图框及标题栏|标题按输入原样写入；不是套用现有公司图框
+drawing_finalize|d|执行校验、可选保存和截图的完成检查|保存/截图可能先于校验失败；不是只读检查；失败可能已有输出
+drawing_deliver|d|生成交付文件、校验及哈希清单|始终包含DXF；支持dxf/pdf/png而非dwg；本机有超时记录，回读受加密影响
+drawing_preflight|r|检查并规范化绘图需求|返回需求检查，不创建实际几何
+drawing_plan|w|记录绘图计划及出图要求|写入计划状态，不等于完成图纸
+drawing_critique|r|检查标注、重复几何及专业图纸问题|返回问题清单；大图可能较慢，不能替代人工设计审查
+drawing_refine|d|按允许的规则修复图纸检查问题|dry_run 只生成计划；仅支持部分问题类型，不保证全部自动修复
+point_from_snap|r|计算实体上的端点、中点等捕捉点|snap 使用 end/mid/center/quad/perp/near；不是执行鼠标捕捉
+point_intersection|r|计算两个支持实体的几何交点|多解可用参考点选择；并非所有曲线类型都支持
+point_tangent|r|从圆外点计算圆的切点|目标须为圆，外点必须满足切线几何条件
+construction_xline|w|创建无限长构造线|默认 CONSTRUCTION 图层；会影响图纸后续质量检查
+construction_clear|d|删除指定构造图层上的全部实体|按图层删除，不只删除 XLINE
+drawing_apply_iso_layers|w|创建或应用标准专业图层集合|图层命名规则有限；不能当作完整制图标准合规认证
+dimension_auto|w|对给定直线实体自动生成尺寸|当前COM实现仅支持 LINE，不能对任意闭合轮廓自动完整标注
+entity_select_smart|r|按类型、图层、位置和长度条件查询实体|predicate 是结构化条件，不是任意自然语言判断
+gd_frame|w|绘制形位公差框|以线和文字组合表示，不保证原生关联公差对象
+datum_feature|w|绘制带字母的基准符号|绘图符号，不建立真实设计基准约束
+layout_list|r|列出模型及图纸空间布局|返回活动布局；不列出全部实体
+layout_create|w|创建图纸空间布局|可能自动带有默认视口，需读回确认
+layout_set_current|w|切换活动布局|影响后续面向当前布局的操作
+viewport_create|w|在布局中创建指定比例的模型视口|COM view_center_x/y 写入 Target；实际显示中心还受视口DCS中心影响
+layout_delete|d|删除布局及其所有图纸空间实体|不能删除模型空间；会删除布局内容
+layout_rename|w|重命名图纸空间布局|保留布局中的实体句柄
+layout_copy|w|复制布局及页面设置和几何|新名称不得冲突；复制后核对视口及设置
+viewport_list|r|列出布局视口及比例、锁定等属性|包括整体纸空间视口；其用途与普通模型视口不同
+viewport_set_scale|w|调整视口显示比例|scale 为纸空间/模型比例，如0.5表示1:2
+viewport_lock|w|锁定或解锁视口比例|不等于锁定视口所在图层
+viewport_delete|d|删除一个布局视口|force 控制部分保护拒绝；确认不是整体纸空间视口
+entity_change_space|d|经视口在模型与布局间转移实体|COM限无扭转正交俯视矩形视口、1–32实体；标注/属性块拒绝；克隆后删除源，句柄改变
+solid_box|w|创建原生三维长方体|仅COM且ENABLE_3D=true；尺寸须为正
+solid_cylinder|w|创建原生三维圆柱体|仅COM且ENABLE_3D=true；半径和高度须有效
+solid_extrude|w|将闭合轮廓拉伸为三维实体|仅COM且开启3D；目标须为支持的闭合轮廓
+solid_revolve|w|将闭合轮廓绕轴旋转为三维实体|仅COM且开启3D；检查轮廓与旋转轴关系
+solid_boolean|d|对两个三维实体作并集差集或交集|修改目标并可能消耗工具实体；仅COM且开启3D
+pid_symbol_list|r|列出工艺流程图符号及端口|先查目录再使用 symbol 名称，不能猜测符号标识
+pid_symbol_insert|w|插入带位号和端口的 PID 符号块|symbol 来自目录；tag 为位号，不是任意唯一性保证
+pid_line_draw|w|连接 PID 端口或坐标并添加管线标注|自动正交路由可能拒绝；可传明确折线路径
+pid_graph|r|读取 PID 连接图和端口连接关系|几何识别受容差影响，不等于工艺逻辑校核
+pid_instrument_index|d|读取仪表索引，可输出 CSV|省略csv_path仅读取；给路径可能覆盖文件，风险按输出分支标记
+pid_line_list|d|读取 PID 管线清单，可输出 CSV|省略csv_path仅读取；给路径可能覆盖文件
+pid_equipment_list|d|读取设备阀门连接清单，可输出 CSV|省略csv_path仅读取；给路径可能覆盖文件
+pid_from_spec|w|按结构化规格批量绘制 PID|dry_run=true 只验证路由；实际绘制使用事务但仍需读回检查
+pid_tag_parse|r|解析仪表或设备位号含义|按已收录语法解析，不自动修改位号
+dimstyle_list|r|列出尺寸标注样式及可读设置|COM 非当前样式的完整变量可能不可读取，不切换样式假装完整
+dimstyle_create|w|新建尺寸标注样式|preset 使用 iso-25 或 ansi；可指定变量覆盖
+dimstyle_modify|w|修改已有尺寸样式变量|可能影响使用该样式的尺寸；overrides 使用支持的 DIM* 名称
+dimstyle_set_current|w|设置当前尺寸样式|会加载相应 DIM* 变量，影响后续标注
+textstyle_list|r|列出文字样式及当前样式|字体引用不代表本机字体文件一定可用
+textstyle_create|w|新建文字样式|字体必须可用；height=0 表示可由对象指定高度
+textstyle_set_current|w|设置当前文字样式|影响后续新文字，不批量替换现有文字样式
+mleaderstyle_list|r|列出多重引线样式|只报告接口已暴露的样式属性
+mleaderstyle_create|w|新建多重引线样式|preset 为 iso/ansi；override 仅支持已定义的四类属性
+drawing_apply_standard|w|应用尺寸文字样式、单位和可选图层标准|复用已有同名样式，不自动重置所有旧样式值
+page_setup_list|r|读取布局的页面打印设置|不是执行打印；设备纸张可用性由本机配置决定
+page_setup_apply|w|设置布局纸张、打印设备和比例|改变布局出图设置，实际媒体名称和边距需核对返回值
+plot_style_list|r|列出可用或已知的打印样式表|目录结果不代表任意设备都支持所有样式
+batch_plot|d|将多个布局批量输出为 PDF|输出文件可能覆盖；需检查每张的 ok/error，不能只看总 ok
+drawing_template_list|r|列出可用于新图纸的模板|与图层模板 template_list 不同
+drawing_template_save|d|将当前图纸保存为模板文件|COM 可能重新绑定当前文档；可能覆盖目标模板
+document_list|r|列出打开文档及活动、保存状态|saved=false 表示存在未保存更改
+document_activate|w|激活指定已打开文档|按名称或完整路径定位，不会自动打开不存在的文档
+document_close|d|关闭指定文档并明确处理保存或放弃|未保存内容需 save 或 discard 明确选择
+layer_state_save|d|保存当前图层状态快照|同名状态可能替换；COM 使用自有 XRECORD，非原生管理器条目
+layer_state_restore|w|恢复已保存的图层状态|仅作用于仍存在的图层；可限制恢复属性
+layer_state_list|r|列出 MCP 保存的图层状态|COM 自有 XRECORD 状态，不代表原生图层状态管理器的全部内容
+layer_state_delete|d|删除一个保存的图层状态|不删除图层实体本身
+view_named_save|d|保存当前或指定范围为命名视图|同名视图会替换，保存视图不保存 DWG 文件
+view_named_restore|w|恢复一个命名视图的显示范围|COM 改变当前显示，不移动实体
+view_named_list|r|列出已保存的命名视图|返回中心及宽高等可读信息
+ucs_list|r|列出世界及命名用户坐标系|读取 UCS 定义，不转换现有实体
+ucs_set|w|保存并切换命名用户坐标系|MCP 几何坐标仍按 WCS；不要把当前UCS坐标直接当作WCS输入
+ucs_restore|w|恢复世界或已命名的 UCS|改变当前坐标系，不转换现有实体坐标
+system_launch|w|连接或启动 CAD 应用，可打开指定图纸|可能启动应用或切换文档；不是纯状态查询
+system_preferences_get|r|读取允许查询的 CAD 应用首选项|应用级设置，不限当前图纸；只提供白名单字段
+system_preferences_set|w|修改一个允许写入的 CAD 应用首选项|影响应用全局；只读字段和越界值会拒绝
+user_pick_point|w|等待用户在 CAD 中点选坐标|需人工输入；返回 WCS 坐标或 cancelled/timed_out，等待不是完成
+user_select|w|等待用户在 CAD 中点选实体|single 点一个对象，multiple 可多选；取消和超时不等于选中
+system_prompt_message|w|在 CAD 命令行显示提示文字|不会代替用户回答或点击
+system_variable_describe|r|查询已收录系统变量的类型和用途|文档目录有限；实际当前值用 system_get_variable
+drawing_properties_get|r|读取图纸标题作者等文档属性|读取 DWGPROPS，不分析几何内容
+drawing_properties_set|w|修改图纸标题作者及自定义属性|仅写入给定字段；custom 为属性键值映射
+mech_part_draw|w|按结构化零件规格绘制机械视图及尺寸|需合法零件模型与标准尺寸；不进行机械强度设计
+mech_view_add|w|为已有机械零件增加视图或剖面|剖面需要 plane，局部详图需要 detail；part_id 消除多零件歧义
+mech_dimension_part|w|为机械零件的未标注视图生成尺寸|已标注视图可能拒绝，不能保证所有布局无重叠
+mech_hole_pattern|w|创建线性或环形孔阵列|无需零件模型；需提供孔径及间距/节圆等参数
+mech_part_from_spec|w|在事务中按规格绘制多个机械零件|先验证规格；实际回滚依后端，不替代设计审查
+mech_part_inspect|r|读取工具生成的机械零件元数据|需要 ACADMCP_MECH 记录，不是对任意线稿逆向建模
+std_part_list|r|查询标准件目录和尺寸来源|仅含已收录条目，不覆盖所有标准规格
+std_part_insert|w|按目录代号插入标准件块并写元数据|designation 使用目录格式，如 ISO 4017 - M8x30
+std_feature_draw|w|在已有几何上绘制标准机械特征|标准表未覆盖的尺寸明确拒绝，不插值猜测
+surface_texture|w|绘制表面粗糙度符号及文字|以绘图表示工艺要求，不验证加工可行性
+weld_symbol|w|绘制焊接符号及尺寸说明|输入焊缝类型和尺寸，不自动识别真实焊接构造
+centre_marks|w|为圆或给定中心绘制中心标记|创建中心线图元；按 handles 或 centers 定位
+section_line|w|绘制剖切线并返回剖切平面参数|返回 plane 可用于 mech_view_add，不自动生成剖面
+hatch_material|w|按材料规则填充剖切面|需要边界或有效源句柄，不根据颜色推断真实材料
+sheet_frame|w|绘制标准图框及可选分区标记|按指定纸张和方向生成，不替换公司定制图框
+titleblock_apply|w|按指定纸张绘制标题栏及可选图框|标题字段按输入写入；重复调用前检查是否已有图框
+revision_add|w|增加修订记录及可选云线标记|可能创建标题栏附属对象；不是修改源设计内容
+bom_extract|r|从块和标准件元数据提取材料明细行|没有相应零件数据可能返回空表，不是任意图形的完整工程量
+bom_table|w|把材料明细行绘制成表格|省略rows时从图纸提取，空明细会拒绝
+balloon_add|w|绘制编号气泡及指向引线|targets 应关联实际零件；无关联可能被质量检查判为问题
+xref_attach|w|附加或覆盖方式插入外部参照|路径须可访问；外参内容并不成为可直接编辑的宿主实体
+xref_manage|d|列出或管理外参的加载绑定及路径|action 含卸载/拆离/绑定等写操作，风险按最高分支标记
+image_attach|w|按图像比例插入栅格底图|COM固定模型空间；scale为每像素图纸单位，DPI不改变目标尺寸；返回实际读回尺寸，非矢量化
+data_extract|d|将材料明细提取为 CSV 或 XLSX|来源与 bom_extract 相同，非通用全实体导出；可能覆盖文件
+drawing_export_dwg|d|将当前图纸保存为指定版本 DWG|仅可写DWG的后端；COM SaveAs会改变文档路径并可能覆盖目标
+arch_wall|d|按轴线和厚度建立并更新墙体网络|连接处理可能重画已有墙线，源句柄可能变化
+arch_opening|d|在已记录墙体上生成门窗洞口|需 arch_wall 的 wall ID；会重画宿主墙体
+arch_stair|w|按踏步和层高参数绘制平面楼梯|支持已实现的直/L/U形式；不自动保证规范合规
+arch_dimension_chains|w|为工具记录的建筑平面生成外部尺寸链|依赖已有墙/洞口网络；COM需模型空间，对每个标注设置比例并恢复全局DIMSCALE；不保证任意布局无碰撞
+arch_room|w|为种子点所在房间添加名称及测得面积标签|需要可识别闭合边界；面积计算条件应检查返回结果
+arch_rooms_detect|r|从墙线识别闭合房间和面积|识别依赖图层、间隙容差和最小面积；不自动修复缺口
+arch_schedule|w|将门窗或房间记录绘制为明细表|依赖图纸中已有可识别记录，不生成缺失设计数据
+arch_catalogue_list|r|查询家具和洁具目录及尺寸|使用返回 name 作为插入标识
+arch_catalogue_insert|w|插入目录中的家具或洁具块|目录名称必须有效；尺寸按目录定义
+arch_grid|w|按轴线坐标生成轴网及编号|x_axes/y_axes 是位置数组；scale 为出图比例分母
+arch_symbol|w|绘制北箭头、剖切或标高等建筑符号|kind 决定 params 结构；不是自动标高测量
+arch_plan_from_spec|d|按规格生成墙门窗楼梯及标注平面|事务中绘制并可能更新已有墙网络；先核对规格和现有内容
+drawing_understand|r|分析已打开图纸的单位、图层、文字及几何分布|COM直接内存读取；指定DWG/DXF须已打开；不展开外参，read_metadata说明缺失
+drawing_scale_check|r|用共同位号间距核对两图比例|COM两图须已打开；匹配不足返回insufficient，不证明实际工程尺度
+drawing_diff|w|比较两图实体几何变化并可生成修订标记|COM路径读取已打开的内存版本；块定义内部不比较；markup会写入且受后端限制
+drawing_topology_check|r|检查管线网络的断头、近接和交叉|COM直接读取；默认需识别管线图层，否则显式传layers
+pipe_takeoff|d|按管线网络和可选布局统计管线长度|COM图纸须已打开；output可能覆盖文件；未经比例核对的示意线长不等于实长
+cable_takeoff|d|识别电气负载并按可选布局估算电缆|COM图纸须已打开；缺柜号/布局会列待补项；output可能覆盖文件

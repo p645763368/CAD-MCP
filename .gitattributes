@@ -1,0 +1,4 @@
+# Preserve deployed source bytes (including line endings).
+# Optional local clean driver handles an authorized application's transparent
+# encryption view. Without a configured driver, normal Git content is used.
+* -text filter=cad-mcp-content
