@@ -205,12 +205,8 @@ drawing_properties_set|w|修改图纸标题作者及自定义属性|仅写入给
 mech_part_draw|w|按结构化零件规格绘制机械视图及尺寸|需合法零件模型与标准尺寸；不进行机械强度设计
 mech_view_add|w|为已有机械零件增加视图或剖面|剖面需要 plane，局部详图需要 detail；part_id 消除多零件歧义
 mech_dimension_part|w|为机械零件的未标注视图生成尺寸|已标注视图可能拒绝，不能保证所有布局无重叠
-mech_hole_pattern|w|创建线性或环形孔阵列|无需零件模型；需提供孔径及间距/节圆等参数
 mech_part_from_spec|w|在事务中按规格绘制多个机械零件|先验证规格；实际回滚依后端，不替代设计审查
 mech_part_inspect|r|读取工具生成的机械零件元数据|需要 ACADMCP_MECH 记录，不是对任意线稿逆向建模
-std_part_list|r|查询标准件目录和尺寸来源|仅含已收录条目，不覆盖所有标准规格
-std_part_insert|w|按目录代号插入标准件块并写元数据|designation 使用目录格式，如 ISO 4017 - M8x30
-std_feature_draw|w|在已有几何上绘制标准机械特征|标准表未覆盖的尺寸明确拒绝，不插值猜测
 surface_texture|w|绘制表面粗糙度符号及文字|以绘图表示工艺要求，不验证加工可行性
 weld_symbol|w|绘制焊接符号及尺寸说明|输入焊缝类型和尺寸，不自动识别真实焊接构造
 centre_marks|w|为圆或给定中心绘制中心标记|创建中心线图元；按 handles 或 centers 定位
@@ -240,7 +236,6 @@ arch_grid|w|按轴线坐标生成轴网及编号|x_axes/y_axes 是位置数组�
 arch_symbol|w|绘制北箭头、剖切或标高等建筑符号|kind 决定 params 结构；不是自动标高测量
 arch_plan_from_spec|d|按规格生成墙门窗楼梯及标注平面|事务中绘制并可能更新已有墙网络；先核对规格和现有内容
 drawing_understand|r|分析已打开图纸的单位、图层、文字及几何分布|COM直接内存读取；指定DWG/DXF须已打开；不展开外参，read_metadata说明缺失
-drawing_scale_check|r|用共同位号间距核对两图比例|COM两图须已打开；匹配不足返回insufficient，不证明实际工程尺度
 drawing_diff|w|比较两图实体几何变化并可生成修订标记|COM路径读取已打开的内存版本；块定义内部不比较；markup会写入且受后端限制
 drawing_topology_check|r|检查管线网络的断头、近接和交叉|COM直接读取；默认需识别管线图层，否则显式传layers
 pipe_takeoff|d|按管线网络和可选布局统计管线长度|COM图纸须已打开；output可能覆盖文件；未经比例核对的示意线长不等于实长

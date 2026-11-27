@@ -86,7 +86,6 @@ OVERRIDES={
 ('dimension_auto','handles'):'当前COM仅接受LINE句柄；不能直接传矩形多段线并期待完整自动标注。',
 ('point_from_snap','snap'):'end端点、mid中点、center中心、quad象限、perp垂足、near近点；perp/near需要参考点。',
 ('dimstyle_create','preset'):'可选预置：iso-25 或 ansi；不是 iso。省略时遵循工具默认行为。',
-('std_part_insert','designation'):'使用 std_part_list 返回的完整目录代号，如 ISO 4017 - M8x30；保留标准号、分隔符和尺寸格式。',
 ('drawing_deliver','formats'):'只接受 dxf/pdf/png；无论请求哪些格式，都会额外生成规范DXF用于回读校验。不接受dwg。',
 ('drawing_finalize','save_path'):'若给定，可能在校验前另存并改变文档路径；校验失败不代表没有写文件。',
 ('drawing_finalize','screenshot_path'):'可选PNG输出路径；可能在校验前写入，外部可读性受透明加密影响。',
@@ -106,7 +105,7 @@ OVERRIDES={
 ('entity_list','compact'):'仅true返回total/truncated/next_offset；false返回普通列表，满页时不能判断是否完整。',
 ('user_select','mode'):'single等待单个实体并返回点选位置；multiple等待多选。取消/超时有明确标志，不得按成功选中处理。',
 }
-READPATH_TOOLS={'drawing_understand','drawing_scale_check','drawing_diff','drawing_topology_check','pipe_takeoff','cable_takeoff'}
+READPATH_TOOLS={'drawing_understand','drawing_diff','drawing_topology_check','pipe_takeoff','cable_takeoff'}
 READPATH_KEYS={'path','reference','old_path','new_path','pid_path','layout_path'}
 ARCH_SCALES={'arch_stair','arch_dimension_chains','arch_room','arch_schedule','arch_grid','arch_symbol'}
 
@@ -120,7 +119,6 @@ ALIASES={
 'entity_change_space':['模型转布局','布局转模型','图纸空间转模型空间','模型空间转图纸空间'],
 'drawing_understand':['读图','分析图纸','了解图纸内容','读取加密图纸'],
 'drawing_diff':['对比两版图纸','版本差异','图纸比对','找出改动'],
-'drawing_scale_check':['核对图纸比例','检查图纸比例','比例一致性'],
 'drawing_topology_check':['检查断头线','查找管线缺口','检查网络连接','拓扑检查'],
 'pipe_takeoff':['统计管线长度','管道工程量','管线算量'],
 'cable_takeoff':['电缆工程量','统计电气负载','电缆算量'],

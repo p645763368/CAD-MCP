@@ -1024,12 +1024,8 @@ PACK_TOOL_NAMES: dict[str, frozenset[str]] = {
             "mech_part_draw",
             "mech_view_add",
             "mech_dimension_part",
-            "mech_hole_pattern",
             "mech_part_from_spec",
             "mech_part_inspect",
-            "std_part_list",
-            "std_part_insert",
-            "std_feature_draw",
             "surface_texture",
             "weld_symbol",
             "centre_marks",
@@ -8515,80 +8511,6 @@ async def mech_dimension_part(
         raise ToolError(str(exc)) from exc
 
 
-@cad_tool(
-    summary="Draw a linear, grid or polar hole pattern with centre marks on any drawing.",
-    cost="mutate",
-)
-@mcp.tool(
-    annotations={"title": "Mechanical: Hole Pattern", "destructiveHint": False},
-    tags={"mech", "create"},
-)
-async def mech_hole_pattern(
-    pattern: Annotated[str, Field(description="linear | grid | polar")],
-    x: Annotated[float, Field(description="WCS X of the first hole (polar: the circle centre)")],
-    y: Annotated[float, Field(description="WCS Y of the first hole (polar: the circle centre)")],
-    diameter: Annotated[float, Field(description="Hole diameter in drawing units")],
-    count: Annotated[
-        int, Field(default=2, description="Holes along the pattern (polar: around the circle)")
-    ] = 2,
-    spacing: Annotated[
-        float, Field(default=0.0, description="Pitch between holes (linear, grid columns)")
-    ] = 0.0,
-    count_y: Annotated[int, Field(default=1, description="Rows, for a grid")] = 1,
-    spacing_y: Annotated[float, Field(default=0.0, description="Row pitch, for a grid")] = 0.0,
-    pcd: Annotated[
-        float, Field(default=0.0, description="Pitch-circle diameter, for a polar pattern")
-    ] = 0.0,
-    start_angle: Annotated[
-        float, Field(default=0.0, description="Angle of the first hole (polar), degrees CCW")
-    ] = 0.0,
-    angle: Annotated[
-        float, Field(default=0.0, description="Direction of a linear pattern, degrees CCW")
-    ] = 0.0,
-    layer: Annotated[
-        str | None, Field(default=None, description="Override the GEOMETRY layer for the circles")
-    ] = None,
-    centre_marks: Annotated[
-        bool, Field(default=True, description="Draw ISO 128-23 centre marks")
-    ] = True,
-    dimension: Annotated[
-        bool, Field(default=False, description="Add a '6x ⌀8' diameter callout")
-    ] = False,
-    ctx: Context = None,
-) -> dict:
-    """A hole pattern on any drawing - the part model is not required.
-
-    The same expansion `HolePattern` performs inside a part, exposed for a
-    drawing that was not built from the model.
-
-    Refused before anything is drawn: an unknown pattern, a count below 1 (below
-    2 for polar), a linear pattern with no spacing, a grid with more than one
-    column or row and no pitch for it, a polar pattern with no pitch-circle
-    diameter, and a non-finite or non-positive diameter.
-    """
-    from engineering.mech.draw import draw_hole_pattern
-
-    await ctx.info(f"mech_hole_pattern: {pattern} x{count}")
-    try:
-        return await draw_hole_pattern(
-            _backend(ctx),
-            pattern=pattern,
-            x=x,
-            y=y,
-            diameter=diameter,
-            count=count,
-            spacing=spacing,
-            count_y=count_y,
-            spacing_y=spacing_y,
-            pcd=pcd,
-            start_angle=start_angle,
-            angle=angle,
-            layer=layer,
-            centre_marks=centre_marks,
-            dimension=dimension,
-        )
-    except ValueError as exc:
-        raise ToolError(str(exc)) from exc
 
 
 @cad_tool(
@@ -8674,192 +8596,10 @@ async def mech_part_inspect(
 # ---------------------------------------------------------------------------
 
 
-@cad_tool(
-    summary="Search the standard-parts catalogue: ISO bolts, nuts, washers, cap screws, bearings.",
-    cost="read",
-)
-@mcp.tool(
-    annotations={"title": "Standard Parts: Catalogue", "readOnlyHint": True},
-    tags={"mech", "query"},
-)
-async def std_part_list(
-    query: Annotated[
-        str | None,
-        Field(
-            default=None,
-            description=(
-                "Free text matched against designation, standard, size and family - "
-                "'M12', 'ISO 4014', '6205', 'washer'"
-            ),
-        ),
-    ] = None,
-    standard: Annotated[
-        str | None,
-        Field(
-            default=None,
-            description="One of ISO 4014, ISO 4017, ISO 4032, ISO 7089, ISO 4762, ISO 15",
-        ),
-    ] = None,
-    ctx: Context = None,
-) -> dict:
-    """Catalogue rows with the dimensions a drawing needs, and their provenance.
-
-    Every row is transcribed from the named standard's own table and carries
-    its `source`. Coverage is deliberately narrow: ISO 261 first-choice sizes
-    only (M5-M36, M3-M24 for ISO 4762) and ISO 15 bore numbers 00-10 in the
-    600x / 620x / 630x series. A size outside a table is refused by name by
-    `std_part_insert` with the nearest entries, never interpolated. An unknown
-    `standard` is refused with the list of catalogue standards.
-    """
-    from engineering.mech.stdparts import FAMILY_STANDARDS, catalogue
-
-    rows = catalogue(query, standard)
-    return {"count": len(rows), "standards": list(FAMILY_STANDARDS), "parts": list(rows)}
 
 
-@cad_tool(
-    summary=(
-        "Insert an ISO standard part - hex bolt, nut, washer, cap screw or ball bearing "
-        "- as a tagged block."
-    ),
-    cost="mutate",
-)
-@mcp.tool(
-    annotations={"title": "Standard Parts: Insert", "readOnlyHint": False},
-    tags={"mech", "create"},
-)
-async def std_part_insert(
-    designation: Annotated[
-        str,
-        Field(
-            description=(
-                "'ISO 4014 - M12x60', 'ISO 4032 - M12', 'ISO 7089 - M12', "
-                "'ISO 4762 - M8x30', 'ISO 15 - 6205' (a bare '6205' also works)"
-            )
-        ),
-    ],
-    x: Annotated[float, Field(description="Insertion X (WCS)")],
-    y: Annotated[float, Field(description="Insertion Y (WCS)")],
-    view: Annotated[
-        str,
-        Field(
-            default="side",
-            description=(
-                "Fasteners: side | top. Bearings: simplified (ISO 8826-1) | detailed "
-                "(ISO 8826-2). The default 'side' falls back to the family's first view."
-            ),
-        ),
-    ] = "side",
-    rotation: Annotated[
-        float,
-        Field(default=0.0, description="Degrees CCW; 0 puts the part's axis along +X"),
-    ] = 0.0,
-    layer: Annotated[
-        str,
-        Field(
-            default="GEOMETRY",
-            description=(
-                "Layer for the INSERT; the block's own primitives keep GEOMETRY / CENTER / HIDDEN"
-            ),
-        ),
-    ] = "GEOMETRY",
-    material: Annotated[
-        str | None,
-        Field(
-            default=None,
-            description="Property class or material for the MAT attribute and the XDATA, e.g. '8.8'",
-        ),
-    ] = None,
-    ctx: Context = None,
-) -> dict:
-    """Define the part's block once, insert it, and write its `std_part` XDATA.
-
-    The block carries DESIG / STD / SIZE / MAT attributes and an ACADMCP_MECH
-    payload, so a parts list is a read of the drawing rather than a naming
-    convention. Refusals, all before any write: a designation outside the
-    transcribed tables (named, with the nearest catalogue entries - nothing is
-    drawn approximately), a malformed designation, a missing or stray nominal
-    length, a view the family does not have, an attribute tag the block does
-    not carry, and a non-finite coordinate or rotation.
-    """
-    from engineering.mech.stdparts import insert_std_part
-
-    await ctx.info(f"standard part {designation} ({view}) at ({x}, {y})")
-    return await insert_std_part(
-        _backend(ctx),
-        designation,
-        at=(x, y),
-        view=view,
-        rotation=rotation,
-        layer=layer,
-        material=material,
-    )
 
 
-@cad_tool(
-    summary=(
-        "Draw a standard feature - thread, undercut, ring or O-ring groove, centre hole "
-        "- onto existing geometry."
-    ),
-    cost="mutate",
-)
-@mcp.tool(
-    annotations={"title": "Standard Parts: Draw Feature", "readOnlyHint": False},
-    tags={"mech", "create"},
-)
-async def std_feature_draw(
-    kind: Annotated[
-        str,
-        Field(description="thread | undercut | ring_groove | centre_hole | oring_groove"),
-    ],
-    x: Annotated[float, Field(description="Feature origin X (WCS): a point on the axis")],
-    y: Annotated[float, Field(description="Feature origin Y (WCS): a point on the axis")],
-    params: Annotated[
-        dict,
-        Field(
-            description=(
-                "thread: {d, length, size|pitch, internal} (a size must name d's own "
-                "thread - 'M20' with d=8 is refused, not drawn); "
-                "undercut: {d, form: E|F}; "
-                "ring_groove: {d, kind: shaft|bore}; centre_hole: {size, form: A|B}; "
-                "oring_groove: {d, cord, kind: shaft|bore}"
-            )
-        ),
-    ],
-    rotation: Annotated[
-        float,
-        Field(
-            default=0.0,
-            description="Degrees CCW applied to the local +X (along the axis, into the feature)",
-        ),
-    ] = 0.0,
-    layer: Annotated[
-        str | None,
-        Field(
-            default=None,
-            description="Override the visible primitives' layer; CENTER and HIDDEN keep theirs",
-        ),
-    ] = None,
-    ctx: Context = None,
-) -> dict:
-    """Add a standard feature to geometry that already exists - a foreign drawing being finished.
-
-    Local frame: `(x, y)` is on the axis, +X runs along the axis in the
-    direction the feature extends and +Y is radially outward. The thread is the
-    ISO 6410 representation (minor diameter at 0.8 x major, thread-length limit
-    to the major) and its pitch comes from ISO 261 via `size` or from an
-    explicit `pitch` - it is never guessed. Every other kind takes its
-    dimensions from the registered standards table and is refused by name when
-    that table is absent, when the size is outside its coverage, or when the row
-    lacks a dimension the feature needs: no value is interpolated and no profile
-    is reconstructed. DIN 332 form R is refused - only forms A and B are drawn.
-    """
-    from engineering.mech.stdparts import draw_std_feature
-
-    await ctx.info(f"standard feature {kind} at ({x}, {y})")
-    return await draw_std_feature(
-        _backend(ctx), kind, (x, y), params, rotation=rotation, layer=layer
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -10658,89 +10398,6 @@ async def drawing_understand(
     return result
 
 
-@cad_tool(
-    summary="Is this drawing to scale against a reference? Tag distances, ratios, a verdict.",
-    cost="read",
-)
-@mcp.tool(
-    annotations={"title": "Understand: Scale Check", "readOnlyHint": True},
-    tags={"understand", "analysis", "query"},
-)
-async def drawing_scale_check(
-    reference: Annotated[
-        str,
-        Field(
-            description="The reference drawing of the same plant (a DXF, usually the layout): "
-            "distances on it are the ones the other drawing is measured against."
-        ),
-    ],
-    path: Annotated[
-        str | None,
-        Field(
-            default=None,
-            description="The drawing to check (usually the P&ID); omitted: the current document.",
-        ),
-    ] = None,
-    min_pair_mm: Annotated[
-        float,
-        Field(
-            default=2000.0,
-            gt=0,
-            description="Tag pairs closer than this on the reference (mm) are left out: a tag "
-            "label is not an equipment centre.",
-        ),
-    ] = 2000.0,
-    ctx: Context = None,
-) -> dict:
-    """Is the drawing to scale against the reference - or a schematic whose lengths
-    are lengths of drawn line, not of pipe? Read-only on both drawings.
-
-    Equipment tags are matched between the two (a Cyrillic look-alike such as
-    `Т4100` is the Latin `T4100`). Only a tag found exactly once in each is used;
-    a tag found more than once (plan copies, a legend, a second sheet) is listed
-    in `ambiguous` and takes no part. When a drawing holds several bodies of
-    content (two copies of one plan), the pair of scopes - whole drawing or one
-    cluster on each side - that matches the most tags is used and named in
-    `scope`. For every two matched tags at least `min_pair_mm` apart on the
-    reference, the ratio of their distances is taken (both in millimetres by
-    each drawing's inferred unit, see `drawing_understand`). The result gives
-    the matched tags, the median ratio, the quartiles and their range, the
-    share of pairs within +/-10 % of the median, the same per room of the
-    reference (or per cluster for tags in no room) in `groups`, and a verdict:
-    `to_scale` (at least 80 % within the band; `factor` is the median, so a
-    uniform other scale is recognised), `schematic` (50 % or less), `partly`
-    in between, `insufficient` with fewer than three matched tags or no pair
-    above the floor. Tag labels are not equipment centres; the band and the
-    floor absorb that offset, and the result's `notes` say so.
-
-    Refused before anything is read: a `reference` or `path` that does not
-    exist, a DXF over `MAX_DXF_BYTES` (the refusal names the size and the
-    variable), a file the engine cannot parse (a DWG headlessly), and a
-    `min_pair_mm` that is not a positive finite number.
-    """
-    import asyncio
-
-    from ezdxf.lldxf.const import DXFError
-
-    from engineering.understand.scale import scale_check
-    from engineering.understand.snapshot import take_snapshot
-
-    ref = validate_path(reference)
-    if not ref.is_file():
-        raise ToolError(f"reference: no such file {str(ref)!r}")
-    target = None
-    if path:
-        target = validate_path(path)
-        if not target.is_file():
-            raise ToolError(f"path: no such file {str(target)!r}")
-    await ctx.info(f"drawing_scale_check: {target or 'current document'} against {ref}")
-    backend = _backend(ctx)
-    try:
-        checked = await take_snapshot(backend, str(target) if target else None)
-        against = await take_snapshot(backend, str(ref))
-        return await asyncio.to_thread(scale_check, checked, against, min_pair_mm=min_pair_mm)
-    except (ValueError, OSError, RuntimeError, DXFError) as exc:
-        raise ToolError(str(exc)) from exc
 
 
 async def _diff_revision(backend, path: str | None, *, tol: float, role: str):
@@ -11830,6 +11487,9 @@ import project_fixes as _project_fixes
 _project_fixes.register(__import__(__name__))
 import precision_tools as _precision_tools
 _precision_tools.register(__import__(__name__))
+
+ARCHITECTURE_RETIRED_TOOLS = frozenset(['mech_hole_pattern', 'std_feature_draw', 'std_part_insert', 'std_part_list', 'drawing_scale_check'])
+assert not (ARCHITECTURE_RETIRED_TOOLS & {t.name for t in _local_tool_components()})
 
 def main() -> None:
     """Run the MCP server from the installed ``autocad-mcp`` command."""

@@ -4,7 +4,7 @@
 
 - 实际DWG/COM制图：Windows x64、完整AutoCAD 2026及相应许可，先手动打开AutoCAD。
 - 无界面验证：DXF后端不需要AutoCAD；它不能替代DWG原生读写或所有建筑原生操作。
-- 安装Git和uv，私有仓库需要你自己的GitHub访问权限。不要共享个人令牌。
+- 安装Git和uv，仓库公开，可直接克隆。
 - 项目支持Python 3.11及以上；本轮现场安装验证使用Python 3.14。优先按下方命令使用3.14。
 
 ## 新主机安装（PowerShell）
@@ -61,8 +61,8 @@ autocad-mcp --help
 ```
 
 doctor只读文件及版本，不连接CAD。实际COM连接需在MCP客户端调用`system_status`，检查
-`version=1.6.0.post4`、`build=icons-20261127.1`以及实际后端状态。
-注册数量240不代表239项工具在每台机器上所有分支均可用。
+`version=1.6.0.post5`、`build=architecture-20261127.1`以及实际后端状态。
+注册数量235不代表239项工具在每台机器上所有分支均可用。
 
 命令行直接启动示例：
 
