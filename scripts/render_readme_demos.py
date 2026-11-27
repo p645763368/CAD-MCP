@@ -21,17 +21,26 @@ SCENES=[
 
 def text(d,xy,s,size=18,color=WHITE): d.text(xy,s,font=FONT[size],fill=color)
 def line(d,points,color=GREEN,width=3):d.line(points,fill=color,width=width)
+def door_leaf(d,x,color=ORANGE):
+ # Hinge sits on the left jamb; the leaf opens inward by 90 degrees.
+ hinge=x-18; y=278; width=36
+ line(d,[(hinge,y),(hinge,y-width)],color,3)
+ d.arc((hinge-width,y-width,hinge+width,y+width),270,360,fill=MUTED,width=1)
+ d.ellipse((hinge-2,y-2,hinge+2,y+2),fill=color)
+
 def roomplan(d):
  for x in range(40,630,25):line(d,[(x,135),(x,430)],GRID,1)
  for y in range(135,440,25):line(d,[(40,y),(620,y)],GRID,1)
- d.rectangle((100,175,550,390),outline=GREEN,width=4)
- line(d,[(100,282),(550,282)])
- line(d,[(250,175),(250,282)])
- line(d,[(400,175),(400,282)])
- line(d,[(325,282),(325,390)])
+ d.rectangle((100,175,550,390),outline=GREEN,width=2)
+ d.rectangle((106,181,544,384),outline=GREEN,width=2)
+ for y in (278,286):line(d,[(106,y),(544,y)],GREEN,2)
+ for x in (250,400):
+  for dx in (-3,3):line(d,[(x+dx,181),(x+dx,278)],GREEN,2)
  for x in (180,330,480):
-  line(d,[(x-15,282),(x+15,282)],BG,6)
-  line(d,[(x,267),(x,297)],ORANGE,4)
+  d.rectangle((x-18,276,x+18,288),fill=BG)
+  for jamb in (x-18,x+18):line(d,[(jamb,278),(jamb,286)],GREEN,2)
+  door_leaf(d,x)
+ text(d,(300,330),'走道',18,MUTED)
 
 def render(idx,frame):
  name,title,stages,labels=SCENES[idx]
@@ -59,9 +68,9 @@ def render(idx,frame):
   if idx==1:
    for x in (180,330,480):
     col=BLUE if phase>=1 else ORANGE
-    line(d,[(x,267),(x,297)],col,5)
+    door_leaf(d,x,col)
     if phase==0:
-     d.rectangle((x-22,254,x+22,310),outline=BLUE,width=2)
+     d.rectangle((x-25,235,x-11,284),outline=BLUE,width=1)
    text(d,(130,408),'A-SingleDoor' if phase>=1 else '已选中 3 条门短线',18,BLUE if phase>=1 else ORANGE)
  elif idx==2:
   xs=[80,240,368,560]
