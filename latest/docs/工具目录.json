@@ -556,7 +556,7 @@
   },
   {
     "name": "arch_catalogue_insert",
-    "description": "插入目录中的家具或洁具块。\n限制/副作用：目录名称必须有效；尺寸按目录定义。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch catalogue insert。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "插入目录中的家具或洁具块。\n限制/副作用：目录名称必须有效；尺寸按目录定义。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch catalogue insert。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -565,17 +565,36 @@
           "type": "string"
         },
         "x": {
-          "description": "X坐标。X (WCS) of the item's back-left corner",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "y": {
-          "description": "Y坐标。Y (WCS) of the item's back-left corner",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "rotation": {
           "default": 0.0,
           "description": "Degrees CCW about (x, y); 0 puts the item's back (its wall side) along +X with the item extending towards +Y [默认=0.0]",
           "type": "number"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -610,10 +629,10 @@
           "kuvet",
           "mobilya yerlestir"
         ],
-        "limits": "插入目录中的家具或洁具块。\n限制/副作用：目录名称必须有效；尺寸按目录定义。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch catalogue insert。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "插入目录中的家具或洁具块。\n限制/副作用：目录名称必须有效；尺寸按目录定义。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch catalogue insert。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "插入目录中的家具或洁具块"
         ],
@@ -724,7 +743,7 @@
   },
   {
     "name": "arch_dimension_chains",
-    "description": "为工具记录的建筑平面生成外部尺寸链。\n限制/副作用：依赖已有墙/洞口网络；COM需模型空间，对每个标注设置比例并恢复全局DIMSCALE；不保证任意布局无碰撞。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch dimension chains。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "为工具记录的建筑平面生成外部尺寸链。\n限制/副作用：依赖已有墙/洞口网络；COM需模型空间，对每个标注设置比例并恢复全局DIMSCALE；不保证任意布局无碰撞。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch dimension chains。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -778,6 +797,25 @@
           ],
           "default": null,
           "description": "Distance between rows (drawing units) [默认=null]"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "type": "object"
@@ -800,10 +838,10 @@
           "aks ölçüsü",
           "aks olcusu"
         ],
-        "limits": "为工具记录的建筑平面生成外部尺寸链。\n限制/副作用：依赖已有墙/洞口网络；COM需模型空间，对每个标注设置比例并恢复全局DIMSCALE；不保证任意布局无碰撞。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch dimension chains。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "为工具记录的建筑平面生成外部尺寸链。\n限制/副作用：依赖已有墙/洞口网络；COM需模型空间，对每个标注设置比例并恢复全局DIMSCALE；不保证任意布局无碰撞。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch dimension chains。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "为工具记录的建筑平面生成外部尺寸链"
         ],
@@ -814,23 +852,39 @@
   },
   {
     "name": "arch_grid",
-    "description": "按轴线坐标生成轴网及编号。\n限制/副作用：x_axes/y_axes 是位置数组；scale 为出图比例分母。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch grid。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "生成正交、斜向及弧形轴网和轴号。\n默认预览；执行须带token。正交坐标可按origin/rotation旋转；弧轴独立使用WCS。两端/单端轴号，禁止重号。replace仅替换同group由本工具记录的轴网。默认沿用建筑CENTER轴线图层；首次空图需先drawing_apply_iso_layers(standard=arch)。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
         "x_axes": {
-          "description": "X positions (WCS) of the vertical axes; numbered 1, 2, 3 left to right",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "竖向轴线在局部X的位置，采用图纸单位"
         },
         "y_axes": {
-          "description": "Y positions (WCS) of the horizontal axes; lettered A, B, C bottom to top",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "横向轴线在局部Y的位置，采用图纸单位"
         },
         "labels": {
           "anyOf": [
@@ -842,67 +896,126 @@
               "type": "null"
             }
           ],
-          "default": null,
-          "description": "Override the labels: {'x': [...], 'y': [...]} (either key), one label per position in the order the positions were given [默认=null]"
+          "default": null
         },
         "extension": {
-          "default": 1500.0,
-          "description": "Drawing units each axis runs past the outermost crossing axis [>0；默认=1500.0]",
-          "exclusiveMinimum": 0,
+          "default": 1500,
+          "description": "轴线延伸毫米",
           "type": "number"
         },
         "scale": {
+          "default": 50,
+          "type": "number"
+        },
+        "origin": {
+          "default": [
+            0,
+            0
+          ],
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "rotation_deg": {
+          "default": 0,
+          "type": "number"
+        },
+        "arc_axes": {
           "anyOf": [
             {
-              "type": "number"
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "省略/null使用当前DWG保存的建筑配置，未配置时保持原默认值；lang=zh/en/tr；scale为正的出图比例分母。"
+          "description": "[{center:[x,y],radius:模型单位,start_angle_deg,end_angle_deg,label}]；弧轴使用WCS"
+        },
+        "sides": {
+          "default": "both",
+          "enum": [
+            "start",
+            "end",
+            "both"
+          ],
+          "type": "string"
+        },
+        "group": {
+          "default": "GRID",
+          "type": "string"
+        },
+        "axis_layer": {
+          "default": "A-GRID-E-N",
+          "type": "string"
+        },
+        "label_layer": {
+          "default": "A-SYMB-T-N",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
-      "required": [
-        "x_axes",
-        "y_axes"
-      ],
       "type": "object"
     },
     "meta": {
       "cad": {
-        "summary": "按轴线坐标生成轴网及编号",
-        "cost": "mutate",
-        "acad": [
-          "COLUMNGRIDADD"
-        ],
-        "synonyms": [
-          "structural grid",
-          "column grid",
-          "axis grid",
-          "grid bubbles",
-          "grid lines with bubbles",
-          "numbered and lettered axes",
-          "aks sistemi",
-          "akslar",
-          "kolon aksi"
-        ],
-        "limits": "按轴线坐标生成轴网及编号。\n限制/副作用：x_axes/y_axes 是位置数组；scale 为出图比例分母。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch grid。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
-        "risk": "write",
-        "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "summary": "生成正交、斜向及弧形轴网和轴号",
+        "risk": "destructive",
+        "cost": "destructive",
         "zh_aliases": [
-          "按轴线坐标生成轴网及编号"
+          "绘制轴网",
+          "轴号",
+          "弧形轴网"
         ],
-        "search_terms_en": "Draw a structural grid: axis lines with numbered and lettered bubbles at both ends."
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
   },
   {
     "name": "arch_opening",
-    "description": "在已记录墙体上生成门窗洞口。\n限制/副作用：需 arch_wall 的 wall ID；会重画宿主墙体。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch opening。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "在已记录墙体上生成门窗洞口。\n限制/副作用：需 arch_wall 的 wall ID；会重画宿主墙体。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch opening。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -997,6 +1110,25 @@
           "default": true,
           "description": "Hatch the redrawn wall's cut faces [默认=true]",
           "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1029,10 +1161,10 @@
           "doğrama",
           "dograma"
         ],
-        "limits": "在已记录墙体上生成门窗洞口。\n限制/副作用：需 arch_wall 的 wall ID；会重画宿主墙体。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch opening。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "在已记录墙体上生成门窗洞口。\n限制/副作用：需 arch_wall 的 wall ID；会重画宿主墙体。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch opening。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "destructive",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "在已记录墙体上生成门窗洞口"
         ],
@@ -1043,7 +1175,7 @@
   },
   {
     "name": "arch_plan_from_spec",
-    "description": "按规格生成墙门窗楼梯及标注平面。\n限制/副作用：事务中绘制并可能更新已有墙网络；先核对规格和现有内容。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch plan from spec。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "按规格生成墙门窗楼梯及标注平面。\n限制/副作用：事务中绘制并可能更新已有墙网络；先核对规格和现有内容。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch plan from spec。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1051,6 +1183,25 @@
           "additionalProperties": true,
           "description": "结构化业务规格；字段和单位见后文，不接受任意自然语言。{sheet: {intent, sheet_size, scale (denominator, 50 = 1:50)}, lang: 'en'|'tr', poche: bool, walls: [{id, axis: [[x,y],...], thickness, justification, material, closed}], openings: [{id, wall, kind: 'door'|'window', offset, width, swing, hand, sill, height, tag}], stairs: [{id, start, direction_deg, width, risers, riser_height, going, kind, turn}], rooms: [{id, name, number, at}], chains: {sides: ['bottom','left']}, schedules: [{kind: 'doors'|'windows'|'rooms', at: [x,y]}]}",
           "type": "object"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1082,10 +1233,10 @@
           "vaziyet plani ciz",
           "mimari plan"
         ],
-        "limits": "按规格生成墙门窗楼梯及标注平面。\n限制/副作用：事务中绘制并可能更新已有墙网络；先核对规格和现有内容。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch plan from spec。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "按规格生成墙门窗楼梯及标注平面。\n限制/副作用：事务中绘制并可能更新已有墙网络；先核对规格和现有内容。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch plan from spec。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "destructive",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "按规格生成墙门窗楼梯及标注平面"
         ],
@@ -1134,7 +1285,7 @@
   },
   {
     "name": "arch_room",
-    "description": "为种子点所在房间添加名称及测得面积标签。\n限制/副作用：需要可识别闭合边界；面积计算条件应检查返回结果。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch room。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "为种子点所在房间添加名称及测得面积标签。\n限制/副作用：需要可识别闭合边界；面积计算条件应检查返回结果。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch room。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1143,11 +1294,11 @@
           "type": "string"
         },
         "x": {
-          "description": "X坐标。WCS X of a point inside the room; the label starts here.",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "y": {
-          "description": "Y坐标。WCS Y of a point inside the room.",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "number": {
@@ -1197,6 +1348,25 @@
           ],
           "default": null,
           "description": "省略/null使用当前DWG保存的建筑配置，未配置时保持原默认值；lang=zh/en/tr；scale为正的出图比例分母。"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1225,10 +1395,10 @@
           "mahal adı",
           "mahal adi"
         ],
-        "limits": "为种子点所在房间添加名称及测得面积标签。\n限制/副作用：需要可识别闭合边界；面积计算条件应检查返回结果。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch room。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "为种子点所在房间添加名称及测得面积标签。\n限制/副作用：需要可识别闭合边界；面积计算条件应检查返回结果。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch room。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "房间面积标注",
           "房间名称标注",
@@ -1241,7 +1411,7 @@
   },
   {
     "name": "arch_rooms_detect",
-    "description": "从墙线识别闭合房间和面积。\n限制/副作用：识别依赖图层、间隙容差和最小面积；不自动修复缺口。\n风险：只读查询，不写入图形或输出文件。\n检索：arch rooms detect。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位适配：读取INSUNITS，坐标/area保持图纸单位及其平方，area_m2按实际单位换算；min_area仍为mm²、tol仍为mm。未知单位拒绝；非毫米图中的旧ACADMCP_ARCH记录无单位标记，明确拒绝猜测。外来直线闭合区域不等于法定建筑面积。",
+    "description": "从墙线识别闭合房间和面积。\n限制/副作用：识别依赖图层、间隙容差和最小面积；不自动修复缺口。\n风险：只读查询，不写入图形或输出文件。\n检索：arch rooms detect。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1271,6 +1441,25 @@
           "description": "Endpoints closer than this (mm) are one corner. [>0；默认=1.0]",
           "exclusiveMinimum": 0,
           "type": "number"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "type": "object"
@@ -1300,10 +1489,10 @@
           "kat planı alanları",
           "kat plani alanlari"
         ],
-        "limits": "从墙线识别闭合房间和面积。\n限制/副作用：识别依赖图层、间隙容差和最小面积；不自动修复缺口。\n风险：只读查询，不写入图形或输出文件。\n检索：arch rooms detect。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位适配：读取INSUNITS，坐标/area保持图纸单位及其平方，area_m2按实际单位换算；min_area仍为mm²、tol仍为mm。未知单位拒绝；非毫米图中的旧ACADMCP_ARCH记录无单位标记，明确拒绝猜测。外来直线闭合区域不等于法定建筑面积。",
+        "limits": "从墙线识别闭合房间和面积。\n限制/副作用：识别依赖图层、间隙容差和最小面积；不自动修复缺口。\n风险：只读查询，不写入图形或输出文件。\n检索：arch rooms detect。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "read",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "识别房间",
           "统计封闭房间",
@@ -1316,7 +1505,7 @@
   },
   {
     "name": "arch_schedule",
-    "description": "将门窗或房间记录绘制为明细表。\n限制/副作用：依赖图纸中已有可识别记录，不生成缺失设计数据。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch schedule。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "将门窗或房间记录绘制为明细表。\n限制/副作用：依赖图纸中已有可识别记录，不生成缺失设计数据。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch schedule。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1325,11 +1514,11 @@
           "type": "string"
         },
         "x": {
-          "description": "X坐标。WCS X of the table's top-left corner.",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "y": {
-          "description": "Y坐标。WCS Y of the table's top-left corner.",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "lang": {
@@ -1355,6 +1544,25 @@
           ],
           "default": null,
           "description": "省略/null使用当前DWG保存的建筑配置，未配置时保持原默认值；lang=zh/en/tr；scale为正的出图比例分母。"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1387,10 +1595,10 @@
           "pencere cizelgesi",
           "mahal listesi"
         ],
-        "limits": "将门窗或房间记录绘制为明细表。\n限制/副作用：依赖图纸中已有可识别记录，不生成缺失设计数据。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch schedule。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "将门窗或房间记录绘制为明细表。\n限制/副作用：依赖图纸中已有可识别记录，不生成缺失设计数据。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch schedule。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "生成门窗表",
           "房间明细表",
@@ -1403,7 +1611,7 @@
   },
   {
     "name": "arch_stair",
-    "description": "按踏步和层高参数绘制平面楼梯。\n限制/副作用：支持已实现的直/L/U形式；不自动保证规范合规。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch stair。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "按踏步和层高参数绘制平面楼梯。\n限制/副作用：支持已实现的直/L/U形式；不自动保证规范合规。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch stair。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1412,11 +1620,11 @@
           "type": "string"
         },
         "start_x": {
-          "description": "WCS X of the midpoint of the bottom riser",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "start_y": {
-          "description": "WCS Y of the midpoint of the bottom riser",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "width": {
@@ -1473,6 +1681,25 @@
           ],
           "default": null,
           "description": "省略/null使用当前DWG保存的建筑配置，未配置时保持原默认值；lang=zh/en/tr；scale为正的出图比例分母。"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1509,10 +1736,10 @@
           "rıht",
           "riht"
         ],
-        "limits": "按踏步和层高参数绘制平面楼梯。\n限制/副作用：支持已实现的直/L/U形式；不自动保证规范合规。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch stair。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "按踏步和层高参数绘制平面楼梯。\n限制/副作用：支持已实现的直/L/U形式；不自动保证规范合规。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch stair。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "按踏步和层高参数绘制平面楼梯"
         ],
@@ -1523,7 +1750,7 @@
   },
   {
     "name": "arch_symbol",
-    "description": "绘制北箭头、剖切或标高等建筑符号。\n限制/副作用：kind 决定 params 结构；不是自动标高测量。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch symbol。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "绘制北箭头、剖切或标高等建筑符号。\n限制/副作用：kind 决定 params 结构；不是自动标高测量。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch symbol。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -1532,11 +1759,11 @@
           "type": "string"
         },
         "x": {
-          "description": "X坐标。Symbol origin X (WCS)",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "y": {
-          "description": "Y坐标。Symbol origin Y (WCS)",
+          "description": "WCS坐标，采用实际图纸单位。",
           "type": "number"
         },
         "params": {
@@ -1575,6 +1802,25 @@
           ],
           "default": null,
           "description": "省略/null使用当前DWG保存的建筑配置，未配置时保持原默认值；lang=zh/en/tr；scale为正的出图比例分母。"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1602,10 +1848,10 @@
           "kesit isareti",
           "gorunus isareti"
         ],
-        "limits": "绘制北箭头、剖切或标高等建筑符号。\n限制/副作用：kind 决定 params 结构；不是自动标高测量。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch symbol。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "绘制北箭头、剖切或标高等建筑符号。\n限制/副作用：kind 决定 params 结构；不是自动标高测量。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：arch symbol。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "绘制北箭头、剖切或标高等建筑符号"
         ],
@@ -1615,13 +1861,95 @@
     "enabled": true
   },
   {
+    "name": "arch_units_migrate",
+    "description": "预览并迁移旧建筑记录的单位标识。\n只转换建筑记录中的数值及单位标识，不缩放任何几何。source_record_units由用户确认：mm保留原数值，model将记录长度/坐标按实际模型单位换算为毫米；执行必须带预览token。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "source_record_units": {
+          "enum": [
+            "mm",
+            "model"
+          ],
+          "type": "string"
+        },
+        "handles": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "要迁移的ACADMCP_ARCH载体句柄；null读取全部模型记录"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "source_record_units"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "迁移建筑记录单位",
+        "risk": "write",
+        "cost": "mutate",
+        "zh_aliases": [
+          "建筑单位迁移",
+          "旧记录单位",
+          "米制建筑"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "arch_wall",
-    "description": "按轴线和厚度建立并更新墙体网络。\n限制/副作用：连接处理可能重画已有墙线，源句柄可能变化。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch wall。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+    "description": "按轴线和厚度建立并更新墙体网络。\n限制/副作用：连接处理可能重画已有墙线，源句柄可能变化。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch wall。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
         "walls": {
-          "description": "Walls to add: [{id, axis:[[x,y],...] (2+ points, straight segments, WCS mm), thickness, justification:'center'|'left'|'right' (side of the axis looking along it), material:'brick'|'aac'|'concrete'|'reinforced_concrete'|'gypsum_board'|'stone'|'timber'|'generic', closed:bool}]",
+          "description": "墙列表：axis为WCS图纸单位坐标；thickness为毫米。其他字段按原定义。",
           "items": {
             "additionalProperties": true,
             "type": "object"
@@ -1632,6 +1960,25 @@
           "default": true,
           "description": "Hatch the cut wall faces in their material (ISO 128-50) [默认=true]",
           "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "required": [
@@ -1666,14 +2013,111 @@
           "kat planı",
           "kat plani"
         ],
-        "limits": "按轴线和厚度建立并更新墙体网络。\n限制/副作用：连接处理可能重画已有墙线，源句柄可能变化。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch wall。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位前置检查：当前仅毫米模型；其他/未知单位在执行前明确拒绝，不能只改INSUNITS冒充几何换算。",
+        "limits": "按轴线和厚度建立并更新墙体网络。\n限制/副作用：连接处理可能重画已有墙线，源句柄可能变化。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：arch wall。\n自动读取当前DWG内建筑配置：角色图层映射、材料填充、默认语言/比例；未配置则使用原默认值。\n单位：坐标采用图纸单位，构件尺寸使用毫米；内部毫米计算后换算写入。新记录保存单位标记，非毫米旧记录需显式迁移。",
         "risk": "destructive",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.project-fix1",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "按轴线和厚度建立并更新墙体网络"
         ],
         "search_terms_en": "Add walls to the plan: clean L/T/X junctions, cut openings, material poché."
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "area_schedule",
+    "description": "按项目规则计算面积、扣减并按楼层分区汇总。\n边界使用图纸单位；扣减区取并集防重复扣减，同层区域重叠拒绝。结果m²。规则由用户明确提供，不自动判断法定面积；支持已有闭合直线多段线边界。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "zones": {
+          "description": "[{id,name,floor,zone,rule,boundary:坐标多边形或boundary_handle, deductions:[多边形]}]",
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "rules": {
+          "additionalProperties": true,
+          "description": "规则名→{factor:非负系数,basis:依据说明,version:版本}",
+          "type": "object"
+        },
+        "group": {
+          "type": "string"
+        },
+        "at": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "scale": {
+          "default": 50,
+          "type": "number"
+        },
+        "layer": {
+          "default": "A-AREA-SCHEDULE",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "zones",
+        "rules",
+        "group",
+        "at"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按项目规则计算面积、扣减并按楼层分区汇总",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "建筑面积",
+          "计容面积",
+          "面积汇总"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
@@ -1838,6 +2282,93 @@
           "将多个布局批量输出为 PDF"
         ],
         "search_terms_en": "Plot every sheet (or the named ones) to PDF; each sheet size is read back from its PDF."
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "beam_place",
+    "description": "沿直轴绘制梁平面边界并记录宽度。\n每根梁提供两个WCS端点（图纸单位），宽度毫米；生成闭合平面边界，保留轴线记录。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "axes": {
+          "items": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "group": {
+          "type": "string"
+        },
+        "layer": {
+          "default": "A-BEAM",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "axes",
+        "width_mm",
+        "group"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "沿直轴绘制梁平面边界并记录宽度",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "绘制梁",
+          "梁边线"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
@@ -2791,6 +3322,127 @@
           "为圆或给定中心绘制中心标记"
         ],
         "search_terms_en": "Draw ISO 128-23 centre marks or centre lines on circles, read from the drawing."
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "column_place",
+    "description": "按点位或直轴交点布置圆柱和矩形柱。\n尺寸毫米，点位为图纸WCS单位。axis_handles模式取有限直线轴网交点，重合轴拒绝；记录柱尺寸和来源轴网。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "depth_mm": {
+          "type": "number"
+        },
+        "points": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "axis_handles": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "shape": {
+          "default": "rectangle",
+          "enum": [
+            "rectangle",
+            "circle"
+          ],
+          "type": "string"
+        },
+        "rotation_deg": {
+          "default": 0,
+          "type": "number"
+        },
+        "layer": {
+          "default": "A-COLUMN",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "group",
+        "width_mm",
+        "depth_mm"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按点位或直轴交点布置圆柱和矩形柱",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "柱网落柱",
+          "布置柱"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
@@ -4341,14 +4993,155 @@
     "enabled": true
   },
   {
+    "name": "door_window_tag",
+    "description": "按块属性识别门窗并按实例或型号编号。\ninstance逐实例编号；type按规格共用型号，明细可汇总数量。读取显式映射的本地块属性，不推断散线；锁层/外参拒绝。检查与未选块的同名编号冲突；缩放块列出核对提示。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "handles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "door",
+            "window"
+          ],
+          "type": "string"
+        },
+        "mapping": {
+          "additionalProperties": true,
+          "description": "width/height→宽高属性名必填；tag/sill可选；其他字段按字符串保存，可用于材料/防火等级",
+          "type": "object"
+        },
+        "group": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "start_number": {
+          "default": 1,
+          "type": "integer"
+        },
+        "numbering": {
+          "default": "instance",
+          "enum": [
+            "instance",
+            "type"
+          ],
+          "type": "string"
+        },
+        "type_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "型号分组附加字段；宽高窗台始终参与，如material、fire_rating"
+        },
+        "attribute_units": {
+          "default": "mm",
+          "enum": [
+            "mm",
+            "model"
+          ],
+          "type": "string"
+        },
+        "label_offset": {
+          "default": [
+            0,
+            0
+          ],
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "text_height_mm": {
+          "default": 200,
+          "type": "number"
+        },
+        "layer": {
+          "default": "A-DOOR-WINDOW-TEXT",
+          "type": "string"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "handles",
+        "kind",
+        "mapping",
+        "group",
+        "prefix"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按块属性识别门窗并按实例或型号编号",
+        "risk": "write",
+        "cost": "mutate",
+        "zh_aliases": [
+          "门窗编号",
+          "门窗属性识别",
+          "门窗型号"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "drawing_apply_iso_layers",
     "description": "创建或应用标准专业图层集合。\n限制/副作用：图层命名规则有限；不能当作完整制图标准合规认证。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：drawing apply iso layers。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
         "standard": {
-          "default": "mech",
-          "description": "Layer set: mech (DIN/ISO mechanical), pid (P&ID), iso13567 (CAD layer naming), arch (ISO 13567-style architectural: walls, poche, doors, windows, stairs, furniture, sanitary, grid, rooms, dimensions, symbols, overhead). [默认=\"mech\"]",
+          "default": "arch",
+          "description": "Layer set: mech (DIN/ISO mechanical), pid (P&ID), iso13567 (CAD layer naming), arch (ISO 13567-style architectural: walls, poche, doors, windows, stairs, furniture, sanitary, grid, rooms, dimensions, symbols, overhead). [默认=\"arch\"]",
           "type": "string"
         }
       },
@@ -4503,7 +5296,7 @@
   },
   {
     "name": "drawing_critique",
-    "description": "检查标注、重复几何及专业图纸问题。\n限制/副作用：返回问题清单；大图可能较慢，不能替代人工设计审查。\n风险：只读查询，不写入图形或输出文件。\n检索：drawing critique。",
+    "description": "检查建筑尺寸重叠、未修剪角、重复实体、构造线和已记录房间/墙/门窗问题。默认建筑组合，其他专业须显式指定focus。部分检查依赖建筑记录；返回问题列表。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -4520,7 +5313,26 @@
             }
           ],
           "default": null,
-          "description": "Subset of: iso128, layer_color, dim_overlap, untrimmed_corner, duplicate_entities, construction_left, gdt, the P&ID focuses pid_dangling_line, pid_duplicate_tag, pid_incompatible_connection, pid_untagged_instrument, pid_illegal_tag, pid_unconnected_equipment (silent on a drawing with no P&ID symbols), and the mechanical focuses mech_missing_centreline, mech_unhatched_section, mech_view_misaligned, mech_duplicate_dimension, mech_thread_unrepresented, mech_bom_balloon_mismatch (silent on a drawing with no mechanical part), and the architectural focuses arch_room_unlabelled, arch_wall_gap, arch_opening_clash (silent on a drawing with no ACADMCP_ARCH record), and the topology focuses topo_dangling_endpoint, topo_near_miss, topo_interior_crossing (network layers no P&ID or architectural focus reads). None = run all. [默认=null]"
+          "description": "null使用建筑检查组合；可显式传原有focus名称列表。"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "type": "object"
@@ -4538,10 +5350,10 @@
           "check before finalising",
           "anything wrong before i finish"
         ],
-        "limits": "返回问题清单；大图可能较慢，不能替代人工设计审查",
+        "limits": "检查建筑尺寸重叠、未修剪角、重复实体、构造线和已记录房间/墙/门窗问题。默认建筑组合，其他专业须显式指定focus。部分检查依赖建筑记录；返回问题列表。",
         "risk": "read",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "检查标注、重复几何及专业图纸问题"
         ],
@@ -4552,12 +5364,11 @@
   },
   {
     "name": "drawing_deliver",
-    "description": "生成交付文件、校验及哈希清单。\n限制/副作用：始终包含DXF；支持dxf/pdf/png而非dwg；本机有超时记录，回读受加密影响。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing deliver。",
+    "description": "检查后生成可恢复的DWG/PDF交付包。\n先检查→暂存导出→DWG重开/PDF文件头核验→统一发布。默认预览，执行须带token；拒绝覆盖现有目标。失败保留本任务暂存目录与清单，可用resume_id恢复；图纸或参数变化后拒绝复用。DWG副本修复本工具的句柄关联；依赖清单随结果提供，不自动复制外参/字体/打印样式。原图不保存、不关闭。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
         "output_dir": {
-          "description": "Output directory for drawing artifacts and manifest.json.",
           "type": "string"
         },
         "formats": {
@@ -4573,19 +5384,26 @@
             }
           ],
           "default": null,
-          "description": "只接受 dxf/pdf/png；无论请求哪些格式，都会额外生成规范DXF用于回读校验。不接受dwg。 [默认=null]"
+          "description": "dwg/pdf；null为两者，不强制追加其他格式"
         },
-        "min_score": {
-          "default": 95.0,
-          "description": "最低检查分数阈值，不等于工程质量保证。Minimum accepted quality score. [≥0.0；≤100.0；默认=95.0]",
-          "maximum": 100.0,
-          "minimum": 0.0,
-          "type": "number"
+        "prefix": {
+          "default": "drawing",
+          "type": "string"
         },
-        "strict_critique": {
-          "default": true,
-          "description": "Block delivery on every non-info critique issue. [默认=true]",
-          "type": "boolean"
+        "layouts": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PDF布局名称；null输出Model"
         },
         "expected": {
           "anyOf": [
@@ -4597,8 +5415,70 @@
               "type": "null"
             }
           ],
+          "default": null
+        },
+        "strict_critique": {
+          "default": false,
+          "type": "boolean"
+        },
+        "checks": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resume_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "default": null,
-          "description": "Optional validator expectations for the drawing. [默认=null]"
+          "description": "失败后返回的32位job_id；用于恢复同一图纸、同一参数的暂存交付"
         }
       },
       "required": [
@@ -4608,26 +5488,17 @@
     },
     "meta": {
       "cad": {
-        "summary": "生成交付文件、校验及哈希清单",
-        "cost": "destructive",
-        "acad": [],
-        "synonyms": [
-          "delivery bundle",
-          "package the drawing",
-          "hand off the drawing",
-          "final deliverable"
-        ],
-        "limits": "始终包含DXF；支持dxf/pdf/png而非dwg；本机有超时记录，回读受加密影响",
+        "summary": "检查后生成可恢复的DWG/PDF交付包",
         "risk": "destructive",
-        "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "cost": "destructive",
         "zh_aliases": [
-          "生成交付文件、校验及哈希清单"
+          "建筑检查交付",
+          "检查后生成可恢复的DWG/PDF交付包"
         ],
-        "search_terms_en": "Hand the drawing off: a hashed, validated bundle of files plus a manifest."
+        "catalog_revision": "2026-11-27.p01"
       }
     },
-    "enabled": false
+    "enabled": true
   },
   {
     "name": "drawing_diff",
@@ -4897,7 +5768,7 @@
   },
   {
     "name": "drawing_finalize",
-    "description": "执行校验、可选保存和截图的完成检查。\n限制/副作用：保存/截图可能先于校验失败；不是只读检查；失败可能已有输出。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing finalize。",
+    "description": "先检查建筑图纸，再按明确路径生成DWG副本和截图。\n先只读检查，默认预览；执行必须携带最新token。检查不通过时不输出文件。DWG保存为完整副本并在CAD中重开核验，不改变当前文档路径；截图是当前窗口画面。输出中途失败明确列出已生成文件。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -4911,7 +5782,7 @@
             }
           ],
           "default": null,
-          "description": "若给定，可能在校验前另存并改变文档路径；校验失败不代表没有写文件。 [默认=null]"
+          "description": "可选DWG副本路径；目标已存在时拒绝"
         },
         "screenshot_path": {
           "anyOf": [
@@ -4923,7 +5794,7 @@
             }
           ],
           "default": null,
-          "description": "可选PNG输出路径；可能在校验前写入，外部可读性受透明加密影响。 [默认=null]"
+          "description": "可选PNG路径；检查通过后才写出"
         },
         "expected": {
           "anyOf": [
@@ -4936,39 +5807,75 @@
             }
           ],
           "default": null,
-          "description": "Optional contract: {'part_type', 'helix_angle', 'must_have_bore', 'must_have_keyway'} [默认=null]"
+          "description": "min_entities/max_entities/required_layers/forbid_layers/required_layouts"
         },
         "strict_critique": {
           "default": false,
-          "description": "If true, ANY critique issue (including warnings) fails the gate — the full premium discipline. Default false: only critique 'error' issues (e.g. leftover construction geometry) fail; warnings are surfaced in the payload. [默认=false]",
           "type": "boolean"
+        },
+        "checks": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "type": "object"
     },
     "meta": {
       "cad": {
-        "summary": "执行校验、可选保存和截图的完成检查",
-        "cost": "destructive",
-        "acad": [],
-        "synonyms": [
-          "finish the drawing",
-          "validate and save",
-          "final check",
-          "completion gate",
-          "the drawing is done"
-        ],
-        "limits": "保存/截图可能先于校验失败；不是只读检查；失败可能已有输出",
+        "summary": "先检查建筑图纸，再按明确路径生成DWG副本和截图",
         "risk": "destructive",
-        "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "cost": "destructive",
         "zh_aliases": [
-          "执行校验、可选保存和截图的完成检查"
+          "建筑检查交付",
+          "先检查建筑图纸，再按明确路径生成DWG副本和截图"
         ],
-        "search_terms_en": "Finish the drawing: validate, critique, save, screenshot and score it."
+        "catalog_revision": "2026-11-27.p01"
       }
     },
-    "enabled": false
+    "enabled": true
   },
   {
     "name": "drawing_import_standards",
@@ -5177,7 +6084,7 @@
   },
   {
     "name": "drawing_plan",
-    "description": "记录绘图计划及出图要求。\n限制/副作用：写入计划状态，不等于完成图纸。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：drawing plan。",
+    "description": "记录建筑绘图计划和出图要求；默认arch建筑图层，不直接生成图元。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -5197,8 +6104,8 @@
           "type": "number"
         },
         "layer_set_id": {
-          "default": "mech",
-          "description": "Layer set to bootstrap: mech / pid / iso13567. [默认=\"mech\"]",
+          "default": "arch",
+          "description": "Layer set to bootstrap: arch / iso13567 / mech / pid. [默认=\"arch\"]",
           "type": "string"
         },
         "view_count": {
@@ -5238,7 +6145,7 @@
             }
           ],
           "default": null,
-          "description": "Normalized preflight requirements. [默认=null]"
+          "description": "建筑要求：units，scope或dimensions/reference，可选project_rules和constraints。"
         },
         "spec_hash": {
           "anyOf": [
@@ -5269,10 +6176,10 @@
           "decide what to draw",
           "drawing intent"
         ],
-        "limits": "写入计划状态，不等于完成图纸",
+        "limits": "记录建筑绘图计划和出图要求；默认arch建筑图层，不直接生成图元。",
         "risk": "write",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "记录绘图计划及出图要求"
         ],
@@ -5283,7 +6190,7 @@
   },
   {
     "name": "drawing_preflight",
-    "description": "检查并规范化绘图需求。\n限制/副作用：返回需求检查，不创建实际几何。\n风险：只读查询，不写入图形或输出文件。\n检索：drawing preflight。",
+    "description": "只读检查建筑任务的单位、范围、图幅和约束；默认arch建筑图层。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -5302,7 +6209,7 @@
             }
           ],
           "default": null,
-          "description": "Units, part_type, dimensions, tolerance_policy and optional constraints. [默认=null]"
+          "description": "建筑要求：units，scope或dimensions/reference，可选project_rules和constraints。"
         },
         "sheet_size": {
           "default": "A3",
@@ -5316,8 +6223,8 @@
           "description": "计划几何缩放比例，如1.0表示1:1、0.1表示1:10；不是比例分母。 [>0；默认=1.0]"
         },
         "layer_set_id": {
-          "default": "mech",
-          "description": "mech / pid / iso13567. [默认=\"mech\"]",
+          "default": "arch",
+          "description": "arch / iso13567 / mech / pid. [默认=\"arch\"]",
           "type": "string"
         },
         "view_count": {
@@ -5353,10 +6260,10 @@
           "validate the brief",
           "normalise the requirements"
         ],
-        "limits": "返回需求检查，不创建实际几何",
+        "limits": "只读检查建筑任务的单位、范围、图幅和约束；默认arch建筑图层。",
         "risk": "read",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "检查并规范化绘图需求"
         ],
@@ -5581,7 +6488,7 @@
   },
   {
     "name": "drawing_refine",
-    "description": "按允许的规则修复图纸检查问题。\n限制/副作用：dry_run 只生成计划；仅支持部分问题类型，不保证全部自动修复。\n风险：可能删除/替换对象、覆盖文件或执行高影响操作；按可选参数的最高风险标记。\n检索：drawing refine。",
+    "description": "预览或执行建筑图纸整改计划；默认dry_run=true，仅列出方案。默认允许重复实体清理与尺寸重叠调整，其他修复须显式选择。执行使用原有撤销保护，不自动保存。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
@@ -5612,7 +6519,7 @@
             }
           ],
           "default": null,
-          "description": "Critique focuses to repair; None runs all. [默认=null]"
+          "description": "null使用建筑检查组合。"
         },
         "allowed_repairs": {
           "anyOf": [
@@ -5627,12 +6534,31 @@
             }
           ],
           "default": null,
-          "description": "Optional allowlist of repair focus names. [默认=null]"
+          "description": "null只允许duplicate_entities和dim_overlap；其他规则须明确提供。"
         },
         "dry_run": {
-          "default": false,
-          "description": "true 仅预览/预检；false 才执行写入分支。Return the repair plan without modifying the drawing. [默认=false]",
+          "default": true,
+          "description": "true 仅预览/预检；false 才执行写入分支。Return the repair plan without modifying the drawing. [默认=true]",
           "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "显式实际模型单位；null读取INSUNITS。坐标采用图纸单位，构件尺寸/偏移/高度仍为毫米。"
         }
       },
       "type": "object"
@@ -5651,10 +6577,10 @@
           "remove duplicate entities",
           "repair loop"
         ],
-        "limits": "dry_run 只生成计划；仅支持部分问题类型，不保证全部自动修复",
+        "limits": "预览或执行建筑图纸整改计划；默认dry_run=true，仅列出方案。默认允许重复实体清理与尺寸重叠调整，其他修复须显式选择。执行使用原有撤销保护，不自动保存。",
         "risk": "destructive",
         "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "catalog_revision": "2026-11-27.p01",
         "zh_aliases": [
           "自动整理",
           "自动修复图纸",
@@ -9497,6 +10423,170 @@
     "enabled": true
   },
   {
+    "name": "grid_label",
+    "description": "为既有直线或弧轴补轴号并刷新位置。\n保留原轴线；标注记录源句柄。replace仅删除同group、同源轴线的已有轴号/圆圈/延伸线，再按当前源几何补标。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "handles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "labels": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "group": {
+          "type": "string"
+        },
+        "scale": {
+          "default": 50,
+          "type": "number"
+        },
+        "extension_mm": {
+          "default": 300,
+          "type": "number"
+        },
+        "sides": {
+          "default": "both",
+          "enum": [
+            "start",
+            "end",
+            "both"
+          ],
+          "type": "string"
+        },
+        "layer": {
+          "default": "A-GRID-TEXT",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "existing_labels": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选：源轴线句柄→既有TEXT/MTEXT句柄列表；用于关联已有轴号并保留位置"
+        }
+      },
+      "required": [
+        "handles",
+        "labels",
+        "group"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "为既有直线或弧轴补轴号并刷新位置",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "补轴号",
+          "既有轴网标注"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "grid_renumber",
+    "description": "批量修改已记录轴号并检查重号。\n只更新本工具记录的轴网标签，保留位置。一次支持交换轴号；与未改轴线发生重号时拒绝。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "mapping": {
+          "additionalProperties": true,
+          "description": "源轴线句柄→新轴号",
+          "type": "object"
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "group",
+        "mapping"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "批量修改已记录轴号并检查重号",
+        "risk": "write",
+        "cost": "mutate",
+        "zh_aliases": [
+          "轴号重编号",
+          "批量改轴号"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "hatch_add_boundary",
     "description": "为已有填充增加内边界岛屿。\n限制/副作用：edges 为带类型的闭合边链；不是创建独立外轮廓。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：hatch add boundary。",
     "parameters": {
@@ -11349,6 +12439,352 @@
     "enabled": true
   },
   {
+    "name": "parking_layout",
+    "description": "按边界和障碍排布停车行并编号统计。\n输入为项目明确尺寸，不内置法规判定。过滤超界、障碍/通道冲突和重叠车位，报告每个遗漏；含特殊车位宽度及侧向预留带。斜列端线与通道平行。圆障碍使用128段外包多边形作保守避让；未进行车辆转弯扫掠。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "description": "每行{origin:[x,y],count,width_mm,length_mm,aisle_mm,angle_deg:0或15..90,direction_deg,sides:single/double,prefix,start_number,bay_overrides:{索引:{width_mm,access_strip_mm,kind}}}",
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "group": {
+          "type": "string"
+        },
+        "boundary": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "场地闭合边界，图纸单位；null不限制"
+        },
+        "obstacles": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "柱墙等障碍多边形，图纸单位"
+        },
+        "clearance_mm": {
+          "default": 0,
+          "type": "number"
+        },
+        "layer": {
+          "default": "A-PARKING",
+          "type": "string"
+        },
+        "label_layer": {
+          "default": "A-PARKING-TEXT",
+          "type": "string"
+        },
+        "text_height_mm": {
+          "default": 200,
+          "type": "number"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "boundary_handle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选已有Z=0闭合直线多段线，和boundary二选一"
+        },
+        "obstacle_handles": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选柱墙闭合直线多段线或Z=0圆"
+        }
+      },
+      "required": [
+        "rows",
+        "group"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按边界和障碍排布停车行并编号统计",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "停车位排布",
+          "停车场布置"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "parking_row",
+    "description": "绘制一行或背靠背两行停车位。\n尺寸毫米，origin和边界使用图纸单位。预览及碰撞规则同parking_layout；双排按通道两侧布置。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "length_mm": {
+          "type": "number"
+        },
+        "aisle_mm": {
+          "type": "number"
+        },
+        "group": {
+          "type": "string"
+        },
+        "angle_deg": {
+          "default": 90,
+          "type": "number"
+        },
+        "direction_deg": {
+          "default": 0,
+          "type": "number"
+        },
+        "sides": {
+          "default": "single",
+          "enum": [
+            "single",
+            "double"
+          ],
+          "type": "string"
+        },
+        "prefix": {
+          "default": "P",
+          "type": "string"
+        },
+        "start_number": {
+          "default": 1,
+          "type": "integer"
+        },
+        "bay_overrides": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "boundary": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "obstacles": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "boundary_handle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选已有Z=0闭合直线多段线，和boundary二选一"
+        },
+        "obstacle_handles": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选柱墙闭合直线多段线或Z=0圆"
+        }
+      },
+      "required": [
+        "origin",
+        "count",
+        "width_mm",
+        "length_mm",
+        "aisle_mm",
+        "group"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "绘制一行或背靠背两行停车位",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "单排车位",
+          "双排车位"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "plot_style_list",
     "description": "列出可用或已知的打印样式表。\n限制/副作用：目录结果不代表任意设备都支持所有样式。\n风险：只读查询，不写入图形或输出文件。\n检索：plot style list。",
     "parameters": {
@@ -11711,6 +13147,124 @@
     "enabled": true
   },
   {
+    "name": "ramp_draw",
+    "description": "按路径和标高绘制坡道平面及坡度标注。\n各路径点对应标高，标高和宽度毫米；可提供最大坡度比例（如0.08）。平台边界和标高由用户提供，输出分段坡度与关联记录。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "elevations_mm": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "group": {
+          "type": "string"
+        },
+        "landings": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "[{boundary:图纸坐标,elevation_mm:标高}]"
+        },
+        "max_slope": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "layer": {
+          "default": "A-RAMP",
+          "type": "string"
+        },
+        "replace": {
+          "default": false,
+          "type": "boolean"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "path",
+        "width_mm",
+        "elevations_mm",
+        "group"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按路径和标高绘制坡道平面及坡度标注",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "绘制坡道",
+          "坡度标注"
+        ],
+        "catalog_revision": "2026-11-27.p01"
+      }
+    },
+    "enabled": true
+  },
+  {
     "name": "revision_add",
     "description": "增加修订记录及可选云线标记。\n限制/副作用：可能创建标题栏附属对象；不是修改源设计内容。\n风险：创建/修改实体、图纸设置或交互状态；先确认活动文档。\n检索：revision add。",
     "parameters": {
@@ -11834,6 +13388,92 @@
           "增加修订记录及可选云线标记"
         ],
         "search_terms_en": "Append a revision row, with optional revision clouds and triangular tags."
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "schedule_update",
+    "description": "从当前门窗块属性更新关联明细和型号数量。\n重读已标识源块，按当前属性更新宽高/自定义字段/编号及标签位置。型号模式汇总同规格数量；实例模式保留逐门窗行。同编号不同规格或源块删除时拒绝。表格按group原位更新；行列数或比例改变时按记录版式重建，句柄可能变化。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "at": {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "创建默认50；更新省略沿用已记录比例"
+        },
+        "layer": {
+          "default": "A-SCHEDULE",
+          "type": "string"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "group",
+        "at"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "从当前门窗块属性更新关联明细和型号数量",
+        "risk": "write",
+        "cost": "mutate",
+        "zh_aliases": [
+          "更新门窗表",
+          "关联明细表",
+          "门窗数量统计"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
@@ -12316,6 +13956,87 @@
           "绘制标准图框及可选分区标记"
         ],
         "search_terms_en": "Draw an ISO 5457 sheet frame with the zone grid and centring marks."
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "stair_check",
+    "description": "按给定规则检查梯段尺寸和断面净高。\n只计算不改图，规则需用户给定。净高取障碍覆盖区间内最不利值；缺断面或障碍时headroom_complete=false，不能当作已完成净高校核。\n参数计算可离线运行。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "risers": {
+          "type": "integer"
+        },
+        "riser_height_mm": {
+          "type": "number"
+        },
+        "going_mm": {
+          "type": "number"
+        },
+        "width_mm": {
+          "type": "number"
+        },
+        "limits": {
+          "additionalProperties": true,
+          "description": "字段→{min,max}；riser_height_mm/going_mm/width_mm/blondel_mm/headroom_mm",
+          "type": "object"
+        },
+        "profile": {
+          "anyOf": [
+            {
+              "items": {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "断面[里程mm,完成面标高mm]，可表达多梯段和平台"
+        },
+        "obstacles": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "[{id,start_mm,end_mm,underside_mm}] 梁板底在断面中的范围"
+        }
+      },
+      "required": [
+        "risers",
+        "riser_height_mm",
+        "going_mm",
+        "width_mm",
+        "limits"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "按给定规则检查梯段尺寸和断面净高",
+        "risk": "read",
+        "cost": "read",
+        "zh_aliases": [
+          "楼梯检查",
+          "净高校核"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true
@@ -13797,44 +15518,72 @@
   },
   {
     "name": "validation_check",
-    "description": "检查空图层、零长实体等图纸问题。\n限制/副作用：返回 ok=false 是检查发现问题，不等于接口异常。\n风险：只读查询，不写入图形或输出文件。\n检索：validation check。",
+    "description": "检查空图层、零长、重复几何、编号和交付依赖。\n只读；ok表示执行成功，passed表示没有error级发现；complete表示读取完整。重复检查按容差量化并区分空间/图层/样式，未支持类型单列coverage。全空间最多200000对象，超限拒绝，不会静默截断。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
     "parameters": {
       "additionalProperties": false,
       "properties": {
         "checks": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "default": null,
-          "description": "List of checks: empty_layers, zero_length, duplicate_entities [默认=null]",
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "description": "empty_layers/zero_length/duplicate_entities/duplicate_tags/assets；null全选"
+        },
+        "scope": {
+          "default": "all",
+          "enum": [
+            "model",
+            "all"
+          ],
+          "type": "string"
+        },
+        "tolerance_mm": {
+          "default": 0.001,
+          "type": "number"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "type": "object"
     },
     "meta": {
       "cad": {
-        "summary": "检查空图层、零长实体等图纸问题",
-        "cost": "read",
-        "acad": [],
-        "synonyms": [
-          "quality check",
-          "find duplicates",
-          "empty layers",
-          "zero length lines",
-          "sanity check the drawing"
-        ],
-        "limits": "返回 ok=false 是检查发现问题，不等于接口异常",
+        "summary": "检查空图层、零长、重复几何、编号和交付依赖",
         "risk": "read",
-        "reviewed_backend": "com",
-        "catalog_revision": "2026-11-11.arch2",
+        "cost": "read",
         "zh_aliases": [
-          "检查空图层、零长实体等图纸问题"
+          "检查图纸",
+          "质量检查",
+          "重线检查"
         ],
-        "search_terms_en": "Sanity-check the drawing for empty layers, zero-length lines and duplicates."
+        "catalog_revision": "2026-11-27.p01"
       }
     },
-    "enabled": false
+    "enabled": true
   },
   {
     "name": "view_named_list",
@@ -14472,6 +16221,111 @@
           "出图比例"
         ],
         "catalog_revision": "2026-11-11.project-fix1"
+      }
+    },
+    "enabled": true
+  },
+  {
+    "name": "wall_join",
+    "description": "预览并处理墙面角点或柱墙收口。\ncorner将两条墙面线指定端点延伸/修剪到交点；columns从直线墙面或本工具生成的闭合梁边界中扣除柱范围，可能拆分并产生新句柄；闭合梁使用多边形柱。保留图层/颜色/线型/线宽并记录关联。拒绝锁层及既有ACADMCP_ARCH墙记录。\n仅支持AutoCAD 2026 COM及建筑原生桥。",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "handles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "group": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "corner",
+            "columns"
+          ],
+          "type": "string"
+        },
+        "ends": {
+          "default": [
+            1,
+            0
+          ],
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "column_handles": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "max_shift_mm": {
+          "default": 1000,
+          "type": "number"
+        },
+        "model_units": {
+          "anyOf": [
+            {
+              "enum": [
+                "mm",
+                "cm",
+                "m",
+                "inch",
+                "ft"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dry_run": {
+          "default": true,
+          "type": "boolean"
+        },
+        "expected_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "handles",
+        "group",
+        "mode"
+      ],
+      "type": "object"
+    },
+    "meta": {
+      "cad": {
+        "summary": "预览并处理墙面角点或柱墙收口",
+        "risk": "destructive",
+        "cost": "destructive",
+        "zh_aliases": [
+          "柱墙收口",
+          "墙线连接"
+        ],
+        "catalog_revision": "2026-11-27.p01"
       }
     },
     "enabled": true

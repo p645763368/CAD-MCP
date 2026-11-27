@@ -35,7 +35,7 @@ def check_join_chain(doc,handles):
 
 def dispatch(op,**args):
  from backends import com_backend as com
- doc=com._acad_doc()
+ doc=com._acad_doc();identity=str(doc.FullName or doc.Name)
  if int(doc.GetVariable('CMDACTIVE')):raise RuntimeError('AutoCAD命令未结束，请完成或取消后再调用')
  if op=='curve_join':check_join_chain(doc,args['handles'])
  if not DLL.is_file():raise RuntimeError('Missing CadMcpArch2026V2Safe.dll')
@@ -45,6 +45,7 @@ def dispatch(op,**args):
   if len(doc.GetVariable('USERS5'))!=8192:raise RuntimeError('USERS5 transport capacity is insufficient')
   doc.SetVariable('FILEDIA',0)
   def invoke(expr):
+   if str(com._acad_doc().FullName or com._acad_doc().Name)!=identity:raise RuntimeError('活动图纸已改变')
    marker='ARCH_PENDING_'+uuid.uuid4().hex;doc.SetVariable('USERS5',marker);doc.SendCommand('(setvar "USERS5" '+expr+')\n');end=time.monotonic()+15
    while time.monotonic()<end:
     result=str(doc.GetVariable('USERS5'))
@@ -55,7 +56,7 @@ def dispatch(op,**args):
    # Loading is separated from geometry: never dispatch a write after first load.
    doc.SendCommand('(command "_.NETLOAD" '+json.dumps(str(DLL).replace('\\','/'))+')\n')
    raise RuntimeError('新原生模块已请求加载；若CAD提示请选加载一次。确认加载后重新调用，尚未派发几何操作。')
-  payload={'op':op,'document':str(doc.FullName),**args};encoded=json.dumps(payload,ensure_ascii=True,separators=(',',':'))
+  payload={'op':op,'document':identity,**args};encoded=json.dumps(payload,ensure_ascii=True,separators=(',',':'))
   if len(encoded)>24000:raise ValueError('Request too large; split into smaller explicit batches')
   result=json.loads(invoke('(car (MCPARCH2026V2SAFE '+json.dumps(encoded)+'))'))
   if not result.get('ok'):raise ValueError(result.get('error','Native operation failed'))

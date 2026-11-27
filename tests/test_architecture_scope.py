@@ -7,7 +7,7 @@ class ArchitectureScope(unittest.TestCase):
   root=Path(__file__).resolve().parents[1]
   catalog=json.loads((root/'latest/docs/工具目录.json').read_text(encoding='utf-8'))
   names={t.name for t in server._local_tool_components()}
-  self.assertEqual(len(names),235);self.assertEqual(names,{r['name'] for r in catalog});self.assertEqual(sum(r['enabled'] for r in catalog),232)
+  self.assertEqual(len(names),248);self.assertEqual(names,{r['name'] for r in catalog});self.assertEqual(sum(r['enabled'] for r in catalog),248)
  def test_retired_endpoints_have_no_callable_entry(self):
   names={t.name for t in server._local_tool_components()}
   for name in server.ARCHITECTURE_RETIRED_TOOLS:

@@ -4,7 +4,7 @@
       "command": "autocad-mcp",
       "startup_timeout_sec": 120,
       "env": {
-        "DISABLED_TOOLS": "drawing_deliver,drawing_finalize,validation_check",
+        "DISABLED_TOOLS": "",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONUTF8": "1",
         "AUTOCAD_MCP_BACKEND": "com",

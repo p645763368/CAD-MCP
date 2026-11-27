@@ -15,7 +15,7 @@ async def main():
         root=Path(t)
         env=dict(os.environ,AUTOCAD_MCP_BACKEND='ezdxf',ALLOWED_PATHS=t,CAD_MCP_NATIVE_ROOT=str(root/'unused-plugins'),
                  APPDATA=str(root/'fake-roaming'),TOOL_PROFILE='full',TOOL_PACKS='all',DISCOVERY_MODE='search',
-                 DISABLED_TOOLS='drawing_deliver,drawing_finalize,validation_check',PYTHONDONTWRITEBYTECODE='1')
+                 DISABLED_TOOLS='',PYTHONDONTWRITEBYTECODE='1')
         command=str(Path(sys.executable).parent/('autocad-mcp.exe' if os.name=='nt' else 'autocad-mcp'))
         async with Client(StdioTransport(command=command,args=[],env=env)) as client:
             names={x.name for x in await client.list_tools()}
@@ -26,9 +26,9 @@ async def main():
                 assert not r.is_error and not (isinstance(data,dict) and data.get('ok') is False),(name,data)
                 return data
             status=await call('system_status')
-            assert status['backend']=='ezdxf' and status['build']=='architecture-20261127.1',status
-            assert status['version']=='1.6.0.post5' and status['tool_count']==235,status
-            for name in ['drawing_unit_context','viewport_list','dimension_chain','drawing_round_geometry']:
+            assert status['backend']=='ezdxf' and status['build']=='building-20261127.1',status
+            assert status['version']=='1.7.0' and status['tool_count']==248,status
+            for name in ['drawing_unit_context','viewport_list','dimension_chain','drawing_round_geometry','validation_check','drawing_finalize','drawing_deliver','grid_label','grid_renumber','parking_row','parking_layout','door_window_tag','schedule_update','area_schedule','column_place','beam_place','wall_join','ramp_draw','stair_check','arch_units_migrate']:
                 r=unpack(await client.call_tool('search_tools',{'query':name,'limit':1,'detail':True}))
                 assert r['tools'][0]['name']==name
             r=unpack(await client.call_tool('search_tools',{'query':'碎数','limit':1,'detail':True}));assert r['tools'][0]['name']=='drawing_round_geometry'
@@ -38,9 +38,9 @@ async def main():
                 assert all(t['name']!=name for t in found['tools']),name
                 refused=await client.call_tool('call_tool',{'name':name,'arguments':{}},raise_on_error=False)
                 assert refused.is_error,name
-            for name in ['drawing_deliver','drawing_finalize','validation_check']:
-                r=await client.call_tool('call_tool',{'name':name,'arguments':{}},raise_on_error=False)
-                assert r.is_error,name
+            for query,expected in [('停车位','parking_layout'),('建筑面积','area_schedule'),('净高','stair_check')]:
+                found=unpack(await client.call_tool('search_tools',{'query':query,'limit':10,'detail':True}))
+                assert any(t['name']==expected for t in found['tools']),(query,found)
             # Inspect schemas before invoking the supported headless drawing path.
             for name in ['drawing_new','entity_create_line','entity_list']:
                 r=unpack(await client.call_tool('search_tools',{'query':name,'limit':1,'detail':True}));assert r['tools'][0]['name']==name
@@ -50,5 +50,5 @@ async def main():
             assert rows['total']==1 and rows['rows'][0][0]==line['handle'],rows
         assert not (root/'unused-plugins').exists(),'Unexpected native deployment'
         print(json.dumps({'ok':True,'backend':'ezdxf','build':status['build'],'version':status['version'],
-                          'registered':235,'disabled_checked':3,'retired_search_and_call_checked':5,'in_memory_line_verified':True,'autocad_contacted':False}))
+                          'registered':248,'reopened_tools_discovered':3,'retired_search_and_call_checked':5,'in_memory_line_verified':True,'autocad_contacted':False}))
 if __name__=='__main__':asyncio.run(main())

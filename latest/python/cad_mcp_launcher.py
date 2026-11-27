@@ -7,7 +7,7 @@ def defaults() -> None:
         "AUTOCAD_MCP_BACKEND": "com" if sys.platform == "win32" else "ezdxf",
         "CAD_PROGID": "AutoCAD.Application.25.1",
         "TOOL_PROFILE": "full", "TOOL_PACKS": "all", "DISCOVERY_MODE": "search",
-        "DISABLED_TOOLS": "drawing_deliver,drawing_finalize,validation_check",
+        "DISABLED_TOOLS": "",
         "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8",
     }
     for key, value in values.items():

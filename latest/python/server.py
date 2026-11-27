@@ -5916,13 +5916,13 @@ async def drawing_preflight(
     intent: Annotated[str, "One-line description of what this drawing represents."],
     requirements: Annotated[
         dict | None,
-        "Units, part_type, dimensions, tolerance_policy and optional constraints.",
+        "建筑任务：units、scope或dimensions/reference、可选project_rules和constraints。",
     ] = None,
     sheet_size: Annotated[str, Field(default="A3", description="A4 / A3 / A2 / A1 / A0.")] = "A3",
     scale: Annotated[float, Field(default=1.0, gt=0)] = 1.0,
     layer_set_id: Annotated[
-        str, Field(default="mech", description="mech / pid / iso13567.")
-    ] = "mech",
+        str, Field(default="arch", description="arch / iso13567 / mech / pid.")
+    ] = "arch",
     view_count: Annotated[int, Field(default=1, ge=1)] = 1,
     dim_style: Annotated[
         str, Field(default="chain", description="chain / baseline / ordinate / mixed.")
@@ -5963,8 +5963,8 @@ async def drawing_plan(
         float, Field(default=1.0, gt=0, description="Drawing scale (1.0 = 1:1, 0.1 = 1:10, etc).")
     ] = 1.0,
     layer_set_id: Annotated[
-        str, Field(default="mech", description="Layer set to bootstrap: mech / pid / iso13567.")
-    ] = "mech",
+        str, Field(default="arch", description="Layer set to bootstrap: arch / iso13567 / mech / pid.")
+    ] = "arch",
     view_count: Annotated[int, Field(default=1, ge=1)] = 1,
     dim_style: Annotated[
         str,
@@ -6033,7 +6033,7 @@ async def drawing_critique(
             "arch_opening_clash (silent on a drawing with no ACADMCP_ARCH record), and "
             "the topology focuses topo_dangling_endpoint, topo_near_miss, "
             "topo_interior_crossing (network layers no P&ID or architectural focus reads). "
-            "None = run all.",
+            "None selects architectural annotation, duplicate and wall/room/opening checks; other focuses must be explicit.",
         ),
     ] = None,
     ctx: Context = None,
@@ -6042,6 +6042,7 @@ async def drawing_critique(
 
     Standard production gate: must return [] before `drawing_finalize`.
     """
+    focus = focus if focus is not None else ['dim_overlap','untrimmed_corner','duplicate_entities','construction_left','arch_room_unlabelled','arch_wall_gap','arch_opening_clash']
     issues = await _backend(ctx).drawing_critique(focus)
     return [_dc(i) for i in issues]
 
@@ -6057,11 +6058,11 @@ async def drawing_critique(
 async def drawing_refine(
     max_rounds: Annotated[int, Field(default=3, ge=1, le=3)] = 3,
     min_score: Annotated[float, Field(default=95.0, ge=0, le=100)] = 95.0,
-    focus: Annotated[list[str] | None, "Critique focuses to repair; None runs all."] = None,
+    focus: Annotated[list[str] | None, "检查范围；省略使用建筑检查组合。"] = None,
     allowed_repairs: Annotated[
-        list[str] | None, "Optional allowlist of repair focus names."
+        list[str] | None, "可修复类型白名单；省略只处理重复实体和尺寸重叠。"
     ] = None,
-    dry_run: Annotated[bool, "Return the repair plan without modifying the drawing."] = False,
+    dry_run: Annotated[bool, "Return the repair plan without modifying the drawing."] = True,
     ctx: Context = None,
 ) -> dict:
     """Run a bounded, transaction-safe critique/repair/re-critique loop."""
@@ -6071,8 +6072,8 @@ async def drawing_refine(
         _backend(ctx),
         max_rounds=max_rounds,
         min_score=min_score,
-        focus=focus,
-        allowed_repairs=allowed_repairs,
+        focus=focus if focus is not None else ['dim_overlap','duplicate_entities','arch_room_unlabelled','arch_wall_gap','arch_opening_clash'],
+        allowed_repairs=allowed_repairs if allowed_repairs is not None else ['duplicate_entities','dim_overlap'],
         dry_run=dry_run,
     )
     return result.to_dict()
@@ -6195,14 +6196,14 @@ async def drawing_apply_iso_layers(
     standard: Annotated[
         str,
         Field(
-            default="mech",
+            default="arch",
             description=(
                 "Layer set: mech (DIN/ISO mechanical), pid (P&ID), iso13567 (CAD layer naming), "
                 "arch (ISO 13567-style architectural: walls, poche, doors, windows, stairs, "
                 "furniture, sanitary, grid, rooms, dimensions, symbols, overhead)."
             ),
         ),
-    ] = "mech",
+    ] = "arch",
     ctx: Context = None,
 ) -> dict:
     """Bootstrap a full ISO-conformant layer set with correct colors and lineweights.
@@ -11487,6 +11488,12 @@ import project_fixes as _project_fixes
 _project_fixes.register(__import__(__name__))
 import precision_tools as _precision_tools
 _precision_tools.register(__import__(__name__))
+import building_units as _building_units
+_building_units.register(__import__(__name__))
+import building_tools as _building_tools
+_building_tools.register(__import__(__name__))
+import building_delivery as _building_delivery
+_building_delivery.register(__import__(__name__))
 
 ARCHITECTURE_RETIRED_TOOLS = frozenset(['mech_hole_pattern', 'std_feature_draw', 'std_part_insert', 'std_part_list', 'drawing_scale_check'])
 assert not (ARCHITECTURE_RETIRED_TOOLS & {t.name for t in _local_tool_components()})

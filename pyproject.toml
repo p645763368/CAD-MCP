@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autocad-mcp-pro"
-version = "1.6.0.post5"
+version = "1.7.0"
 description = "Maintained portable AutoCAD 2026 MCP architectural tooling"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -12,7 +12,7 @@ license = "MIT"
 license-files = ["LICENSE", "NOTICE.md"]
 dependencies = [
   "ezdxf==1.4.5", "fastmcp==3.4.9", "pydantic==2.14.1",
-  "pillow==13.0.0", "matplotlib==3.11.2", "openpyxl==3.1.5",
+  "pillow==13.0.0", "matplotlib==3.11.2", "openpyxl==3.1.5", "shapely==2.1.2",
   "pywin32==312; sys_platform == 'win32'",
 ]
 
@@ -24,7 +24,7 @@ autocad-mcp-doctor = "cad_mcp_deploy:doctor_main"
 
 [tool.setuptools]
 package-dir = {"" = "latest/python"}
-py-modules = ["server", "config", "security", "version", "arch_tools", "arch_deep_tools", "project_fixes", "cad_mcp_paths", "cad_mcp_launcher", "cad_mcp_deploy", "precision_tools", "cad_mcp_status"]
+py-modules = ["server", "config", "security", "version", "arch_tools", "arch_deep_tools", "project_fixes", "cad_mcp_paths", "cad_mcp_launcher", "cad_mcp_deploy", "precision_tools", "cad_mcp_status", "building_bridge", "building_tools", "building_delivery", "building_units"]
 include-package-data = true
 
 [tool.setuptools.packages.find]
@@ -43,3 +43,5 @@ discovery = ["*.tsv", "*.json"]
 
 "share/cad-mcp/native/CadMcpStatus2026.bundle/Contents/Win64" = ["latest/native/CadMcpStatus2026.bundle/Contents/Win64/CadMcpStatus2026.dll", "latest/native/CadMcpStatus2026.bundle/Contents/Win64/CadMcpStatusIcons2026.dll"]
 "share/cad-mcp/native/CadMcpStatus2026.bundle" = ["latest/native/CadMcpStatus2026.bundle/PackageContents.xml"]
+
+"share/cad-mcp/native/CadMcpBuilding2026.bundle/Contents/Win64" = ["latest/native/CadMcpBuilding2026.bundle/Contents/Win64/CadMcpBuilding2026.dll"]

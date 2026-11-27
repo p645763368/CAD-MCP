@@ -434,7 +434,7 @@ def from_payload(payload: dict):
             f"{APP_ID}: payload version {version!r}; this build reads version {PAYLOAD_VERSION}"
         )
     kind = payload.get("kind")
-    fields = {k: v for k, v in payload.items() if k not in ("v", "kind")}
+    fields = {k: v for k, v in payload.items() if k not in ("v", "kind", "coordinate_units", "model_mm_per_unit")}
     if f"{kind}_kind" in fields:
         fields["kind"] = fields.pop(f"{kind}_kind")
     where = f"{APP_ID} {kind}"

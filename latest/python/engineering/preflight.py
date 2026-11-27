@@ -101,7 +101,7 @@ def preflight_drawing(
     requirements: dict | None = None,
     sheet_size: str = "A3",
     scale: float = 1.0,
-    layer_set_id: str = "mech",
+    layer_set_id: str = "arch",
     view_count: int = 1,
     dim_style: str = "chain",
     *,
@@ -140,6 +140,11 @@ def preflight_drawing(
             ["ISO 2768-m", "explicit", "none"],
         ),
     )
+    if str(layer_set_id).lower() in {"arch", "iso13567"}:
+        required = (("units", "MISSING_UNITS", "请明确实际图纸单位。", ["mm", "cm", "m", "inch", "ft"]),)
+        if not req.get("dimensions") and not req.get("reference"):
+            required += (("scope", "MISSING_SCOPE", "请明确目标图纸、区域或对象范围。", []),)
+        req.setdefault("drawing_type", "architectural")
     for field_name, code, question, choices in required:
         value = req.get(field_name)
         if value is None or value == "" or value == {} or value == []:
@@ -208,11 +213,11 @@ def preflight_drawing(
             "dim_style must be chain, baseline, ordinate, or mixed.",
         ),
         (
-            normalized_layer_set in {"iso13567", "mech", "pid"},
+            normalized_layer_set in {"iso13567", "mech", "pid", "arch"},
             "INVALID_LAYER_SET",
             "layer_set_id",
             layer_set_id,
-            "layer_set_id must be iso13567, mech, or pid.",
+            "layer_set_id must be arch, iso13567, mech, or pid.",
         ),
     )
     for valid, code, field_name, value, message in parameter_rules:

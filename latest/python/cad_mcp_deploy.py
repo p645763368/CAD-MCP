@@ -75,7 +75,7 @@ def client_config(workspaces: list[str], backend: str = "com", plugin_root: str 
     command = Path(sys.executable).parent / ("autocad-mcp.exe" if os.name == "nt" else "autocad-mcp")
     env = {"AUTOCAD_MCP_BACKEND": backend, "CAD_PROGID": "AutoCAD.Application.25.1",
            "ALLOWED_PATHS": ",".join(map(str, paths)), "TOOL_PROFILE": "full", "TOOL_PACKS": "all",
-           "DISCOVERY_MODE": "search", "DISABLED_TOOLS": "drawing_deliver,drawing_finalize,validation_check",
+           "DISCOVERY_MODE": "search", "DISABLED_TOOLS": "",
            "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
     if plugin_root:
         env["CAD_MCP_NATIVE_ROOT"] = str(absolute_directory(plugin_root, "native root"))

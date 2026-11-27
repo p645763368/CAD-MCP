@@ -56,7 +56,7 @@ def context(model_units=None,reference_length=None,reference_mm=None):
  if reference_length is not None:
   if any(not math.isfinite(x) or x<=0 for x in [reference_length,reference_mm]):raise ValueError('参考长度必须为正有限数')
   observed=reference_mm/reference_length;consistent=mm is not None and math.isclose(mm,observed,rel_tol=.01)
- return {'ok':True,'document':str(d.FullName),'insunits':code,'declared_units':declared[0] if declared else 'unknown','model_units':name,'mm_per_unit':mm,'source':'explicit_override' if model_units else 'INSUNITS','reference_consistent':consistent,'observed_mm_per_unit':observed,'modified':False,'warning':'INSUNITS仅为声明，不能证明实际几何单位；请用已知长度校核。'}
+ return {'ok':True,'document':str(d.FullName or d.Name),'insunits':code,'declared_units':declared[0] if declared else 'unknown','model_units':name,'mm_per_unit':mm,'source':'explicit_override' if model_units else 'INSUNITS','reference_consistent':consistent,'observed_mm_per_unit':observed,'modified':False,'warning':'INSUNITS仅为声明，不能证明实际几何单位；请用已知长度校核。'}
 
 def required_context(model_units=None):
  state=context(model_units)
@@ -142,7 +142,7 @@ def register(s):
  replace('dimension_chain',dims,'按图纸实际单位创建毫米显示的尺寸链','write',['尺寸链','米制标注','单位适配标注'])
  # Existing high-level generators contain millimetre constants and serialized
  # records without unit tags: fail before writes rather than scale old records.
- guarded={'arch_wall','arch_opening','arch_stair','arch_room','arch_schedule','arch_grid','arch_symbol','arch_catalogue_insert','arch_dimension_chains','arch_plan_from_spec'}
+ guarded=set()  # Canonical unit adapter is registered by building_units.
  for t in s._local_tool_components():
   if t.name in guarded:
    fn=t.fn;sig=inspect.signature(fn)
